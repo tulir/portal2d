@@ -10,6 +10,13 @@ import org.newdawn.slick.SlickException;
 
 import net.maunium.Portal2D.BlockRenderer.BlockType;
 
+/**
+ * Main class for the Portal 2(D) game.
+ * 
+ * @author Tulir293
+ * @author Antti
+ * @since 0.1
+ */
 public class Portal2D extends BasicGame {
 	private Map map;
 	
@@ -34,6 +41,9 @@ public class Portal2D extends BasicGame {
 	
 	}
 	
+	/**
+	 * Get thhe image in the given path (without .png) from the jar.
+	 */
 	private Image getImage(String name) throws SlickException {
 		return new Image(this.getClass().getClassLoader().getResourceAsStream("res/" + name + ".png"), name, false);
 	}
@@ -48,6 +58,5 @@ public class Portal2D extends BasicGame {
 			System.err.println("Fatal error:");
 			e.printStackTrace();
 		}
-		
 	}
 }
