@@ -2,21 +2,25 @@ package net.maunium.Portal2D;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import net.maunium.Portal2D.BlockRenderer.BlockType;
+
 public class Portal2D extends BasicGame {
-	private BlockRenderer br;
-	
 	public Portal2D() {
 		super("Portal 2(D)");
-		br = new BlockRenderer();
 	}
 	
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-	
+		BlockRenderer.loadImage(BlockType.DARK, new Color(1, 2, 3),
+				new Image(this.getClass().getClassLoader().getResourceAsStream("res/tile_dark.png"), "tile_dark", false));
+		BlockRenderer.loadImage(BlockType.LIGHT, new Color(1, 2, 3),
+				new Image(this.getClass().getClassLoader().getResourceAsStream("res/tile_light.png"), "tile_light", false));
 	}
 	
 	@Override
