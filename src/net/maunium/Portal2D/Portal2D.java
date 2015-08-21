@@ -11,16 +11,17 @@ import org.newdawn.slick.SlickException;
 import net.maunium.Portal2D.BlockRenderer.BlockType;
 
 public class Portal2D extends BasicGame {
+	private Map map;
+	
 	public Portal2D() {
 		super("Portal 2(D)");
 	}
 	
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-		BlockRenderer.loadImage(BlockType.DARK, new Color(1, 2, 3),
-				new Image(this.getClass().getClassLoader().getResourceAsStream("res/tile_dark.png"), "tile_dark", false));
-		BlockRenderer.loadImage(BlockType.LIGHT, new Color(1, 2, 3),
-				new Image(this.getClass().getClassLoader().getResourceAsStream("res/tile_light.png"), "tile_light", false));
+		BlockRenderer.loadImage(BlockType.DARK, new Color(1, 2, 3), getImage("blocks/tile_dark"));
+		BlockRenderer.loadImage(BlockType.LIGHT, new Color(1, 2, 3), getImage("blocks/tile_light"));
+		map = new Map(getImage("maps/default"));
 	}
 	
 	@Override
@@ -31,6 +32,10 @@ public class Portal2D extends BasicGame {
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
 	
+	}
+	
+	private Image getImage(String name) throws SlickException {
+		return new Image(this.getClass().getClassLoader().getResourceAsStream("res/" + name + ".png"), name, false);
 	}
 	
 	public static void main(String[] args) {
