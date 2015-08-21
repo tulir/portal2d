@@ -1,5 +1,6 @@
 package net.maunium.Portal2D;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -31,15 +32,13 @@ public class Map {
 		for (int x = 0; x < img.getWidth(); x++) {
 			blocks[x] = new BlockType[img.getHeight()];
 			for (int y = 0; y < img.getHeight(); y++) {
-				int r = data[(y * img.getWidth() + x) * 4 + 0];
-				int g = data[(y * img.getWidth() + x) * 4 + 1];
-				int b = data[(y * img.getWidth() + x) * 4 + 2];
+				Color c = img.getColor(x, y);
 				
 				// The player spawn point
-				if (r == 69 && g == 123 && b == 321) {
-					p.setX(x);
-					p.setY(y);
-				} else blocks[x][y] = Renderer.getBlockType(r, g, b);
+				if (c.getRed() == 255 && c.getGreen() == 0 && c.getBlue() == 0) {
+					p.x = x;
+					p.y = y;
+				} else blocks[x][y] = Renderer.getBlockType(c);
 			}
 		}
 	}
@@ -48,9 +47,10 @@ public class Map {
 	 * Render this map.
 	 */
 	public void render(Graphics g) {
+		g.setBackground(new Color(50, 50, 50));
 		for (int x = 0; x < blocks.length; x++) {
 			for (int y = 0; y < blocks[x].length; y++) {
-				Renderer.render(g, blocks[x][y], x, y);
+				if (blocks[x][y] != null) Renderer.render(g, blocks[x][y], x, y);
 			}
 		}
 		
@@ -58,5 +58,13 @@ public class Map {
 		
 		portal_blue.render(g);
 		portal_orange.render(g);
+	}
+	
+	public BlockType getBlockAt(int x, int y) {
+		return blocks[x][y];
+	}
+	
+	public Player getPlayer() {
+		return p;
 	}
 }

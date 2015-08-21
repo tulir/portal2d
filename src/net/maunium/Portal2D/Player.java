@@ -10,7 +10,7 @@ import org.newdawn.slick.Image;
  * @since 0.1
  */
 public class Player {
-	private float x, y;
+	public float x, y, dx, dy;
 	private final Image i;
 	
 	public Player(Image i) {
@@ -20,21 +20,4 @@ public class Player {
 	public void render(Graphics g) {
 		g.drawImage(i, x * 32, y * 32);
 	}
-	
-	public float getX() {
-		return x;
-	}
-	
-	public void setX(float x) {
-		this.x = x;
-	}
-	
-	public float getY() {
-		return y;
-	}
-	
-	public void setY(float y) {
-		this.y = y;
-	}
-	
 }

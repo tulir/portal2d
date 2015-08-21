@@ -32,10 +32,9 @@ public class Renderer {
 	 * 
 	 * @return The block type, or null if color couldn't be identified.
 	 */
-	public static BlockType getBlockType(int r, int g, int b) {
-		Color c = new Color(r, g, b);
+	public static BlockType getBlockType(Color c) {
 		for (Entry<Color, BlockType> e : colors.entrySet()) {
-			if (e.getValue().equals(c)) return e.getValue();
+			if (e.getKey().equals(c)) return e.getValue();
 		}
 		return null;
 	}

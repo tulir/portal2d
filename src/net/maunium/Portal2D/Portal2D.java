@@ -1,5 +1,6 @@
 package net.maunium.Portal2D;
 
+import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
@@ -7,6 +8,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.util.ResourceLoader;
 
 import net.maunium.Portal2D.Renderer.BlockType;
 
@@ -26,14 +28,24 @@ public class Portal2D extends BasicGame {
 	
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-		Renderer.loadImage(BlockType.DARK, new Color(1, 2, 3), getImage("blocks/tile_dark"));
-		Renderer.loadImage(BlockType.LIGHT, new Color(1, 2, 3), getImage("blocks/tile_light"));
-		map = new Map(this, getImage("maps/default"));
+		Renderer.loadImage(BlockType.DARK, new Color(50, 50, 50), getImage("blocks/tile_dark"));
+		Renderer.loadImage(BlockType.LIGHT, new Color(200, 200, 200), getImage("blocks/tile_light"));
+		map = new Map(this, getImage("maps/map1"));
 	}
 	
 	@Override
-	public void update(GameContainer gc, int i) throws SlickException {
-	
+	public void update(GameContainer gc, int delta) throws SlickException {
+		Player p = map.getPlayer();
+		
+		if (gc.getInput().isKeyDown(Keyboard.KEY_A)) p.dx = -0.005f;
+		else if (gc.getInput().isKeyDown(Keyboard.KEY_D)) p.dx = 0.005f;
+		else p.dx = 0.0f;
+		
+		if (gc.getInput().isKeyDown(Keyboard.KEY_SPACE) && p.dy == 0 && map.getBlockAt((int) p.x, (int) p.y + 1) != null) p.dy = 0.004f;
+		else if (p.dy > 0.0f) p.dy -= 0.0001f;
+		
+		p.x += delta * p.dx;
+		p.y -= delta * p.dy;
 	}
 	
 	@Override
@@ -44,15 +56,15 @@ public class Portal2D extends BasicGame {
 	/**
 	 * Get the image in the given path (without .png) from the jar.
 	 */
-	Image getImage(String name) throws SlickException {
-		return new Image(this.getClass().getClassLoader().getResourceAsStream("res/" + name + ".png"), name, false);
+	public Image getImage(String name) throws SlickException {
+		return new Image(ResourceLoader.getResourceAsStream("/res/" + name + ".png"), name, false);
 	}
 	
 	public static void main(String[] args) {
 		try {
 			AppGameContainer agc;
 			agc = new AppGameContainer(new Portal2D());
-			agc.setDisplayMode(640, 480, false);
+			agc.setDisplayMode(12 * 32, 12 * 32, false);
 			agc.start();
 		} catch (SlickException e) {
 			System.err.println("Fatal error:");
