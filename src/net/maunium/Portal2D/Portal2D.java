@@ -7,19 +7,26 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 public class Portal2D extends BasicGame {
+	private BlockRenderer br;
+	
 	public Portal2D() {
 		super("Portal 2(D)");
+		br = new BlockRenderer();
 	}
 	
 	@Override
-	public void init(GameContainer gc) throws SlickException {}
+	public void init(GameContainer gc) throws SlickException {
+	
+	}
 	
 	@Override
-	public void update(GameContainer gc, int i) throws SlickException {}
+	public void update(GameContainer gc, int i) throws SlickException {
+	
+	}
 	
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
-//		g.drawString("Mau", 100, 100);
+	
 	}
 	
 	public static void main(String[] args) {
