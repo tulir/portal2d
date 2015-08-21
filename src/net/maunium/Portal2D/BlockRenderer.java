@@ -14,7 +14,7 @@ import org.newdawn.slick.Image;
  * @author Tulir293
  * @since 0.1
  */
-public class Renderer {
+public class BlockRenderer {
 	/** Contains the BlockType -> Image mappings. */
 	private static Map<BlockType, Image> images = new HashMap<BlockType, Image>();
 	/** Contains the Color -> BlockType mappings. */

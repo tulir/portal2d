@@ -5,13 +5,14 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import net.maunium.Portal2D.Renderer.BlockType;
+import net.maunium.Portal2D.BlockRenderer.BlockType;
 import net.maunium.Portal2D.Vector.SideHit;
 
 /**
  * Container for maps.
  * 
  * @author Tulir293
+ * @author Antti
  * @since 0.1
  */
 public class Map {
@@ -23,7 +24,6 @@ public class Map {
 	 * Construct a map based on the given Image.
 	 */
 	public Map(Portal2D host, Image img) throws SlickException {
-		byte[] data = img.getTexture().getTextureData();
 		p = new Player(host.getImage("player"));
 		
 		portal_blue = new Portal(host.getImage("blocks/portal_blue"));
@@ -39,7 +39,7 @@ public class Map {
 				if (c.getRed() == 255 && c.getGreen() == 0 && c.getBlue() == 0) {
 					p.x = x;
 					p.y = y;
-				} else blocks[x][y] = Renderer.getBlockType(c);
+				} else blocks[x][y] = BlockRenderer.getBlockType(c);
 			}
 		}
 	}
@@ -51,7 +51,7 @@ public class Map {
 		g.setBackground(new Color(50, 50, 50));
 		for (int x = 0; x < blocks.length; x++) {
 			for (int y = 0; y < blocks[x].length; y++) {
-				if (blocks[x][y] != null) Renderer.render(g, blocks[x][y], x, y);
+				if (blocks[x][y] != null) BlockRenderer.render(g, blocks[x][y], x, y);
 			}
 		}
 		
@@ -61,14 +61,27 @@ public class Map {
 		portal_orange.render(g);
 	}
 	
+	/**
+	 * Get the block type at the given location.
+	 * 
+	 * @return The block type, or null if no block at given location.
+	 */
 	public BlockType getBlockAt(int x, int y) {
 		return blocks[x][y];
 	}
 	
+	/**
+	 * Get the player in this map.
+	 */
 	public Player getPlayer() {
 		return p;
 	}
 	
+	/**
+	 * Ray trace method. TODO: Add proper javadoc
+	 * 
+	 * @author Antti
+	 */
 	private Vector rayTrace(double angle, int playerX, int playerY) {
 		if (angle % 90 == 0) {
 			angle += 1 / 10000;
@@ -123,9 +136,9 @@ public class Map {
 			
 			// Testing which limit is closer.
 			if (distToVertLim <= distToHorLim) {
-				Renderer.BlockType blockType = blocks[(int) ((currentX - currentX % 32) / 32)][nextVerticalLimit / 32 + directionVector.y];
+				BlockRenderer.BlockType blockType = blocks[(int) ((currentX - currentX % 32) / 32)][nextVerticalLimit / 32 + directionVector.y];
 				playerX += directionVector.y * distToVertLim;
-				if (blockType == Renderer.BlockType.LIGHT) {
+				if (blockType == BlockRenderer.BlockType.LIGHT) {
 					// 0 top 1 left 2 bottom 3 right
 					portalHit.sideHit = SideHit.fromInt(directionVector.y + 1);
 					// We get the x and y values of the blockwe're in.
@@ -138,10 +151,10 @@ public class Map {
 				} else if (blockType != null) return null;
 			} else {
 				// We get the block that is at the position we crashed to.
-				Renderer.BlockType blockType = blocks[nextHorizontalLimit / 32 + directionVector.x][(int) ((b * currentX + c - (b * currentX + c) % 32) / 32)];
+				BlockRenderer.BlockType blockType = blocks[nextHorizontalLimit / 32 + directionVector.x][(int) ((b * currentX + c - (b * currentX + c) % 32) / 32)];
 				playerX += directionVector.x * distToVertLim;
 				// If we can place a portal on the surface, we do so, returning the surface.
-				if (blockType == Renderer.BlockType.LIGHT) {
+				if (blockType == BlockRenderer.BlockType.LIGHT) {
 					// 0 top 1 left 2 bottom 3 right
 					portalHit.sideHit = SideHit.fromInt(directionVector.x + 2);
 					portalHit.x = nextHorizontalLimit / 32 + directionVector.x;
