@@ -2,5 +2,16 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/jinput.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://javadoc.lwjgl.org/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/slick.jar" sourcepath="lib/slick.src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="http://slick.ninjacave.com/javadoc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
