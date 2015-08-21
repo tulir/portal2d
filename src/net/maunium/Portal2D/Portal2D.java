@@ -8,7 +8,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import net.maunium.Portal2D.BlockRenderer.BlockType;
+import net.maunium.Portal2D.Renderer.BlockType;
 
 /**
  * Main class for the Portal 2(D) game.
@@ -26,9 +26,9 @@ public class Portal2D extends BasicGame {
 	
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-		BlockRenderer.loadImage(BlockType.DARK, new Color(1, 2, 3), getImage("blocks/tile_dark"));
-		BlockRenderer.loadImage(BlockType.LIGHT, new Color(1, 2, 3), getImage("blocks/tile_light"));
-		map = new Map(getImage("maps/default"));
+		Renderer.loadImage(BlockType.DARK, new Color(1, 2, 3), getImage("blocks/tile_dark"));
+		Renderer.loadImage(BlockType.LIGHT, new Color(1, 2, 3), getImage("blocks/tile_light"));
+		map = new Map(this, getImage("maps/default"));
 	}
 	
 	@Override
@@ -38,13 +38,13 @@ public class Portal2D extends BasicGame {
 	
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
-	
+		map.render(g);
 	}
 	
 	/**
-	 * Get thhe image in the given path (without .png) from the jar.
+	 * Get the image in the given path (without .png) from the jar.
 	 */
-	private Image getImage(String name) throws SlickException {
+	Image getImage(String name) throws SlickException {
 		return new Image(this.getClass().getClassLoader().getResourceAsStream("res/" + name + ".png"), name, false);
 	}
 	
