@@ -20,8 +20,10 @@ public class Vector {
 					return LEFT;
 				case 2:
 					return BOTTOM;
-				default:
+				case 3:
 					return RIGHT;
+				default:
+					return null;
 			}
 		}
 	}
@@ -30,5 +32,10 @@ public class Vector {
 		this.x = x;
 		this.y = y;
 		this.sideHit = sideHit;
+	}
+	public Vector(int x, int y) {
+		this.x = x;
+		this.y = y;
+		this.sideHit = null;
 	}
 }
