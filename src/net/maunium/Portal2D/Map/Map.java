@@ -70,10 +70,10 @@ public class Map extends BasicGameState {
 			}
 		}
 		
-		double mX = p.x - gc.getInput().getMouseX(), mY = p.y - gc.getInput().getMouseY();
-		System.out.print(gc.getInput().getMouseX() + ", " + gc.getInput().getMouseY() + " - " + p.x + ", " + p.y + " >> " + mX + ", " + mY + ", ");
-		double tan = Math.atan2(mX, mY);
-		p.render(g, Math.toDegrees(tan < 0 ? tan + 2 * Math.PI : tan));
+		double angle = -Math.atan2(p.x * 32 + 16 - gc.getInput().getMouseX(), p.y * 32 + 16 - gc.getInput().getMouseY());
+		angle = Math.toDegrees(angle < 0 ? angle + 2 * Math.PI : angle);
+		
+		p.render(g, angle);
 		
 		portal_blue.render(g);
 		portal_orange.render(g);
