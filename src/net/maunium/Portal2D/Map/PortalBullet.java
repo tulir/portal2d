@@ -1,5 +1,7 @@
 package net.maunium.Portal2D.Map;
 
+import java.util.HashMap;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
@@ -57,21 +59,28 @@ public class PortalBullet {
 		BlockType hitBlock = blocks[(int) (x - x % 32) / 32][(int) (y - y % 32) / 32];
 		if (hitBlock != null && hitBlock.isSolid()) {
 			if (hitBlock == BlockType.LIGHT) {
+				
 				int blockMiddleX = (int) (x - x % 32)+16;
 				int blockMiddleY = (int) (y - y % 32)+16;
-				if (Math.abs(blockMiddleX - x) < Math.abs(blockMiddleY - y)) {
-					if (blockMiddleY - y < 0) {
-						return new Vector((int) (x - x % 32) / 32, (int) (y - y % 32) / 32, SideHit.BOTTOM);
-					} else {
-						return new Vector((int) (x - x % 32) / 32, (int) (y - y % 32) / 32, SideHit.TOP);
+				HashMap<Integer, Double> possibleValues = new HashMap<Integer, Double>();
+				// Checking if there can possibly be a portal there.
+				for(int side = 0; side < 4; side++) {
+					BlockType test = blocks
+							[(int) (x - x % 32) / 32+(side == 0 ? 0 : side-2)]
+							[(int) (y - y % 32) / 32+(side == 3 ? 0 : side-1)];
+					int testX = (int) (x - x % 32) / 32+(side == 0 ? 0 : side-2);
+					int testY = (int) (y - y % 32) / 32+(side == 3 ? 0 : side-1);
+					int blockX = (int) (x - x % 32) / 32;
+					int blockY = (int) (y - y % 32) / 32;
+					if (test == null || test == BlockType.POINT || test == BlockType.FINISH) {
+						
+						if ((side == 0 ? 0 : side-2)*dx <= 0 && (side == 3 ? 0 : side-1) * dy <= 0) {
+							if (Math.abs((blockMiddleX+(side == 0 ? 0 : side-2)*16-x))+Math.abs((blockMiddleY+(side == 3 ? 0 : side-1)*16-y))<=16) {
+								return new Vector((int)(x - x % 32) / 32, (int)(y - y % 32) / 32, SideHit.fromInt(side));
+							}
+						}
 					}
-				} else {
-					if (blockMiddleX - x < 0) {
-						return new Vector((int) (x - x % 32) / 32, (int) (y - y % 32) / 32, SideHit.RIGHT);
-					} else {
-						return new Vector((int) (x - x % 32) / 32, (int) (y - y % 32) / 32, SideHit.LEFT);
-					}
-				}
+				}			
 			} else {
 				return new Vector(-1, -1, SideHit.TOP);
 			}
