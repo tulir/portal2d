@@ -13,13 +13,13 @@ import net.maunium.Portal2D.Util.Vector;
  */
 public class Portal {
 	private Vector location;
-	private Image i;
+	private Image image;
 	
 	/**
 	 * Construct a new Portal with the given texture.
 	 */
 	public Portal(Image i) {
-		this.i = i;
+		this.image = i;
 		location = Vector.NULL;
 	}
 	
@@ -29,20 +29,20 @@ public class Portal {
 	public void render(Graphics g) {
 		if (location == null) return;
 		
-		i.setRotation(0);
+		image.setRotation(0);
 		switch (location.sideHit) {
 			case NULL:
 				return;
 			case LEFT:
-				i.rotate(90);
+				image.rotate(90);
 			case BOTTOM:
-				i.rotate(90);
+				image.rotate(90);
 			case RIGHT:
-				i.rotate(90);
+				image.rotate(90);
 			case TOP:
 		}
 		
-		g.drawImage(i, location.x * 32, location.y * 32);
+		g.drawImage(image, location.x * 32, location.y * 32);
 	}
 	
 	/**
