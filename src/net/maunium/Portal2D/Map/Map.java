@@ -284,36 +284,92 @@ public class Map extends BasicGameState {
 		if (portal_blue == null || portal_orange == null) {
 			return;
 		}
-		checkCollisionWithPortal(portal_blue);
-		checkCollisionWithPortal(portal_orange);
+		if (!checkCollisionWithPortal(portal_blue)) {
+			checkCollisionWithPortal(portal_orange);
+		}
 		return;
 	}
-	private void checkCollisionWithPortal(Portal portal) {
+	private boolean checkCollisionWithPortal(Portal portal) {
 		if (Math.abs(p.x - portal.getLocation().x) < 32 && Math.abs(p.y - portal.getLocation().y) < 32) {
 			if (Math.abs(p.y - portal.getLocation().y)<2) {
 				if (p.x - portal.getLocation().x < 0) {
 					if (portal.getLocation().sideHit == SideHit.LEFT) {
-						return;
+						teleport(portal);
+						return true;
 					}
 				} else {
 					if (portal.getLocation().sideHit == SideHit.RIGHT) {
-						return;
+						teleport(portal);
+						return true;
 					}
 				}
 			} else if (Math.abs(p.x - portal.getLocation().x)<2){
 				if (p.y - portal.getLocation().y < 0) {
 					if (portal.getLocation().sideHit == SideHit.TOP) {
-						return;
+						teleport(portal);
+						return true;
 					}
 				} else {
 					if (portal.getLocation().sideHit == SideHit.BOTTOM) {
-						return;
+						teleport(portal);
+						return true;
 					}
 				}
 			}
 		}
+		return false;
 	}
-	private void teleport(Portal targetPortal) {
+	private void teleport(Portal currentPortal) {
+		Portal targetPortal = currentPortal == portal_blue ? portal_orange : portal_blue;
+		float newDX = p.dx,newDY = p.dy;
 		
+		// Get the amount of rotations needed
+		int rotationsNeeded = SideHit.toInt(currentPortal.getLocation().sideHit)
+				-SideHit.toInt(targetPortal.getLocation().sideHit);
+		if (rotationsNeeded < 0) {
+			rotationsNeeded += 4;
+		}
+		
+		// Do the rotations
+		for(int rotations = 0; rotations < rotationsNeeded; rotations++) {
+			Vector tempVector = rotateVector(newDX,newDY);
+			newDX = tempVector.x;
+			newDY = tempVector.y;
+		}
+		// Apply the new speed vector
+		p.dx = newDX;
+		p.dy = newDY;
+		
+		// Then after modifying the speed, teleport to the correct tile.
+		int x = SideHit.toInt(targetPortal.getLocation().sideHit);
+		int cx = x == 0 ? 0 : x-2;
+		int cy = x == 3 ? 0 : x-1;
+		
+		p.x = (targetPortal.getLocation().x+cx)*32;
+		p.y = (targetPortal.getLocation().y+cy)*32;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
