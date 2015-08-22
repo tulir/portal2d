@@ -28,7 +28,7 @@ public class PortalBullet {
 		this.y = y;
 		this.blue = blue;
 		dy = PIXELS_PER_SECOND * (mouseY - y) / (Math.abs(mouseY - y) + Math.abs(mouseX - x));
-		dx = PIXELS_PER_SECOND - dy;
+		dx = PIXELS_PER_SECOND * (mouseX - x) / (Math.abs(mouseY - y) + Math.abs(mouseX - x));
 		
 		// Calculate the angle from the player to the mouse in radians.
 		double angle = -Math.atan2(dx, dy);
@@ -54,89 +54,28 @@ public class PortalBullet {
 		x += delta / 1000.0f * dx;
 		y += delta / 1000.0f * dy;
 		
-		BlockType hitBlock = blocks[(int) (x - x % 32) / 32][(int) (x - x % 32) / 32];
-		if (hitBlock.isSolid()) {
-			
+		BlockType hitBlock = blocks[(int) (x - x % 32) / 32][(int) (y - y % 32) / 32];
+		if (hitBlock != null && hitBlock.isSolid()) {
 			if (hitBlock == BlockType.LIGHT) {
-				int blockMiddleX = (int)(x-x%32);
-				int blockMiddleY = (int)(y-y%32);
-				if (Math.abs(blockMiddleX)-x < Math.abs(blockMiddleY)-y) {
-					if ((blockMiddleY)-y < 0) {
-						return new Vector((int)(x-x%32)/32,(int)(y-y%32)/32,SideHit.BOTTOM);
+				int blockMiddleX = (int) (x - x % 32);
+				int blockMiddleY = (int) (y - y % 32);
+				if (Math.abs(blockMiddleX) - x < Math.abs(blockMiddleY) - y) {
+					if (blockMiddleY - y < 0) {
+						return new Vector((int) (x - x % 32) / 32, (int) (y - y % 32) / 32, SideHit.BOTTOM);
 					} else {
-						return new Vector((int)(x-x%32)/32,(int)(y-y%32)/32,SideHit.TOP);
+						return new Vector((int) (x - x % 32) / 32, (int) (y - y % 32) / 32, SideHit.TOP);
 					}
 				} else {
-					if ((blockMiddleX)-x < 0) {
-						return new Vector((int)(x-x%32)/32,(int)(y-y%32)/32,SideHit.RIGHT);
+					if (blockMiddleX - x < 0) {
+						return new Vector((int) (x - x % 32) / 32, (int) (y - y % 32) / 32, SideHit.RIGHT);
 					} else {
-						return new Vector((int)(x-x%32)/32,(int)(y-y%32)/32,SideHit.LEFT);
+						return new Vector((int) (x - x % 32) / 32, (int) (y - y % 32) / 32, SideHit.LEFT);
 					}
 				}
 			} else {
-				return new Vector(-1,-1,SideHit.TOP);
+				return new Vector(-1, -1, SideHit.TOP);
 			}
 		}
 		return null;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
