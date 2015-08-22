@@ -1,13 +1,17 @@
 package net.maunium.Portal2D.Map;
 
+import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
 import net.maunium.Portal2D.BlockRenderer;
-import net.maunium.Portal2D.Portal2D;
 import net.maunium.Portal2D.BlockRenderer.BlockType;
+import net.maunium.Portal2D.Portal2D;
 import net.maunium.Portal2D.Util.Vector;
 import net.maunium.Portal2D.Util.Vector.SideHit;
 
@@ -18,7 +22,10 @@ import net.maunium.Portal2D.Util.Vector.SideHit;
  * @author Antti
  * @since 0.1
  */
-public class Map {
+public class Map extends BasicGameState {
+	private final int id;
+	private final Image img;
+	private final Portal2D host;
 	private BlockType[][] blocks;
 	private Portal portal_blue, portal_orange;
 	private Player p;
@@ -26,7 +33,14 @@ public class Map {
 	/**
 	 * Construct a map based on the given Image.
 	 */
-	public Map(Portal2D host, Image img) throws SlickException {
+	public Map(Portal2D host, Image img, int id) throws SlickException {
+		this.id = id;
+		this.host = host;
+		this.img = img;
+	}
+	
+	@Override
+	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		p = new Player(host.getImage("player"));
 		
 		portal_blue = new Portal(host.getImage("blocks/portal_blue"));
@@ -47,10 +61,8 @@ public class Map {
 		}
 	}
 	
-	/**
-	 * Render this map.
-	 */
-	public void render(Graphics g) {
+	@Override
+	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		g.setBackground(new Color(50, 50, 50));
 		for (int x = 0; x < blocks.length; x++) {
 			for (int y = 0; y < blocks[x].length; y++) {
@@ -62,6 +74,30 @@ public class Map {
 		
 		portal_blue.render(g);
 		portal_orange.render(g);
+	}
+	
+	@Override
+	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+		Player p = getPlayer();
+		
+		if (gc.getInput().isKeyDown(Keyboard.KEY_A)) p.dx = -0.005f;
+		else if (gc.getInput().isKeyDown(Keyboard.KEY_D)) p.dx = 0.005f;
+		else p.dx = 0.0f;
+		
+		if (gc.getInput().isKeyDown(Keyboard.KEY_SPACE) && p.dy == 0 && getBlockAt((int) (p.x + 0.5), (int) p.y + 1) != null) p.dy = 0.004f;
+		// TODO: Proper collision checking
+//		else if (p.dy == 0 && ((int) p.x < p.x || map.getBlockAt((int) (p.x + 0.5), (int) p.y + 1) == null)) p.dy = -0.01f;
+		else if (gc.getInput().isKeyDown(Keyboard.KEY_LSHIFT)) p.dy = -0.004f;
+		else if (p.dy > 0.0f) p.dy -= 0.0001f;
+		else if (p.dy < 0.0f) p.dy = 0.0f;
+		
+		p.x += delta * p.dx;
+		p.y -= delta * p.dy;
+	}
+	
+	@Override
+	public int getID() {
+		return id;
 	}
 	
 	/**
@@ -154,7 +190,8 @@ public class Map {
 				} else if (blockType != null) return null;
 			} else {
 				// We get the block that is at the position we crashed to.
-				BlockRenderer.BlockType blockType = blocks[nextHorizontalLimit / 32 + directionVector.x][(int) ((b * currentX + c - (b * currentX + c) % 32) / 32)];
+				BlockRenderer.BlockType blockType = blocks[nextHorizontalLimit / 32
+						+ directionVector.x][(int) ((b * currentX + c - (b * currentX + c) % 32) / 32)];
 				playerX += directionVector.x * distToVertLim;
 				// If we can place a portal on the surface, we do so, returning the surface.
 				if (blockType == BlockRenderer.BlockType.LIGHT) {
