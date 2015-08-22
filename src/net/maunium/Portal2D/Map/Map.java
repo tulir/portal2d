@@ -190,48 +190,48 @@ public class Map extends BasicGameState {
 	 * TODO |-!!!------!!!!------!!!-| TODO |------------------------| TODO | FIX COLLISION CHECKING | TODO |------------------------| TODO
 	 * |-!!!------!!!!------!!!-| It currently assumes player positions are in pixels, while they are in floating grid points.
 	 */
-//	private boolean checkCollision() {
-//		// Returns true if a spike was hit.
-//		int playerTileX = (int) (p.x - p.x % 32) / 32;
-//		int playerTileY = (int) (p.y - p.y % 32) / 32;
-//		for (int mx = -1; mx < 2; mx++) {
-//			for (int my = -1; my < 2; my++) {
-//				if (checkCollisionWith(playerTileX + mx, playerTileY + my)) return true;
-//			}
-//		}
-//		return false;
-//	}
-//	
-//	private boolean checkCollisionWith(int x, int y) {
-//		// Return true if a spike gets hit.
-//		if (Math.abs(p.x - x) < 32 && Math.abs(p.y - y) < 32) {
-//			if (Math.abs(p.x - x) >= Math.abs(p.y - y)) {
-//				// We want to create as little lag as possible, so we politely
-//				// Show the player the door with the least moving required.
-//				p.dx = 0;
-//				if (p.x - x < 0) {
-//					p.x -= p.x % 32;
-//				} else {
-//					p.x += 32 - p.x % 32;
-//				}
-//			} else {
-//				p.dy = 0;
-//				if (p.y - y < 0) {
-//					p.y -= p.y % 32;
-//				} else {
-//					p.y += 32 - p.y % 32;
-//				}
-//			}
-//			if (blocks[x][y] == BlockType.BOMB) return true;
-//		}
-//		return false;
-//	}
-//	
-//	/**
-//	 * Checks collision between the player and the two portals. If a player is to teleport, this method also does that.
-//	 * 
-//	 * @author Antti
-//	 */
+	private boolean checkCollision() {
+		// Returns true if a spike was hit.
+		int playerTileX = (int) (p.x);
+		int playerTileY = (int) (p.y);
+		for (int mx = -1; mx < 2; mx++) {
+			for (int my = -1; my < 2; my++) {
+				if (checkCollisionWith(playerTileX + mx, playerTileY + my)) return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean checkCollisionWith(int x, int y) {
+		// Return true if a spike gets hit.
+		if (Math.abs(p.x - x) < 1 && Math.abs(p.y - y) < 1) {
+			if (Math.abs(p.x - x) >= Math.abs(p.y - y)) {
+				// We want to create as little lag as possible, so we politely
+				// Show the player the door with the least moving required.
+				p.dx = 0;
+				if (p.x - x < 0) {
+					p.x += (int)p.x - p.x;
+				} else {
+					p.x += (int)p.x - p.x + 1;
+				}
+			} else {
+				p.dy = 0;
+				if (p.y - y < 0) {
+					p.y += (int)p.y - p.y;
+				} else {
+					p.y += (int)p.y - p.y + 1;
+				}
+			}
+			if (blocks[x][y] == BlockType.BOMB) return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks collision between the player and the two portals. If a player is to teleport, this method also does that.
+	 * 
+	 * @author Antti
+	 */
 //	private void checkPortalCollision() {
 //		if (portal_blue == null || portal_orange == null) return;
 //		if (!checkCollisionWithPortal(portal_blue)) {
