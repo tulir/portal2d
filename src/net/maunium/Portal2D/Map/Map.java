@@ -106,7 +106,8 @@ public class Map extends BasicGameState {
 		/*
 		 * Handle up/down presses.
 		 */
-		if (gc.getInput().isKeyDown(Keyboard.KEY_SPACE) && p.dy == 0 && getBlockAt((int) (p.x + 0.5), (int) p.y + 1) != null) p.dy = 0.004f;
+		BlockType below = getBlockAt((int) (p.x + 0.5), (int) p.y + 1);
+		if (gc.getInput().isKeyDown(Keyboard.KEY_SPACE) && p.dy == 0 && below != null && below.isSolid()) p.dy = 0.004f;
 		else if (gc.getInput().isKeyDown(Keyboard.KEY_S)) p.dy = -MOVE_VELOCITY;
 		else if (gc.getInput().isKeyDown(Keyboard.KEY_W)) p.dy = MOVE_VELOCITY;
 		else if (p.dy > 0.0f) p.dy -= delta * JUMP_VELOCITY;
@@ -121,20 +122,15 @@ public class Map extends BasicGameState {
 		/*
 		 * Portal shooting
 		 */
-		if (gc.getInput().isMouseButtonDown(0) || gc.getInput().isMouseButtonDown(1))
-			shootPortal(gc.getInput().isMousePressed(0) ? portal_blue : portal_orange, gc.getInput().getMouseX(), gc.getInput().getMouseY());
-	}
-	
-	public void shootPortal(Portal po, int mouseX, int mouseY) {
-		Player p = getPlayer();
-		Vector rt = rayTrace(mouseX, mouseY);
-		if (rt != null && validPortalBlock(rt)) po.setLocation(rt);
+		if (gc.getInput().isMouseButtonDown(0) || gc.getInput().isMouseButtonDown(1)) {
+			Vector rt = rayTrace(gc.getInput().getMouseX(), gc.getInput().getMouseY());
+			if (validPortalBlock(rt)) (gc.getInput().isMousePressed(0) ? portal_orange : portal_blue).setLocation(rt);
+		}
 	}
 	
 	public boolean validPortalBlock(Vector rt) {
-		// TODO: Check if portal can be placed.
-		if (getBlockAt(rt.x, rt.y) != BlockType.LIGHT) return false;
-		return true;
+		if (rt == null || getBlockAt(rt.x, rt.y) != BlockType.LIGHT) return false;
+		else return true;
 	}
 	
 	@Override
