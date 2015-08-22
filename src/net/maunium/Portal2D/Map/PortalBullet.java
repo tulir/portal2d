@@ -22,16 +22,16 @@ public class PortalBullet {
 	public static Image BLUE_BULLET, ORANGE_BULLET;
 	public static final int PIXELS_PER_SECOND = 40 * 32;
 	public float x, y, dx, dy, angle;
-	public boolean blue;
+	public boolean isBlue;
 	
 	public PortalBullet(boolean blue) {
 		this(0f, 0f, 0f, 0f, blue);
 	}
 	
-	public PortalBullet(float x, float y, int mouseX, int mouseY, boolean blue) {
+	public PortalBullet(float x, float y, int mouseX, int mouseY, boolean isBlue) {
 		this.x = x;
 		this.y = y;
-		this.blue = blue;
+		this.isBlue = isBlue;
 		dy = PIXELS_PER_SECOND * (mouseY - y) / (Math.abs(mouseY - y) + Math.abs(mouseX - x));
 		dx = PIXELS_PER_SECOND * (mouseX - x) / (Math.abs(mouseY - y) + Math.abs(mouseX - x));
 		
@@ -46,11 +46,11 @@ public class PortalBullet {
 		this.y = y;
 		this.dx = dx;
 		this.dy = dy;
-		this.blue = blue;
+		this.isBlue = blue;
 	}
 	
 	public void render(Graphics g) {
-		Image i = blue ? BLUE_BULLET : ORANGE_BULLET;
+		Image i = isBlue ? BLUE_BULLET : ORANGE_BULLET;
 		i.setRotation(angle);
 		g.drawImage(i, x, y);
 	}

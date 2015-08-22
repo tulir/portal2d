@@ -117,7 +117,7 @@ public class Map extends BasicGameState {
 			if (v == null) continue;
 			if (v.x == -1 || v.y == -1) bullets.remove(i);
 			else {
-				boolean blue = bullets.get(i).blue;
+				boolean blue = bullets.get(i).isBlue;
 				Portal p1 = blue ? portal_blue : portal_orange, p2 = blue ? portal_orange : portal_blue;
 				if (p2.getLocation().equals(v)) p2.setLocation(Vector.NULL);
 				p1.setLocation(v);

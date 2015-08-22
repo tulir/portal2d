@@ -16,6 +16,7 @@ import org.newdawn.slick.Image;
 public class BlockRegistry {
 	/** Contains the ID -> Image mappings. */
 	private static Map<Integer, Image> images = new HashMap<Integer, Image>();
+	/** Contains the ID -> Solid flag mappings. */
 	private static Map<Integer, Boolean> solid = new HashMap<Integer, Boolean>();
 	/** Contains the Color -> ID mappings. */
 	private static Map<Color, Integer> colors = new HashMap<Color, Integer>();

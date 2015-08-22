@@ -20,37 +20,37 @@ public class Player {
 	/** The position and movement vectors of this player. */
 	public float x, y, dx, dy;
 	/** The texture of this player. */
-	private Image image, eye;
+	private Image body, eye;
 	
 	/**
 	 * Construct a Player with the given texture.
 	 */
 	public Player(Image i, Image eye) {
-		image = i;
+		body = i;
 		this.eye = eye;
 	}
 	
 	/**
 	 * Render the player.
 	 */
-	public void render(Graphics g, double d) {
-		eye.setRotation((float) d - 45.0f);
-		g.drawImage(image, x * 32, y * 32);
+	public void render(Graphics g, double eyeAngle) {
+		eye.setRotation((float) eyeAngle - 45.0f);
+		g.drawImage(body, x * 32, y * 32);
 		g.drawImage(eye, x * 32, y * 32);
 	}
 	
-	public void update(Input i, Map m, int delta) {
-		int mX = i.getMouseX(), mY = i.getMouseY();
+	public void update(Input input, Map map, int delta) {
+		int mX = input.getMouseX(), mY = input.getMouseY();
 		
 		// Calculate the angle from the player to the mouse in radians.
 		double ang = -Math.atan2(x * 32 + pixelRadius - mX, y * 32 + pixelRadius - mY);
 		// Convert the angle to degrees.
-		m.angle = Math.toDegrees(ang < 0 ? ang + 2 * Math.PI : ang);
+		map.angle = Math.toDegrees(ang < 0 ? ang + 2 * Math.PI : ang);
 		
 		/*
 		 * Handle left/right presses.
 		 */
-		boolean a = i.isKeyDown(Keyboard.KEY_A), d = i.isKeyDown(Keyboard.KEY_D);
+		boolean a = input.isKeyDown(Keyboard.KEY_A), d = input.isKeyDown(Keyboard.KEY_D);
 		if (a && !d) dx = -MOVE_VELOCITY;
 		else if (!a && d) dx = MOVE_VELOCITY;
 		else dx = 0.0f;
@@ -58,8 +58,8 @@ public class Player {
 		/*
 		 * Handle up/down presses.
 		 */
-		int below = m.getBlockAt((int) (x + 0.5), (int) y + 1);
-		if (i.isKeyDown(Keyboard.KEY_SPACE) && dy == 0 && BlockRegistry.isSolid(below)) dy = JUMP_VELOCITY;
+		int below = map.getBlockAt((int) (x + 0.5), (int) y + 1);
+		if (input.isKeyDown(Keyboard.KEY_SPACE) && dy == 0 && BlockRegistry.isSolid(below)) dy = JUMP_VELOCITY;
 		else if (dy > GRAVITY) dy -= delta * GRAVITY_CHANGE;
 		
 		/*
