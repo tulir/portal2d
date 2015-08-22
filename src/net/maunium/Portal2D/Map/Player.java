@@ -58,8 +58,8 @@ public class Player {
 		/*
 		 * Handle up/down presses.
 		 */
-		int below = map.getBlockAt((int) (x + 0.5), (int) y + 1);
-		if (input.isKeyDown(Keyboard.KEY_SPACE) && dy == 0 && BlockRegistry.isSolid(below)) dy = JUMP_VELOCITY;
+		int belowLeft = map.getBlockAt((int) x, (int) y + 1), belowRight = map.getBlockAt((int) (x + 1), (int) y + 1);
+		if (input.isKeyDown(Keyboard.KEY_SPACE) && dy == 0 && (BlockRegistry.isSolid(belowLeft) || BlockRegistry.isSolid(belowRight))) dy = JUMP_VELOCITY;
 		else if (dy > GRAVITY) dy -= delta * GRAVITY_CHANGE;
 		
 		/*
