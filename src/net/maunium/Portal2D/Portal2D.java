@@ -43,8 +43,11 @@ public class Portal2D extends BasicGame {
 		else if (gc.getInput().isKeyDown(Keyboard.KEY_D)) p.dx = 0.005f;
 		else p.dx = 0.0f;
 		
-		if (gc.getInput().isKeyDown(Keyboard.KEY_SPACE) && p.dy == 0 && map.getBlockAt((int) p.x, (int) p.y + 1) != null) p.dy = 0.004f;
+		if (gc.getInput().isKeyDown(Keyboard.KEY_SPACE) && p.dy == 0 && map.getBlockAt((int) (p.x + 0.5), (int) p.y + 1) != null) p.dy = 0.004f;
+		// TODO: Proper collision checking
+		else if (p.dy == 0 && ((int) p.x < p.x || map.getBlockAt((int) (p.x + 0.5), (int) p.y + 1) == null)) p.dy = -0.01f;
 		else if (p.dy > 0.0f) p.dy -= 0.0001f;
+		else if (p.dy < 0.0f) p.dy = 0.0f;
 		
 		p.x += delta * p.dx;
 		p.y -= delta * p.dy;
