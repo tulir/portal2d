@@ -40,8 +40,8 @@ public class Map extends BasicGameState {
 	}
 	
 	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		p = new Player(host.getImage("player"));
+	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
+		p = new Player(host.getImage("player"), host.getImage("player_eye"));
 		
 		portal_blue = new Portal(host.getImage("blocks/portal_blue"));
 		portal_orange = new Portal(host.getImage("blocks/portal_orange"));
@@ -62,7 +62,7 @@ public class Map extends BasicGameState {
 	}
 	
 	@Override
-	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		g.setBackground(new Color(50, 50, 50));
 		for (int x = 0; x < blocks.length; x++) {
 			for (int y = 0; y < blocks[x].length; y++) {
@@ -70,7 +70,10 @@ public class Map extends BasicGameState {
 			}
 		}
 		
-		p.render(g);
+		double mX = p.x - gc.getInput().getMouseX(), mY = p.y - gc.getInput().getMouseY();
+		System.out.print(gc.getInput().getMouseX() + ", " + gc.getInput().getMouseY() + " - " + p.x + ", " + p.y + " >> " + mX + ", " + mY + ", ");
+		double tan = Math.atan2(mX, mY);
+		p.render(g, Math.toDegrees(tan < 0 ? tan + 2 * Math.PI : tan));
 		
 		portal_blue.render(g);
 		portal_orange.render(g);
@@ -79,6 +82,8 @@ public class Map extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Player p = getPlayer();
+		
+		int mX = gc.getInput().getMouseX(), mY = gc.getInput().getMouseY();
 		
 		if (gc.getInput().isKeyDown(Keyboard.KEY_A)) p.dx = -0.005f;
 		else if (gc.getInput().isKeyDown(Keyboard.KEY_D)) p.dx = 0.005f;
@@ -93,6 +98,7 @@ public class Map extends BasicGameState {
 		
 		p.x += delta * p.dx;
 		p.y -= delta * p.dy;
+		
 	}
 	
 	@Override
