@@ -49,10 +49,17 @@ public class Map extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		player = new Player(host.getImage("player"), host.getImage("player_eye"));
-		bullets = new ArrayList<PortalBullet>();
 		
 		portal_blue = new Portal(host.getImage("blocks/portal_blue"));
 		portal_orange = new Portal(host.getImage("blocks/portal_orange"));
+		
+		resetMap();
+	}
+	
+	public void resetMap() {
+		portal_blue.setLocation(Vector.NULL);
+		portal_orange.setLocation(Vector.NULL);
+		bullets = new ArrayList<PortalBullet>();
 		
 		blocks = new int[img.getWidth()][];
 		for (int x = 0; x < img.getWidth(); x++) {
@@ -124,15 +131,38 @@ public class Map extends BasicGameState {
 				bullets.remove(i);
 			}
 		}
-		updatePortals();
-		if (checkCollision()) {
-			game.enterState(0);
+		
+		// Check collisions with portals.
+		checkPortals();
+		
+		// Check collisions with blocks and handle them accordingly.
+		List<Vector> vs = checkCollision();
+		for (Vector v : vs) {
+			switch (getBlockAt(v.x, v.y)) {
+				case Portal2D.TILE_BOMB:
+					// The player hit a bomb. Go to the menu.
+					game.enterState(0);
+					break;
+				case Portal2D.TILE_POINT:
+					// The player hit a point. Collect it.
+					blocks[v.x][v.y] = Portal2D.TILE_NONE;
+					// TODO: Increase points and delete point.
+					break;
+				case Portal2D.TILE_FINISH:
+					game.enterState(game.getCurrentStateID() + 1);
+					break;
+			}
 		}
 	}
 	
 	@Override
 	public void enter(GameContainer gc, StateBasedGame game) throws SlickException {
 		((AppGameContainer) gc).setDisplayMode(img.getWidth() * 32, img.getHeight() * 32, false);
+	}
+	
+	@Override
+	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
+		resetMap();
 	}
 	
 	@Override
@@ -157,52 +187,51 @@ public class Map extends BasicGameState {
 		return player;
 	}
 	
-	private boolean checkCollision() {
+	/**
+	 * Check if the player is colliding with something.
+	 * 
+	 * @return The ID of the block the player collided with.
+	 */
+	public List<Vector> checkCollision() {
 		// Returns true if a spike was hit.
+		List<Vector> hitBlocks = new ArrayList<Vector>();
 		int playerTileX = (int) player.x;
 		int playerTileY = (int) player.y;
 		for (int mx = -1; mx < 2; mx++) {
 			for (int my = -1; my < 2; my++) {
-				if (checkCollisionWith(playerTileX + mx, playerTileY + my)) return true;
+				Vector v = checkCollisionWith(playerTileX + mx, playerTileY + my);
+				if (!v.equals(Vector.NULL)) hitBlocks.add(v);
 			}
 		}
-		return false;
+		return hitBlocks;
 	}
 	
-	private boolean checkCollisionWith(int x, int y) {
+	private Vector checkCollisionWith(int x, int y) {
 		// Return true if a spike gets hit.
 		// This is the block in that tile.
 		int blockAt = getBlockAt(x, y);
-		if (!BlockRegistry.isSolid(blockAt)) return false;
 		if (Math.abs(player.x - x) < 1 && Math.abs(player.y - y) < 1) {
+			if (!BlockRegistry.isSolid(blockAt)) return new Vector(x, y);
 			if (Math.abs(player.x - x) >= Math.abs(player.y - y)) {
 				// We want to create as little lag as possible, so we politely
 				// Show the player the door with the least moving required.
 				player.dx = 0;
-				if (player.x - x < 0) {
-					player.x += (int) player.x - player.x;
-				} else {
-					player.x += (int) player.x - player.x + 1;
-				}
+				if (player.x - x < 0) player.x += (int) player.x - player.x;
+				else player.x += (int) player.x - player.x + 1;
 			} else {
 				player.dy = 0;
-				if (player.y - y < 0) {
-					player.y += (int) player.y - player.y;
-				} else {
-					player.y += (int) player.y - player.y + 1;
-				}
+				if (player.y - y < 0) player.y += (int) player.y - player.y;
+				else player.y += (int) player.y - player.y + 1;
 			}
-			if (getBlockAt(x, y) == Portal2D.TILE_BOMB) return true;
+			return new Vector(x, y);
 		}
-		return false;
+		return Vector.NULL;
 	}
 	
 	/**
 	 * Checks collision between the player and the two portals. If a player is to teleport, this method also does that.
-	 * 
-	 * @author Antti
 	 */
-	private void updatePortals() {
+	public void checkPortals() {
 		if (portal_blue == null || portal_orange == null) return;
 		if (!checkCollisionWithPortal(portal_blue)) {
 			checkCollisionWithPortal(portal_orange);
@@ -241,17 +270,15 @@ public class Map extends BasicGameState {
 		// Get the amount of rotations needed
 		int rotationsNeeded = hitSide - SideHit.toInt(targetPortal.getLocation().sideHit);
 		if (hitSide % 2 != 0) {
-			player.dx*=-1;
+			player.dx *= -1;
 		} else {
-			player.dy*=-1;
+			player.dy *= -1;
 		}
 		
-		float newDX = (float)(player.dx * Math.cos(-Math.PI/2*rotationsNeeded) - player.dy * Math.sin(-Math.PI/2*rotationsNeeded));
-		player.dy = (float)(player.dx * Math.sin(-Math.PI/2*rotationsNeeded) + player.dy * Math.cos(-Math.PI/2*rotationsNeeded));
+		float newDX = (float) (player.dx * Math.cos(-Math.PI / 2 * rotationsNeeded) - player.dy * Math.sin(-Math.PI / 2 * rotationsNeeded));
+		player.dy = (float) (player.dx * Math.sin(-Math.PI / 2 * rotationsNeeded) + player.dy * Math.cos(-Math.PI / 2 * rotationsNeeded));
 		// Apply the new speed vector
 		player.dx = newDX;
-		
-		
 		
 		// Then after modifying the speed, teleport to the correct tile.
 		int x = SideHit.toInt(targetPortal.getLocation().sideHit);
