@@ -42,7 +42,8 @@ public class Portal2D extends StateBasedGame {
 		try {
 			AppGameContainer agc;
 			agc = new AppGameContainer(new Portal2D());
-			agc.setDisplayMode(12 * 32, 12 * 32, false);
+			agc.setDisplayMode(640, 480, false);
+			agc.setVSync(true);
 			agc.start();
 		} catch (SlickException e) {
 			System.err.println("Fatal error:");
