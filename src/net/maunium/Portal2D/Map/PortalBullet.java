@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
-import net.maunium.Portal2D.BlockRenderer;
+import net.maunium.Portal2D.BlockRegistry;
 import net.maunium.Portal2D.Portal2D;
 import net.maunium.Portal2D.Util.Vector;
 import net.maunium.Portal2D.Util.Vector.SideHit;
@@ -59,7 +59,7 @@ public class PortalBullet {
 		y += delta / 1000.0f * dy;
 		
 		int hitBlock = blocks[(int) (x - x % 32) / 32][(int) (y - y % 32) / 32];
-		if (hitBlock != Portal2D.TILE_NONE && BlockRenderer.isSolid(hitBlock)) {
+		if (hitBlock != Portal2D.TILE_NONE && BlockRegistry.isSolid(hitBlock)) {
 			if (hitBlock == Portal2D.TILE_LIGHT) {
 				int blockMiddleX = (int) (x - x % 32) + 16;
 				int blockMiddleY = (int) (y - y % 32) + 16;
@@ -71,7 +71,7 @@ public class PortalBullet {
 					int testY = (int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1);
 					int blockX = (int) (x - x % 32) / 32;
 					int blockY = (int) (y - y % 32) / 32;
-					if (BlockRenderer.isSolid(hitBlock)) {
+					if (BlockRegistry.isSolid(hitBlock)) {
 						if ((side == 0 ? 0 : side - 2) * dx <= 0 && (side == 3 ? 0 : side - 1) * dy <= 0) {
 							if (Math.abs(blockMiddleX + (side == 0 ? 0 : side - 2) * 16 - x)
 									+ Math.abs(blockMiddleY + (side == 3 ? 0 : side - 1) * 16 - y) <= 16) { return new Vector((int) (x - x % 32) / 32,

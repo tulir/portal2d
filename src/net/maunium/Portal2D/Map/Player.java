@@ -5,7 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 
-import net.maunium.Portal2D.BlockRenderer;
+import net.maunium.Portal2D.BlockRegistry;
 
 /**
  * Container for the player.
@@ -57,7 +57,7 @@ public class Player {
 		 * Handle up/down presses.
 		 */
 		int below = m.getBlockAt((int) (x + 0.5), (int) y + 1);
-		if (i.isKeyDown(Keyboard.KEY_SPACE) && dy == 0 && BlockRenderer.isSolid(below)) dy = 0.004f;
+		if (i.isKeyDown(Keyboard.KEY_SPACE) && dy == 0 && BlockRegistry.isSolid(below)) dy = 0.004f;
 		else if (i.isKeyDown(Keyboard.KEY_S)) dy = -Map.MOVE_VELOCITY;
 		else if (i.isKeyDown(Keyboard.KEY_W)) dy = Map.MOVE_VELOCITY;
 		else if (dy > 0.0f) dy -= delta * Map.JUMP_VELOCITY;

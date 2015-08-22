@@ -12,7 +12,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import net.maunium.Portal2D.BlockRenderer;
+import net.maunium.Portal2D.BlockRegistry;
 import net.maunium.Portal2D.Portal2D;
 import net.maunium.Portal2D.Util.Vector;
 
@@ -64,7 +64,7 @@ public class Map extends BasicGameState {
 				if (c.getRed() == 255 && c.getGreen() == 0 && c.getBlue() == 0) {
 					p.x = x;
 					p.y = y;
-				} else blocks[x][y] = BlockRenderer.getBlockId(c);
+				} else blocks[x][y] = BlockRegistry.getBlockId(c);
 			}
 		}
 	}
@@ -77,7 +77,7 @@ public class Map extends BasicGameState {
 		for (int x = 0; x < blocks.length; x++) {
 			for (int y = 0; y < blocks[x].length; y++) {
 				// Render each existing block. Ignore non-existing block positions.
-				if (blocks[x][y] != Portal2D.TILE_NONE) BlockRenderer.render(g, blocks[x][y], x, y);
+				if (blocks[x][y] != Portal2D.TILE_NONE) BlockRegistry.render(g, blocks[x][y], x, y);
 			}
 		}
 		

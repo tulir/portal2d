@@ -37,11 +37,11 @@ public class Portal2D extends StateBasedGame {
 	public void initStatesList(GameContainer container) throws SlickException {
 		addState(new Menu());
 		
-		BlockRenderer.registerBlock(TILE_DARK, new Color(50, 50, 50), getImage("blocks/tile_dark"), true);
-		BlockRenderer.registerBlock(TILE_LIGHT, new Color(200, 200, 200), getImage("blocks/tile_light"), true);
-		BlockRenderer.registerBlock(TILE_POINT, new Color(0, 100, 0), getImage("blocks/point"), false);
-		BlockRenderer.registerBlock(TILE_FINISH, new Color(0, 255, 0), getImage("blocks/finish"), false);
-		BlockRenderer.registerBlock(TILE_BOMB, new Color(255, 0, 255), getImage("blocks/bomb"), true);
+		BlockRegistry.registerBlock(TILE_DARK, new Color(50, 50, 50), getImage("blocks/tile_dark"), true);
+		BlockRegistry.registerBlock(TILE_LIGHT, new Color(200, 200, 200), getImage("blocks/tile_light"), true);
+		BlockRegistry.registerBlock(TILE_POINT, new Color(0, 100, 0), getImage("blocks/point"), false);
+		BlockRegistry.registerBlock(TILE_FINISH, new Color(0, 255, 0), getImage("blocks/finish"), false);
+		BlockRegistry.registerBlock(TILE_BOMB, new Color(255, 0, 255), getImage("blocks/bomb"), true);
 		
 		PortalBullet.BLUE_BULLET = getImage("bullet_blue");
 		PortalBullet.ORANGE_BULLET = getImage("bullet_orange");

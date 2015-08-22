@@ -13,7 +13,7 @@ import org.newdawn.slick.Image;
  * @author Tulir293
  * @since 0.1
  */
-public class BlockRenderer {
+public class BlockRegistry {
 	/** Contains the ID -> Image mappings. */
 	private static Map<Integer, Image> images = new HashMap<Integer, Image>();
 	private static Map<Integer, Boolean> solid = new HashMap<Integer, Boolean>();
