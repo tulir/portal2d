@@ -51,6 +51,6 @@ public class BlockRenderer {
 	 * Temporary enum to store the type of the block. This should be changed to something more modular.
 	 */
 	public static enum BlockType {
-		LIGHT, DARK, SPIKE;
+		LIGHT, DARK, SPIKE, POINT, FINISH;
 	}
 }
