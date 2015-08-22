@@ -292,7 +292,7 @@ public class Map extends BasicGameState {
 		int cx = x == 0 ? 0 : x - 2;
 		int cy = x == 3 ? 0 : x - 1;
 		
-		player.x = targetPortal.getLocation().x + cx;
-		player.y = targetPortal.getLocation().y + cy;
+		player.x = targetPortal.getLocation().x + cx*(33/32);
+		player.y = targetPortal.getLocation().y + cy*(33/32);
 	}
 }
