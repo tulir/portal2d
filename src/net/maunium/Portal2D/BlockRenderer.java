@@ -52,5 +52,16 @@ public class BlockRenderer {
 	 */
 	public static enum BlockType {
 		LIGHT, DARK, SPIKE, POINT, FINISH;
+		
+		public boolean isSolid() {
+			switch (this) {
+				case LIGHT:
+				case DARK:
+				case SPIKE:
+					return true;
+				default:
+					return false;
+			}
+		}
 	}
 }
