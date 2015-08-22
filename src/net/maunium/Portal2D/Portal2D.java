@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -58,10 +59,14 @@ public class Portal2D extends StateBasedGame {
 		for (File ff : f.listFiles())
 			files.add(ff);
 		f = new File(System.getProperty("user.home") + "/.portal2d");
+		
 		if (f.isFile()) f.delete();
 		if (!f.exists()) f.mkdir();
 		for (File ff : f.listFiles())
 			files.add(ff);
+			
+		Collections.sort(files);
+		
 		return files;
 	}
 	
