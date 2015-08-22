@@ -18,6 +18,7 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import net.maunium.Portal2D.BlockRenderer.BlockType;
 import net.maunium.Portal2D.Map.Map;
+import net.maunium.Portal2D.Map.PortalBullet;
 
 /**
  * Main class for the Portal 2(D) game.
@@ -40,6 +41,9 @@ public class Portal2D extends StateBasedGame {
 		BlockRenderer.loadImage(BlockType.POINT, new Color(0, 100, 0), getImage("blocks/point"));
 		BlockRenderer.loadImage(BlockType.FINISH, new Color(0, 255, 0), getImage("blocks/finish"));
 		BlockRenderer.loadImage(BlockType.BOMB, new Color(255, 0, 255), getImage("blocks/bomb"));
+		
+		PortalBullet.BLUE_BULLET = getImage("bullet_blue");
+		PortalBullet.ORANGE_BULLET = getImage("bullet_orange");
 		
 		int i = 100;
 		for (File f : getMaps()) {
