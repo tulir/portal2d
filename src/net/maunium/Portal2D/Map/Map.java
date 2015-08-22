@@ -28,6 +28,7 @@ public class Map extends BasicGameState {
 	private final int id;
 	private final Image img;
 	private final Portal2D host;
+	private double angle;
 	private BlockType[][] blocks;
 	private Portal portal_blue, portal_orange;
 	private Player p;
@@ -75,11 +76,6 @@ public class Map extends BasicGameState {
 			}
 		}
 		
-		// Calculate the angle from the player to the mouse in radians.
-		double angle = -Math.atan2(p.x * 32 + p.size - gc.getInput().getMouseX(), p.y * 32 + p.size - gc.getInput().getMouseY());
-		// Convert the angle to degrees.
-		angle = Math.toDegrees(angle < 0 ? angle + 2 * Math.PI : angle);
-		
 		// Render the portals.
 		portal_blue.render(g);
 		portal_orange.render(g);
@@ -91,6 +87,11 @@ public class Map extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Player p = getPlayer();
+		
+		// Calculate the angle from the player to the mouse in radians.
+		double ang = -Math.atan2(p.x * 32 + p.size - gc.getInput().getMouseX(), p.y * 32 + p.size - gc.getInput().getMouseY());
+		// Convert the angle to degrees.
+		angle = Math.toDegrees(ang < 0 ? ang + 2 * Math.PI : ang);
 		
 		/*
 		 * Handle left/right presses.
@@ -114,6 +115,23 @@ public class Map extends BasicGameState {
 		 */
 		p.x += delta * p.dx;
 		p.y -= delta * p.dy;
+		
+		/*
+		 * Portal shooting
+		 */
+		if (gc.getInput().isMouseButtonDown(0) || gc.getInput().isMouseButtonDown(1))
+			shootPortal(gc.getInput().isMousePressed(0) ? portal_blue : portal_orange);
+	}
+	
+	public void shootPortal(Portal po) {
+		Player p = getPlayer();
+		Vector rt = rayTrace(angle, (int) (p.x * 32 + p.size), (int) (p.y * 32 + p.size));
+		if (validPortalBlock(rt)) po.setLocation(rt);
+	}
+	
+	public boolean validPortalBlock(Vector rt) {
+		// TODO: Check if portal can be placed.
+		return true;
 	}
 	
 	@Override
