@@ -122,12 +122,12 @@ public class Map extends BasicGameState {
 		 * Portal shooting
 		 */
 		if (gc.getInput().isMouseButtonDown(0) || gc.getInput().isMouseButtonDown(1))
-			shootPortal(gc.getInput().isMousePressed(0) ? portal_blue : portal_orange);
+			shootPortal(gc.getInput().isMousePressed(0) ? portal_blue : portal_orange, gc.getInput().getMouseX(), gc.getInput().getMouseY());
 	}
 	
-	public void shootPortal(Portal po) {
+	public void shootPortal(Portal po, int mouseX, int mouseY) {
 		Player p = getPlayer();
-		Vector rt = rayTrace(angle, (int) (p.x * 32 + p.size), (int) (p.y * 32 + p.size));
+		Vector rt = rayTrace(mouseX, mouseY);
 		if (validPortalBlock(rt)) po.setLocation(rt);
 	}
 	
