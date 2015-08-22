@@ -99,8 +99,10 @@ public class Map extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Player p = getPlayer();
 		
+		int mX = gc.getInput().getMouseX(), mY = gc.getInput().getMouseY();
+		
 		// Calculate the angle from the player to the mouse in radians.
-		double ang = -Math.atan2(p.x * 32 + p.size - gc.getInput().getMouseX(), p.y * 32 + p.size - gc.getInput().getMouseY());
+		double ang = -Math.atan2(p.x * 32 + p.size - mX, p.y * 32 + p.size - mY);
 		// Convert the angle to degrees.
 		angle = Math.toDegrees(ang < 0 ? ang + 2 * Math.PI : ang);
 		
@@ -132,10 +134,7 @@ public class Map extends BasicGameState {
 		 * Portal shooting
 		 */
 		if (gc.getInput().isMousePressed(0) || gc.getInput().isMousePressed(1)) {
-			bullets.add(
-					new PortalBullet(p.x * 32 + 16, p.y * 32 + 16, gc.getInput().getMouseX(), gc.getInput().getMouseY(), gc.getInput().isMouseButtonDown(1)));
-//			Vector rt = rayTrace(gc.getInput().getMouseX(), gc.getInput().getMouseY());
-//			if (validPortalBlock(rt)) (gc.getInput().isMousePressed(0) ? portal_orange : portal_blue).setLocation(rt);
+			bullets.add(new PortalBullet(p.x * 32 + 16, p.y * 32 + 16, mX, mY, gc.getInput().isMouseButtonDown(1)));
 		}
 		
 		for (int i = 0; i < bullets.size(); i++) {
@@ -144,6 +143,7 @@ public class Map extends BasicGameState {
 			if (v.x == -1 || v.y == -1) bullets.remove(i);
 			else {
 				(bullets.get(i).blue ? portal_blue : portal_orange).setLocation(v);
+				if (portal_blue.getLocation().equals(portal_orange)) (bullets.get(i).blue ? portal_orange : portal_blue).setLocation(Vector.NULL);
 				bullets.remove(i);
 			}
 		}
@@ -173,107 +173,6 @@ public class Map extends BasicGameState {
 	 */
 	public Player getPlayer() {
 		return p;
-	}
-	
-	/**
-	 * Ray trace method. Parameters are the x and y-coordinates of the mouse. Returns a surface where the portal should be applied, or in case of not finding
-	 * one, null.
-	 * 
-	 * @author Antti
-	 */
-	private Vector rayTrace(float x1, float y1) {
-		// Player position
-		
-		float x0 = p.x + 0.5f;
-		float y0 = p.y + 0.5f;
-		// x1 and y1 are mouse position
-		x1 /= 32.0f;
-		y1 /= 32.0f;
-		
-		// x and y are the position of the tile we aree
-		// currently checking collision with.
-		int x = (int) p.x;
-		int y = (int) p.y;
-		// Difference in the mouse and player positions
-		double dx = Math.abs(x0 - x1);
-		double dy = Math.abs(x0 - y1);
-		
-		// The line is not at a perfect 45 degree angle.
-		// These two are the slopes of our line.
-		double dt_dx = 1.0 / dx;
-		double dt_dy = 1.0 / dy;
-		
-		// not sure as of what this is yet.
-		double t = 0;
-		
-		// this variable tells us which limit we have last hit.
-		boolean lastHitVertical = false;
-		// n means the amount of limits we have to reach
-		// before getting to the click position.
-		int n = 1;
-		// These are the directions we will be going to.
-		int x_inc, y_inc;
-		// These two are the x- and y-coordinates for the
-		// next limits.
-		double t_next_vertical, t_next_horizontal;
-		
-		// If the two points are on the same x-coordinate, we
-		// of course never reach the next horizontal line, so
-		// lets just set it to infinity.
-		if (dx == 0) {
-			x_inc = 0;
-			t_next_horizontal = dt_dx; // infinity
-		}
-		// If the clickpoint's x is larger than
-		// player's x, we want to be going up.
-		else if (x1 > x0) {
-			x_inc = 1;
-			n += x1 - x;
-			t_next_horizontal = (x + 1 - x0) * dt_dx;
-		} else {
-			// Otherwise we want to go down.
-			x_inc = -1;
-			n += x - x1;
-			t_next_horizontal = (x0 - x) * dt_dx;
-		}
-		
-		// same for y.
-		// Same for y.
-		if (dy == 0) {
-			y_inc = 0;
-			t_next_vertical = dt_dy; // infinity
-		} else if (y1 > y0) {
-			y_inc = 1;
-			n += y1 - y;
-			t_next_vertical = (y + 1 - y0) * dt_dy;
-		} else {
-			y_inc = -1;
-			n += y - y1;
-			t_next_vertical = (y0 - y1) * dt_dy;
-		}
-		
-		while (true) {
-			BlockType hitBlock = blocks[x][y];
-			if (hitBlock != null) {
-				if (hitBlock == BlockType.LIGHT) {
-					return new Vector(x, y, SideHit.fromInt(lastHitVertical ? y_inc + 1 : x_inc + 2));
-				} else {
-					return null;
-				}
-			}
-			
-			if (t_next_vertical < t_next_horizontal) {
-				y += y_inc;
-				t = t_next_vertical;
-				t_next_vertical += dt_dy;
-				lastHitVertical = true;
-			} else {
-				x += x_inc;
-				t = t_next_horizontal;
-				t_next_horizontal += dt_dx;
-				lastHitVertical = false;
-			}
-		}
 	}
 	
 	private Vector rotateVector(double x, double y) {
