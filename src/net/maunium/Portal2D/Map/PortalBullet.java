@@ -20,7 +20,7 @@ import net.maunium.Portal2D.Util.Vector.SideHit;
  */
 public class PortalBullet {
 	public static Image BLUE_BULLET, ORANGE_BULLET;
-	public static final int PIXELS_PER_SECOND = 20 * 32;
+	public static final int PIXELS_PER_SECOND = 40 * 32;
 	public float x, y, dx, dy, angle;
 	public boolean blue;
 	
