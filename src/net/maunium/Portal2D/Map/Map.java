@@ -124,6 +124,7 @@ public class Map extends BasicGameState {
 				bullets.remove(i);
 			}
 		}
+		checkCollision();
 	}
 	
 	@Override
@@ -178,6 +179,11 @@ public class Map extends BasicGameState {
 	
 	private boolean checkCollisionWith(int x, int y) {
 		// Return true if a spike gets hit.
+		// This is the block in that tile.
+		int blockAt = getBlockAt(x, y);
+		if (!BlockRegistry.isSolid(blockAt)) {
+			return false;
+		}
 		if (Math.abs(player.x - x) < 1 && Math.abs(player.y - y) < 1) {
 			if (Math.abs(player.x - x) >= Math.abs(player.y - y)) {
 				// We want to create as little lag as possible, so we politely
