@@ -131,19 +131,24 @@ public class Map extends BasicGameState {
 		p.y -= delta * p.dy;
 		
 		/*
-		 * Portal shooting
+		 * Portal bullet shooting.
 		 */
 		if (gc.getInput().isMousePressed(0) || gc.getInput().isMousePressed(1)) {
 			bullets.add(new PortalBullet(p.x * 32 + 16, p.y * 32 + 16, mX, mY, gc.getInput().isMouseButtonDown(1)));
 		}
 		
+		/*
+		 * Handle bullet updates.
+		 */
 		for (int i = 0; i < bullets.size(); i++) {
 			Vector v = bullets.get(i).update(delta, blocks);
 			if (v == null) continue;
 			if (v.x == -1 || v.y == -1) bullets.remove(i);
 			else {
-				(bullets.get(i).blue ? portal_blue : portal_orange).setLocation(v);
-				if (portal_blue.getLocation().equals(portal_orange)) (bullets.get(i).blue ? portal_orange : portal_blue).setLocation(Vector.NULL);
+				boolean blue = bullets.get(i).blue;
+				Portal p1 = blue ? portal_blue : portal_orange, p2 = blue ? portal_orange : portal_blue;
+				p1.setLocation(v);
+				if (p1.getLocation().equals(p2)) p2.setLocation(Vector.NULL);
 				bullets.remove(i);
 			}
 		}
