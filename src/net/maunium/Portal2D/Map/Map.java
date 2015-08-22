@@ -237,8 +237,9 @@ public class Map extends BasicGameState {
 	
 	private Vector rotateVector(double x, double y) {
 		double angle = Math.atan2(x, y);
-		angle = angle < 0 ? angle + Math.PI * 2 : angle;
-		
+		if (angle < 0) {
+			angle += Math.PI * 2;
+		}
 		Vector rotatedVector = new Vector((int) (x * Math.cos(angle) - y * Math.sin(angle)), (int) (x * Math.sin(angle) + y * Math.cos(angle)));
 		return rotatedVector;
 	}
@@ -278,5 +279,41 @@ public class Map extends BasicGameState {
 			if (blocks[x][y] == BlockType.SPIKE) { return true; }
 		}
 		return false;
+	}
+	private void checkPortalCollision() {
+		if (portal_blue == null || portal_orange == null) {
+			return;
+		}
+		checkCollisionWithPortal(portal_blue);
+		checkCollisionWithPortal(portal_orange);
+		return;
+	}
+	private void checkCollisionWithPortal(Portal portal) {
+		if (Math.abs(p.x - portal.getLocation().x) < 32 && Math.abs(p.y - portal.getLocation().y) < 32) {
+			if (Math.abs(p.y - portal.getLocation().y)<2) {
+				if (p.x - portal.getLocation().x < 0) {
+					if (portal.getLocation().sideHit == SideHit.LEFT) {
+						return;
+					}
+				} else {
+					if (portal.getLocation().sideHit == SideHit.RIGHT) {
+						return;
+					}
+				}
+			} else if (Math.abs(p.x - portal.getLocation().x)<2){
+				if (p.y - portal.getLocation().y < 0) {
+					if (portal.getLocation().sideHit == SideHit.TOP) {
+						return;
+					}
+				} else {
+					if (portal.getLocation().sideHit == SideHit.BOTTOM) {
+						return;
+					}
+				}
+			}
+		}
+	}
+	private void teleport(Portal targetPortal) {
+		
 	}
 }

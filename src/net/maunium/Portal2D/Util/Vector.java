@@ -26,6 +26,20 @@ public class Vector {
 					return null;
 			}
 		}
+		public static int toInt(SideHit s) {
+			switch (s) {
+				case TOP:
+					return 0;
+				case LEFT:
+					return 1;
+				case BOTTOM:
+					return 2;
+				case RIGHT:
+					return 3;
+				default:
+					return -1;
+			}
+		}
 	}
 	
 	public Vector(int x, int y, SideHit sideHit) {
