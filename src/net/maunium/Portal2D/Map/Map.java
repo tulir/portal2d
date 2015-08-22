@@ -162,7 +162,9 @@ public class Map extends BasicGameState {
 	}
 	
 	/**
-	 * Ray trace method. TODO: Add proper javadoc
+	 * Ray trace method. Parameters are the x and y-coordinates of the mouse.
+	 * Returns a surface where the portal should be applied, or in case
+	 * of not finding one, null.
 	 * 
 	 * @author Antti
 	 */
@@ -274,7 +276,9 @@ public class Map extends BasicGameState {
 		    }
 		}
 	}
-	
+	 /**
+	  * RotateVector method: Rotates the vector x,y 90 degrees clockwise, then Returns it as a Vector.
+	  */
 	private Vector rotateVector(double x, double y) {
 		double angle = Math.atan2(x, y);
 		if (angle < 0) {
@@ -284,6 +288,9 @@ public class Map extends BasicGameState {
 		return rotatedVector;
 	}
 	
+	/**
+	 * Checks the collision between the player and his 8 adjanced tiles.
+	 */
 	private boolean checkCollision() {
 		// Returns true if a spike was hit.
 		int playerTileX = (int) (p.x - p.x % 32) / 32;
@@ -320,6 +327,12 @@ public class Map extends BasicGameState {
 		}
 		return false;
 	}
+	/** 
+	 * checks collision between the player and the two portals. If a player is
+	 * to teleport, this method also does that.
+	 * 
+	 * @author Antti
+	 */
 	private void checkPortalCollision() {
 		if (portal_blue == null || portal_orange == null) {
 			return;
