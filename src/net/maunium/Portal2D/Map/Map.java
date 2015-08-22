@@ -164,7 +164,8 @@ public class Map extends BasicGameState {
 	}
 	
 	/**
-	 * Ray trace method. TODO: Add proper javadoc
+	 * Ray trace method. Parameters are the x and y-coordinates of the mouse. Returns a surface where the portal should be applied, or in case of not finding
+	 * one, null.
 	 * 
 	 * @author Antti
 	 */
@@ -307,6 +308,11 @@ public class Map extends BasicGameState {
 		return false;
 	}
 	
+	/**
+	 * Checks collision between the player and the two portals. If a player is to teleport, this method also does that.
+	 * 
+	 * @author Antti
+	 */
 	private void checkPortalCollision() {
 		if (portal_blue == null || portal_orange == null) return;
 		if (!checkCollisionWithPortal(portal_blue)) {
