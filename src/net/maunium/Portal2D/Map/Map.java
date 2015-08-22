@@ -128,7 +128,7 @@ public class Map extends BasicGameState {
 	public void shootPortal(Portal po, int mouseX, int mouseY) {
 		Player p = getPlayer();
 		Vector rt = rayTrace(mouseX, mouseY);
-		if (validPortalBlock(rt)) po.setLocation(rt);
+		if (rt != null && validPortalBlock(rt)) po.setLocation(rt);
 	}
 	
 	public boolean validPortalBlock(Vector rt) {
