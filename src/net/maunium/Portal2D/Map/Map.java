@@ -242,8 +242,10 @@ public class Map extends BasicGameState {
 		int rotationsNeeded = hitSide - SideHit.toInt(targetPortal.getLocation().sideHit);
 		if (hitSide % 2 != 0) {
 			player.dx*=-1;
+			player.dy = 0;
 		} else {
 			player.dy*=-1;
+			player.dx = 0;
 		}
 		
 		float newDX = (float)(player.dx * Math.cos(-Math.PI/2*rotationsNeeded) - player.dy * Math.sin(-Math.PI/2*rotationsNeeded));
