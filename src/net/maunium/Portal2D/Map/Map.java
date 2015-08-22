@@ -26,6 +26,7 @@ import net.maunium.Portal2D.Util.Vector.SideHit;
 public class Map extends BasicGameState {
 	public static final float MOVE_VELOCITY = 0.005f, JUMP_VELOCITY = 0.000008f;
 	private final int id;
+	public final String name;
 	private final Image img;
 	private final Portal2D host;
 	private double angle;
@@ -36,10 +37,11 @@ public class Map extends BasicGameState {
 	/**
 	 * Construct a map based on the given Image.
 	 */
-	public Map(Portal2D host, Image img, int id) throws SlickException {
+	public Map(Portal2D host, Image img, String name, int id) throws SlickException {
 		this.id = id;
 		this.host = host;
 		this.img = img;
+		this.name = name;
 	}
 	
 	@Override
@@ -169,16 +171,16 @@ public class Map extends BasicGameState {
 	private Vector rayTrace(float x1, float y1) {
 		// Player position
 		
-		float x0 = p.x+0.5f;
-		float y0 = p.y+0.5f;
+		float x0 = p.x + 0.5f;
+		float y0 = p.y + 0.5f;
 		// x1 and y1 are mouse position
 		x1 /= 32.0f;
 		y1 /= 32.0f;
 		
 		// x and y are the position of the tile we aree
 		// currently checking collision with.
-		int x = (int)p.x;
-		int y = (int)p.y;
+		int x = (int) p.x;
+		int y = (int) p.y;
 		// Difference in the mouse and player positions
 		double dx = Math.abs(x0 - x1);
 		double dy = Math.abs(x0 - y1);
@@ -205,73 +207,59 @@ public class Map extends BasicGameState {
 		// If the two points are on the same x-coordinate, we
 		// of course never reach the next horizontal line, so
 		// lets just set it to infinity.
-		if (dx == 0)
-		{
-		    x_inc = 0;
-		    t_next_horizontal = dt_dx; // infinity
+		if (dx == 0) {
+			x_inc = 0;
+			t_next_horizontal = dt_dx; // infinity
 		}
-		// If the clickpoint's x is larger than 
+		// If the clickpoint's x is larger than
 		// player's x, we want to be going up.
-		else if (x1 > x0)
-		{
-		    x_inc = 1;
-		    n += x1 - x;
-		    t_next_horizontal = (x + 1 - x0) * dt_dx;
-		}
-		else
-		{
+		else if (x1 > x0) {
+			x_inc = 1;
+			n += x1 - x;
+			t_next_horizontal = (x + 1 - x0) * dt_dx;
+		} else {
 			// Otherwise we want to go down.
-		    x_inc = -1;
-		    n += x - x1;
-		    t_next_horizontal = (x0 - x) * dt_dx;
+			x_inc = -1;
+			n += x - x1;
+			t_next_horizontal = (x0 - x) * dt_dx;
 		}
 		
 		// same for y.
 		// Same for y.
-		if (dy == 0)
-		{
+		if (dy == 0) {
 			y_inc = 0;
 			t_next_vertical = dt_dy; // infinity
-		}
-		else if (y1 > y0)
-		{
-		    y_inc = 1;
-		    n += y1 - y;
-		    t_next_vertical = (y + 1 - y0) * dt_dy;
-		}
-		else
-		{
-		    y_inc = -1;
-		    n += y - y1;
-		    t_next_vertical = (y0 - y1) * dt_dy;
+		} else if (y1 > y0) {
+			y_inc = 1;
+			n += y1 - y;
+			t_next_vertical = (y + 1 - y0) * dt_dy;
+		} else {
+			y_inc = -1;
+			n += y - y1;
+			t_next_vertical = (y0 - y1) * dt_dy;
 		}
 		
-		while(true)
-		{
-		    BlockType hitBlock = blocks[x][y];
-		    if (hitBlock != null) {
-		    	if (hitBlock == BlockType.LIGHT) {
-		    		return new Vector(x,y,
-		    				SideHit.fromInt(lastHitVertical?y_inc+1:x_inc+2));
-		    	} else {
-		    		return null;
-		    	}
-		    }
-		
-		    if (t_next_vertical < t_next_horizontal)
-		    {
-		        y += y_inc;
-		        t = t_next_vertical;
-		        t_next_vertical += dt_dy;
-		        lastHitVertical = true;
-		    }
-		    else
-		    {
-		        x += x_inc;
-		        t = t_next_horizontal;
-		        t_next_horizontal += dt_dx;
-		        lastHitVertical = false;
-		    }
+		while (true) {
+			BlockType hitBlock = blocks[x][y];
+			if (hitBlock != null) {
+				if (hitBlock == BlockType.LIGHT) {
+					return new Vector(x, y, SideHit.fromInt(lastHitVertical ? y_inc + 1 : x_inc + 2));
+				} else {
+					return null;
+				}
+			}
+			
+			if (t_next_vertical < t_next_horizontal) {
+				y += y_inc;
+				t = t_next_vertical;
+				t_next_vertical += dt_dy;
+				lastHitVertical = true;
+			} else {
+				x += x_inc;
+				t = t_next_horizontal;
+				t_next_horizontal += dt_dx;
+				lastHitVertical = false;
+			}
 		}
 	}
 	
