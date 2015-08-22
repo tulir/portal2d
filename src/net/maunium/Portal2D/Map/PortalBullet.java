@@ -65,12 +65,8 @@ public class PortalBullet {
 				// Checking if there can possibly be a portal there.
 				for(int side = 0; side < 4; side++) {
 					BlockType test = blocks
-							[(int) (x - x % 32) / 32+(side == 0 ? 0 : side-2)]
-							[(int) (y - y % 32) / 32+(side == 3 ? 0 : side-1)];
-					int testX = (int) (x - x % 32) / 32+(side == 0 ? 0 : side-2);
-					int testY = (int) (y - y % 32) / 32+(side == 3 ? 0 : side-1);
-					int blockX = (int) (x - x % 32) / 32;
-					int blockY = (int) (y - y % 32) / 32;
+							[Math.min(Math.max((int) (x - x % 32) / 32+(side == 0 ? 0 : side-2),0),blocks.length-1)]
+							[Math.min(Math.max((int) (y - y % 32) / 32+(side == 3 ? 0 : side-1),0),blocks.length-1)];
 					if (test == null || test == BlockType.POINT || test == BlockType.FINISH) {
 						
 						if ((side == 0 ? 0 : side-2)*dx <= 0 && (side == 3 ? 0 : side-1) * dy <= 0) {
@@ -79,7 +75,8 @@ public class PortalBullet {
 							}
 						}
 					}
-				}			
+				}	
+				return Vector.NULL;
 			} else {
 				return Vector.NULL;
 			}
