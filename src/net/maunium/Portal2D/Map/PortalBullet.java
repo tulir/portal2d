@@ -67,7 +67,6 @@ public class PortalBullet {
 				HashMap<Integer, Double> possibleValues = new HashMap<Integer, Double>();
 				// Checking if there can possibly be a portal there.
 				for (int side = 0; side < 4; side++) {
-					System.out.println((int) (x - x % 32) / 32 + (side == 0 ? 0 : side - 2) + ", " + ((int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1)));
 					int test = map.getBlockAt((int) (x - x % 32) / 32 + (side == 0 ? 0 : side - 2), (int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1));
 					if (!BlockRegistry.isSolid(test)) {
 						if ((side == 0 ? 0 : side - 2) * dx <= 0 && (side == 3 ? 0 : side - 1) * dy <= 0) {
