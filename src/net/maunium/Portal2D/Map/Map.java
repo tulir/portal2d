@@ -131,6 +131,7 @@ public class Map extends BasicGameState {
 	
 	public boolean validPortalBlock(Vector rt) {
 		// TODO: Check if portal can be placed.
+		if (getBlockAt(rt.x, rt.y) != BlockType.LIGHT) return false;
 		return true;
 	}
 	
