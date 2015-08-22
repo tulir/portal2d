@@ -11,6 +11,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.util.ResourceLoader;
 
 import net.maunium.Portal2D.BlockRenderer.BlockType;
+import net.maunium.Portal2D.Map.Map;
+import net.maunium.Portal2D.Map.Player;
 
 /**
  * Main class for the Portal 2(D) game.

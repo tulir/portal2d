@@ -1,12 +1,15 @@
-package net.maunium.Portal2D;
+package net.maunium.Portal2D.Map;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import net.maunium.Portal2D.BlockRenderer;
+import net.maunium.Portal2D.Portal2D;
 import net.maunium.Portal2D.BlockRenderer.BlockType;
-import net.maunium.Portal2D.Vector.SideHit;
+import net.maunium.Portal2D.Util.Vector;
+import net.maunium.Portal2D.Util.Vector.SideHit;
 
 /**
  * Container for maps.

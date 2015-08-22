@@ -1,4 +1,4 @@
-package net.maunium.Portal2D;
+package net.maunium.Portal2D.Map;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
