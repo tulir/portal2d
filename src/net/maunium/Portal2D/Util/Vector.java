@@ -67,4 +67,9 @@ public class Vector {
 		if (v.x == x && v.y == y && v.sideHit == sideHit) return true;
 		else return false;
 	}
+	
+	@Override
+	public String toString() {
+		return "Vector{" + x + ", " + y + ", " + sideHit + "}";
+	}
 }
