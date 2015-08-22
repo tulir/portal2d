@@ -146,8 +146,8 @@ public class Map extends BasicGameState {
 			else {
 				boolean blue = bullets.get(i).blue;
 				Portal p1 = blue ? portal_blue : portal_orange, p2 = blue ? portal_orange : portal_blue;
+				if (p2.getLocation().equals(v)) p2.setLocation(Vector.NULL);
 				p1.setLocation(v);
-				if (p1.getLocation().equals(p2)) p2.setLocation(Vector.NULL);
 				bullets.remove(i);
 			}
 		}
@@ -187,13 +187,8 @@ public class Map extends BasicGameState {
 	}
 	
 	/*
-	 * TODO |-!!!------!!!!------!!!-|
-	 * TODO |------------------------|
-	 * TODO | FIX COLLISION CHECKING |
-	 * TODO |------------------------|
-	 * TODO |-!!!------!!!!------!!!-|
-	 * 
-	 * It currently assumes player positions are in pixels, while they are in floating grid points.
+	 * TODO |-!!!------!!!!------!!!-| TODO |------------------------| TODO | FIX COLLISION CHECKING | TODO |------------------------| TODO
+	 * |-!!!------!!!!------!!!-| It currently assumes player positions are in pixels, while they are in floating grid points.
 	 */
 //	private boolean checkCollision() {
 //		// Returns true if a spike was hit.
