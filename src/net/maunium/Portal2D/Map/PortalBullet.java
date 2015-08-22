@@ -17,7 +17,7 @@ import net.maunium.Portal2D.Util.Vector.SideHit;
  */
 public class PortalBullet {
 	public static Image BLUE_BULLET, ORANGE_BULLET;
-	public static final int PIXELS_PER_SECOND = 20 * 32;
+	public static final int PIXELS_PER_SECOND = 40 * 32;
 	public float x, y, dx, dy, angle;
 	public boolean blue;
 	
@@ -59,23 +59,22 @@ public class PortalBullet {
 		BlockType hitBlock = blocks[(int) (x - x % 32) / 32][(int) (y - y % 32) / 32];
 		if (hitBlock != null && hitBlock.isSolid()) {
 			if (hitBlock == BlockType.LIGHT) {
-				int blockMiddleX = (int) (x - x % 32)+16;
-				int blockMiddleY = (int) (y - y % 32)+16;
+				int blockMiddleX = (int) (x - x % 32) + 16;
+				int blockMiddleY = (int) (y - y % 32) + 16;
 				HashMap<Integer, Double> possibleValues = new HashMap<Integer, Double>();
 				// Checking if there can possibly be a portal there.
-				for(int side = 0; side < 4; side++) {
-					BlockType test = blocks
-							[Math.min(Math.max((int) (x - x % 32) / 32+(side == 0 ? 0 : side-2),0),blocks.length-1)]
-							[Math.min(Math.max((int) (y - y % 32) / 32+(side == 3 ? 0 : side-1),0),blocks.length-1)];
+				for (int side = 0; side < 4; side++) {
+					BlockType test = blocks[Math.min(Math.max((int) (x - x % 32) / 32 + (side == 0 ? 0 : side - 2), 0), blocks.length - 1)][Math
+							.min(Math.max((int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1), 0), blocks.length - 1)];
 					if (test == null || test == BlockType.POINT || test == BlockType.FINISH) {
 						
-						if ((side == 0 ? 0 : side-2)*dx <= 0 && (side == 3 ? 0 : side-1) * dy <= 0) {
-							if (Math.abs((blockMiddleX+(side == 0 ? 0 : side-2)*16-x))+Math.abs((blockMiddleY+(side == 3 ? 0 : side-1)*16-y))<=16) {
-								return new Vector((int)(x - x % 32) / 32, (int)(y - y % 32) / 32, SideHit.fromInt(side));
-							}
+						if ((side == 0 ? 0 : side - 2) * dx <= 0 && (side == 3 ? 0 : side - 1) * dy <= 0) {
+							if (Math.abs(blockMiddleX + (side == 0 ? 0 : side - 2) * 16 - x)
+									+ Math.abs(blockMiddleY + (side == 3 ? 0 : side - 1) * 16 - y) <= 16) { return new Vector((int) (x - x % 32) / 32,
+											(int) (y - y % 32) / 32, SideHit.fromInt(side)); }
 						}
 					}
-				}	
+				}
 				return Vector.NULL;
 			} else {
 				return Vector.NULL;
