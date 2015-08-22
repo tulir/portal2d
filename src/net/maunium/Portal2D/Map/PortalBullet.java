@@ -1,6 +1,7 @@
 package net.maunium.Portal2D.Map;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -73,12 +74,21 @@ public class PortalBullet {
 					int blockY = (int) (y - y % 32) / 32;
 					if (BlockRegistry.isSolid(hitBlock)) {
 						if ((side == 0 ? 0 : side - 2) * dx <= 0 && (side == 3 ? 0 : side - 1) * dy <= 0) {
-							if (Math.abs(blockMiddleX + (side == 0 ? 0 : side - 2) * 16 - x)
-									+ Math.abs(blockMiddleY + (side == 3 ? 0 : side - 1) * 16 - y) <= 16) { return new Vector((int) (x - x % 32) / 32,
-											(int) (y - y % 32) / 32, SideHit.fromInt(side)); }
+							possibleValues.put(side, (double)(Math.abs(blockMiddleX + (side == 0 ? 0 : side - 2) * 16 - x)
+									+ Math.abs(blockMiddleY + (side == 3 ? 0 : side - 1) * 16 - y)));
 						}
 					}
 				}
+
+				double smallestValue = Double.MAX_VALUE;
+				int smallestKey = 0;
+				for (Entry <Integer,Double> e : possibleValues.entrySet()) {
+					if (e.getValue() < smallestValue) {
+						smallestValue = e.getValue();
+						smallestKey = e.getKey();
+					}
+				}
+				return new Vector((int)(x - x % 32) / 32,(int)(y - y % 32) / 32, SideHit.fromInt(smallestKey));
 			} else {
 				return Vector.NULL;
 			}

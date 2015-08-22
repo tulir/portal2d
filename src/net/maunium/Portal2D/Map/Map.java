@@ -34,7 +34,7 @@ public class Map extends BasicGameState {
 	protected int[][] blocks;
 	protected Portal portal_blue, portal_orange;
 	protected List<PortalBullet> bullets;
-	protected Player p;
+	protected Player player;
 	
 	/**
 	 * Construct a map based on the given Image.
@@ -48,7 +48,7 @@ public class Map extends BasicGameState {
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-		p = new Player(host.getImage("player"), host.getImage("player_eye"));
+		player = new Player(host.getImage("player"), host.getImage("player_eye"));
 		bullets = new ArrayList<PortalBullet>();
 		
 		portal_blue = new Portal(host.getImage("blocks/portal_blue"));
@@ -62,8 +62,8 @@ public class Map extends BasicGameState {
 				
 				// The player spawn point
 				if (c.getRed() == 255 && c.getGreen() == 0 && c.getBlue() == 0) {
-					p.x = x;
-					p.y = y;
+					player.x = x;
+					player.y = y;
 				} else blocks[x][y] = BlockRegistry.getBlockId(c);
 			}
 		}
@@ -89,7 +89,7 @@ public class Map extends BasicGameState {
 		portal_orange.render(g);
 		
 		// Render the player.
-		p.render(g, angle);
+		player.render(g, angle);
 	}
 	
 	@Override
@@ -149,7 +149,7 @@ public class Map extends BasicGameState {
 	 * Get the player in this map.
 	 */
 	public Player getPlayer() {
-		return p;
+		return player;
 	}
 	
 	private Vector rotateVector(double x, double y) {
@@ -163,48 +163,48 @@ public class Map extends BasicGameState {
 	 * TODO |-!!!------!!!!------!!!-| TODO |------------------------| TODO | FIX COLLISION CHECKING | TODO |------------------------| TODO
 	 * |-!!!------!!!!------!!!-| It currently assumes player positions are in pixels, while they are in floating grid points.
 	 */
-//	private boolean checkCollision() {
-//		// Returns true if a spike was hit.
-//		int playerTileX = (int) (p.x - p.x % 32) / 32;
-//		int playerTileY = (int) (p.y - p.y % 32) / 32;
-//		for (int mx = -1; mx < 2; mx++) {
-//			for (int my = -1; my < 2; my++) {
-//				if (checkCollisionWith(playerTileX + mx, playerTileY + my)) return true;
-//			}
-//		}
-//		return false;
-//	}
-//	
-//	private boolean checkCollisionWith(int x, int y) {
-//		// Return true if a spike gets hit.
-//		if (Math.abs(p.x - x) < 32 && Math.abs(p.y - y) < 32) {
-//			if (Math.abs(p.x - x) >= Math.abs(p.y - y)) {
-//				// We want to create as little lag as possible, so we politely
-//				// Show the player the door with the least moving required.
-//				p.dx = 0;
-//				if (p.x - x < 0) {
-//					p.x -= p.x % 32;
-//				} else {
-//					p.x += 32 - p.x % 32;
-//				}
-//			} else {
-//				p.dy = 0;
-//				if (p.y - y < 0) {
-//					p.y -= p.y % 32;
-//				} else {
-//					p.y += 32 - p.y % 32;
-//				}
-//			}
-//			if (blocks[x][y] == BlockType.BOMB) return true;
-//		}
-//		return false;
-//	}
-//	
-//	/**
-//	 * Checks collision between the player and the two portals. If a player is to teleport, this method also does that.
-//	 * 
-//	 * @author Antti
-//	 */
+	private boolean checkCollision() {
+		// Returns true if a spike was hit.
+		int playerTileX = (int) player.x;
+		int playerTileY = (int) player.y;
+		for (int mx = -1; mx < 2; mx++) {
+			for (int my = -1; my < 2; my++) {
+				if (checkCollisionWith(playerTileX + mx, playerTileY + my)) return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean checkCollisionWith(int x, int y) {
+		// Return true if a spike gets hit.
+		if (Math.abs(player.x - x) < 1 && Math.abs(player.y - y) < 1) {
+			if (Math.abs(player.x - x) >= Math.abs(player.y - y)) {
+				// We want to create as little lag as possible, so we politely
+				// Show the player the door with the least moving required.
+				player.dx = 0;
+				if (player.x - x < 0) {
+					player.x += (int) player.x - player.x;
+				} else {
+					player.x += (int) player.x - player.x + 1;
+				}
+			} else {
+				player.dy = 0;
+				if (player.y - y < 0) {
+					player.y += (int) player.y - player.y;
+				} else {
+					player.y += (int) player.y - player.y + 1;
+				}
+			}
+			if (blocks[x][y] == Portal2D.TILE_BOMB) return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks collision between the player and the two portals. If a player is to teleport, this method also does that.
+	 * 
+	 * @author Antti
+	 */
 //	private void checkPortalCollision() {
 //		if (portal_blue == null || portal_orange == null) return;
 //		if (!checkCollisionWithPortal(portal_blue)) {
