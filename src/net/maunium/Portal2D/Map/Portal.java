@@ -3,6 +3,8 @@ package net.maunium.Portal2D.Map;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+import net.maunium.Portal2D.Util.Vector;
+
 /**
  * Wrapper for portals. Contains the texture (blue or orange), x coordinate and y coordinate. Set to -1 to hide portal.
  * 
@@ -10,7 +12,7 @@ import org.newdawn.slick.Image;
  * @since 0.1
  */
 public class Portal {
-	private int x = -1, y = -1;
+	private Vector location;
 	private Image i;
 	
 	/**
@@ -24,35 +26,15 @@ public class Portal {
 	 * Render this portal at the given location.
 	 */
 	public void render(Graphics g) {
-		if (x == -1 || y == -1) return;
-		else g.drawImage(i, x * 32, y * 32);
+		if (location == null) return;
+		else g.drawImage(i, location.x * 32, location.y * 32);
 	}
 	
-	/**
-	 * Get the X coordinate of this Portal.
-	 */
-	public int getX() {
-		return x;
+	public Vector getLocation() {
+		return location;
 	}
 	
-	/**
-	 * Set the X coordinate of this Portal.
-	 */
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-	/**
-	 * Get the Y coordinate of this Portal.
-	 */
-	public int getY() {
-		return y;
-	}
-	
-	/**
-	 * Set the Y coordinate of this Portal.
-	 */
-	public void setY(int y) {
-		this.y = y;
+	public void setLocation(Vector v) {
+		if (v.sideHit != null && v.x >= 0 && v.y >= 0) location = v;
 	}
 }
