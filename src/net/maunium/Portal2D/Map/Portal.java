@@ -56,6 +56,6 @@ public class Portal {
 	 * Set the location of this portal.
 	 */
 	public void setLocation(Vector v) {
-		if (v.sideHit != null && v.x >= 0 && v.y >= 0) location = v;
+		if (v.sideHit != null) location = v;
 	}
 }
