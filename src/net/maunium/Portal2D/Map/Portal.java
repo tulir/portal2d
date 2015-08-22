@@ -27,7 +27,19 @@ public class Portal {
 	 */
 	public void render(Graphics g) {
 		if (location == null) return;
-		else g.drawImage(i, location.x * 32, location.y * 32);
+		
+		i.setRotation(0);
+		switch (location.sideHit) {
+			case LEFT:
+				i.rotate(90);
+			case BOTTOM:
+				i.rotate(90);
+			case RIGHT:
+				i.rotate(90);
+			case TOP:
+		}
+		
+		g.drawImage(i, location.x * 32, location.y * 32);
 	}
 	
 	/**
