@@ -8,6 +8,12 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+/**
+ * Class for the Menu game state.
+ * 
+ * @author Tulir293
+ * @since 0.1
+ */
 public class Menu extends BasicGameState {
 	private Image start;
 	

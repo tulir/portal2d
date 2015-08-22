@@ -42,14 +42,19 @@ public class Vector {
 		}
 	}
 	
+	/**
+	 * Construct a new vector with the given X and Y coordinates and the given side hit.
+	 */
 	public Vector(int x, int y, SideHit sideHit) {
 		this.x = x;
 		this.y = y;
 		this.sideHit = sideHit;
 	}
+	
+	/**
+	 * Construct a new vector with the given X and Y coordinates and set the side hit to null.
+	 */
 	public Vector(int x, int y) {
-		this.x = x;
-		this.y = y;
-		this.sideHit = null;
+		this(x, y, null);
 	}
 }

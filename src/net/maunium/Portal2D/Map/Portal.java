@@ -6,7 +6,7 @@ import org.newdawn.slick.Image;
 import net.maunium.Portal2D.Util.Vector;
 
 /**
- * Wrapper for portals. Contains the texture (blue or orange), x coordinate and y coordinate. Set to -1 to hide portal.
+ * Wrapper for portals. Contains the texture (blue or orange) and the location as a vector. If the vector is null, the portal will be hidden.
  * 
  * @author Tulir293
  * @since 0.1
@@ -30,10 +30,16 @@ public class Portal {
 		else g.drawImage(i, location.x * 32, location.y * 32);
 	}
 	
+	/**
+	 * Get the location of this portal.
+	 */
 	public Vector getLocation() {
 		return location;
 	}
 	
+	/**
+	 * Set the location of this portal.
+	 */
 	public void setLocation(Vector v) {
 		if (v.sideHit != null && v.x >= 0 && v.y >= 0) location = v;
 	}
