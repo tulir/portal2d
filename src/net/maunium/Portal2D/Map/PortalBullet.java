@@ -60,7 +60,7 @@ public class PortalBullet {
 		y += delta / 1000.0f * dy;
 		
 		int hitBlock = blocks[(int) (x - x % 32) / 32][(int) (y - y % 32) / 32];
-		if (hitBlock != Portal2D.TILE_NONE && BlockRegistry.isSolid(hitBlock)) {
+		if (hitBlock > Portal2D.TILE_NONE && BlockRegistry.isSolid(hitBlock)) {
 			if (hitBlock == Portal2D.TILE_LIGHT) {
 				int blockMiddleX = (int) (x - x % 32) + 16;
 				int blockMiddleY = (int) (y - y % 32) + 16;
@@ -74,21 +74,21 @@ public class PortalBullet {
 					int blockY = (int) (y - y % 32) / 32;
 					if (BlockRegistry.isSolid(hitBlock)) {
 						if ((side == 0 ? 0 : side - 2) * dx <= 0 && (side == 3 ? 0 : side - 1) * dy <= 0) {
-							possibleValues.put(side, (double)(Math.abs(blockMiddleX + (side == 0 ? 0 : side - 2) * 16 - x)
+							possibleValues.put(side, (double) (Math.abs(blockMiddleX + (side == 0 ? 0 : side - 2) * 16 - x)
 									+ Math.abs(blockMiddleY + (side == 3 ? 0 : side - 1) * 16 - y)));
 						}
 					}
 				}
-
+				
 				double smallestValue = Double.MAX_VALUE;
 				int smallestKey = 0;
-				for (Entry <Integer,Double> e : possibleValues.entrySet()) {
+				for (Entry<Integer, Double> e : possibleValues.entrySet()) {
 					if (e.getValue() < smallestValue) {
 						smallestValue = e.getValue();
 						smallestKey = e.getKey();
 					}
 				}
-				return new Vector((int)(x - x % 32) / 32,(int)(y - y % 32) / 32, SideHit.fromInt(smallestKey));
+				return new Vector((int) (x - x % 32) / 32, (int) (y - y % 32) / 32, SideHit.fromInt(smallestKey));
 			} else {
 				return Vector.NULL;
 			}

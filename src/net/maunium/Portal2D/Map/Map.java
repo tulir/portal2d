@@ -77,7 +77,7 @@ public class Map extends BasicGameState {
 		for (int x = 0; x < blocks.length; x++) {
 			for (int y = 0; y < blocks[x].length; y++) {
 				// Render each existing block. Ignore non-existing block positions.
-				if (blocks[x][y] != Portal2D.TILE_NONE) BlockRegistry.render(g, blocks[x][y], x, y);
+				if (blocks[x][y] > Portal2D.TILE_NONE) BlockRegistry.render(g, blocks[x][y], x, y);
 			}
 		}
 		

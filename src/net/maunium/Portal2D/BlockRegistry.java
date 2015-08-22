@@ -39,10 +39,6 @@ public class BlockRegistry {
 	 * @return The block name, or null if color couldn't be identified.
 	 */
 	public static int getBlockId(Color c) {
-//		for (Entry<Color, Integer> e : colors.entrySet()) {
-//			if (e.getKey().equals(c)) return e.getValue();
-//		}
-//		return -1;
 		if (colors.containsKey(c)) return colors.get(c);
 		else return -1;
 	}
@@ -60,11 +56,7 @@ public class BlockRegistry {
 	 * Get whether or not the block with the given id is solid.
 	 */
 	public static boolean isSolid(int id) {
-		if (id == Portal2D.TILE_NONE && !solid.containsKey(id)) return false;
-		else {
-			Boolean b = solid.get(id);
-			if (b != null) return b;
-			else return false;
-		}
+		if (id <= Portal2D.TILE_NONE || !solid.containsKey(id)) return false;
+		else return solid.get(id);
 	}
 }
