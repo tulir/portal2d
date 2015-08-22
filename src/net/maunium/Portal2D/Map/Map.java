@@ -1,5 +1,8 @@
 package net.maunium.Portal2D.Map;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
@@ -25,13 +28,16 @@ import net.maunium.Portal2D.Util.Vector.SideHit;
  */
 public class Map extends BasicGameState {
 	public static final float MOVE_VELOCITY = 0.005f, JUMP_VELOCITY = 0.000008f;
+	public static final int MS_BETWEEN_BULLETS = 500;
 	private final int id;
 	public final String name;
 	private final Image img;
 	private final Portal2D host;
+	private long bulletShot = System.currentTimeMillis();
 	private double angle;
 	private BlockType[][] blocks;
 	private Portal portal_blue, portal_orange;
+	private List<PortalBullet> bullets;
 	private Player p;
 	
 	/**
@@ -47,6 +53,7 @@ public class Map extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		p = new Player(host.getImage("player"), host.getImage("player_eye"));
+		bullets = new ArrayList<PortalBullet>();
 		
 		portal_blue = new Portal(host.getImage("blocks/portal_blue"));
 		portal_orange = new Portal(host.getImage("blocks/portal_orange"));
@@ -78,6 +85,9 @@ public class Map extends BasicGameState {
 			}
 		}
 		
+		for (PortalBullet pb : bullets)
+			pb.render(g);
+			
 		// Render the portals.
 		portal_blue.render(g);
 		portal_orange.render(g);
@@ -122,16 +132,21 @@ public class Map extends BasicGameState {
 		/*
 		 * Portal shooting
 		 */
-		if (gc.getInput().isMouseButtonDown(0) || gc.getInput().isMouseButtonDown(1)) {
-			Vector rt = rayTrace(gc.getInput().getMouseX(), gc.getInput().getMouseY());
-			if (validPortalBlock(rt)) (gc.getInput().isMousePressed(0) ? portal_orange : portal_blue).setLocation(rt);
+		if ((gc.getInput().isMouseButtonDown(0) || gc.getInput().isMouseButtonDown(1)) && System.currentTimeMillis() - bulletShot > MS_BETWEEN_BULLETS) {
+			bullets.add(new PortalBullet(p.x * 32 + 16, p.y * 32 + 16, gc.getInput().getMouseX(), gc.getInput().getMouseY(), gc.getInput().isMousePressed(1)));
+			bulletShot = System.currentTimeMillis();
+//			Vector rt = rayTrace(gc.getInput().getMouseX(), gc.getInput().getMouseY());
+//			if (validPortalBlock(rt)) (gc.getInput().isMousePressed(0) ? portal_orange : portal_blue).setLocation(rt);
 		}
+		
+		for (PortalBullet pb : bullets)
+			pb.update(delta, blocks);
 	}
 	
-	public boolean validPortalBlock(Vector rt) {
-		if (rt == null || getBlockAt(rt.x, rt.y) != BlockType.LIGHT) return false;
-		else return true;
-	}
+//	public boolean validPortalBlock(Vector rt) {
+//		if (rt == null || getBlockAt(rt.x, rt.y) != BlockType.LIGHT) return false;
+//		else return true;
+//	}
 	
 	@Override
 	public void enter(GameContainer gc, StateBasedGame game) throws SlickException {
