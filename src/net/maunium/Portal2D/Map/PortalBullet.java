@@ -5,6 +5,7 @@ import org.newdawn.slick.Image;
 
 import net.maunium.Portal2D.BlockRenderer.BlockType;
 import net.maunium.Portal2D.Util.Vector;
+import net.maunium.Portal2D.Util.Vector.SideHit;
 
 /**
  * Portal bullet.
@@ -55,8 +56,87 @@ public class PortalBullet {
 		
 		BlockType hitBlock = blocks[(int) (x - x % 32) / 32][(int) (x - x % 32) / 32];
 		if (hitBlock.isSolid()) {
-		
+			
+			if (hitBlock == BlockType.LIGHT) {
+				int blockMiddleX = (int)(x-x%32);
+				int blockMiddleY = (int)(y-y%32);
+				if (Math.abs(blockMiddleX)-x < Math.abs(blockMiddleY)-y) {
+					if ((blockMiddleY)-y < 0) {
+						return new Vector((int)(x-x%32)/32,(int)(y-y%32)/32,SideHit.BOTTOM);
+					} else {
+						return new Vector((int)(x-x%32)/32,(int)(y-y%32)/32,SideHit.TOP);
+					}
+				} else {
+					if ((blockMiddleX)-x < 0) {
+						return new Vector((int)(x-x%32)/32,(int)(y-y%32)/32,SideHit.RIGHT);
+					} else {
+						return new Vector((int)(x-x%32)/32,(int)(y-y%32)/32,SideHit.LEFT);
+					}
+				}
+			} else {
+				return new Vector(-1,-1,SideHit.TOP);
+			}
 		}
 		return null;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
