@@ -27,9 +27,8 @@ public class Player {
 	 * Render the player.
 	 */
 	public void render(Graphics g, double d) {
-		eye.setRotation((float) d);
+		eye.setRotation((float) d - 45.0f);
 		g.drawImage(image, x * 32, y * 32);
 		g.drawImage(eye, x * 32, y * 32);
-		System.out.println(d);
 	}
 }
