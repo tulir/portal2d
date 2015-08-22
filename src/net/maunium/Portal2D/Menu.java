@@ -1,9 +1,9 @@
 package net.maunium.Portal2D;
 
 import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -17,31 +17,27 @@ import net.maunium.Portal2D.Map.Map;
  * @since 0.1
  */
 public class Menu extends BasicGameState {
-	private Image start;
-	
 	@Override
-	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
-		start = ((Portal2D) game).getImage("start");
-	}
+	public void init(GameContainer gc, StateBasedGame game) throws SlickException {}
 	
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		for (int i = 1; i < game.getStateCount(); i++) {
-			g.fillRect(gc.getWidth() / 2 - 100, i * 20, 200, 20);
-			System.out.println(game.getState(i));
-			g.drawString(((Map) game.getState(i)).name, gc.getWidth() / 2 - 100, i * 20 + 5);
+			g.setColor(Color.darkGray);
+			g.fillRect(gc.getWidth() / 2 - 100, i * 25, 200, 20);
+			g.setColor(Color.pink);
+			g.drawString(((Map) game.getState(i + 99)).name, gc.getWidth() / 2 - 95, i * 25 + 1);
 		}
-		g.drawImage(start, gc.getWidth() / 2 - start.getWidth() / 2, gc.getHeight() / 2 - start.getHeight() / 2);
 	}
 	
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		int mX = gc.getInput().getMouseX(), mY = gc.getInput().getMouseY();
 		
-//		if (mX > gc.getWidth() / 2 - start.getWidth() / 2 && mX < gc.getWidth() / 2 + start.getWidth() / 2 && mY > gc.getHeight() / 2 - start.getHeight() / 2
-//				&& mY < gc.getHeight() / 2 + start.getHeight() / 2) {
-//			game.enterState(100);
-//		}
+		if (gc.getInput().isMousePressed(0) && mX > gc.getWidth() / 2 - 100 && mX < gc.getWidth() / 2 + 100) {
+			int i = mY / 25;
+			game.enterState(99 + i);
+		}
 	}
 	
 	@Override
