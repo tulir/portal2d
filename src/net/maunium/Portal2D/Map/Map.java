@@ -93,7 +93,7 @@ public class Map extends BasicGameState {
 		// TODO: Proper collision checking
 //		else if (p.dy == 0 && ((int) p.x < p.x || map.getBlockAt((int) (p.x + 0.5), (int) p.y + 1) == null)) p.dy = -0.01f;
 		else if (gc.getInput().isKeyDown(Keyboard.KEY_LSHIFT)) p.dy = -0.004f;
-		else if (p.dy > 0.0f) p.dy -= 0.0001f;
+		else if (p.dy > 0.0f) p.dy -= delta * 0.000008f;
 		else if (p.dy < 0.0f) p.dy = 0.0f;
 		
 		p.x += delta * p.dx;
