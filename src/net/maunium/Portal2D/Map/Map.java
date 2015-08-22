@@ -214,4 +214,13 @@ public class Map extends BasicGameState {
 			}
 		}
 	}
+	
+	private Vector rotateVector(double x, double y) {
+		double angle = Math.atan2(x, y);
+		if (angle < 0) {
+			angle += Math.PI * 2;
+		}
+		Vector rotatedVector = new Vector((int) (x * Math.cos(angle) - y * Math.sin(angle)), (int) (x * Math.sin(angle) + y * Math.cos(angle)));
+		return rotatedVector;
+	}
 }
