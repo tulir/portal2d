@@ -20,6 +20,7 @@ public class Portal {
 	 */
 	public Portal(Image i) {
 		this.i = i;
+		location = Vector.NULL;
 	}
 	
 	/**
@@ -30,6 +31,8 @@ public class Portal {
 		
 		i.setRotation(0);
 		switch (location.sideHit) {
+			case NULL:
+				return;
 			case LEFT:
 				i.rotate(90);
 			case BOTTOM:

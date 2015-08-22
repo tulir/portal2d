@@ -12,7 +12,7 @@ public class Vector {
 	public SideHit sideHit;
 	
 	public static enum SideHit {
-		TOP, BOTTOM, LEFT, RIGHT;
+		TOP, BOTTOM, LEFT, RIGHT, NULL;
 		public static SideHit fromInt(int i) {
 			switch (i) {
 				case 0:
@@ -57,7 +57,7 @@ public class Vector {
 	 * Construct a new vector with the given X and Y coordinates and set the side hit to null.
 	 */
 	public Vector(int x, int y) {
-		this(x, y, null);
+		this(x, y, SideHit.NULL);
 	}
 	
 	@Override

@@ -59,7 +59,6 @@ public class PortalBullet {
 		BlockType hitBlock = blocks[(int) (x - x % 32) / 32][(int) (y - y % 32) / 32];
 		if (hitBlock != null && hitBlock.isSolid()) {
 			if (hitBlock == BlockType.LIGHT) {
-				
 				int blockMiddleX = (int) (x - x % 32)+16;
 				int blockMiddleY = (int) (y - y % 32)+16;
 				HashMap<Integer, Double> possibleValues = new HashMap<Integer, Double>();
@@ -82,7 +81,7 @@ public class PortalBullet {
 					}
 				}			
 			} else {
-				return new Vector(-1, -1, SideHit.TOP);
+				return Vector.NULL;
 			}
 		}
 		return null;
