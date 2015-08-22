@@ -7,6 +7,7 @@ package net.maunium.Portal2D.Util;
  * @since 0.1
  */
 public class Vector {
+	public static Vector NULL = new Vector(-1, -1);
 	public int x, y;
 	public SideHit sideHit;
 	
@@ -26,6 +27,7 @@ public class Vector {
 					return null;
 			}
 		}
+		
 		public static int toInt(SideHit s) {
 			switch (s) {
 				case TOP:
@@ -56,5 +58,13 @@ public class Vector {
 	 */
 	public Vector(int x, int y) {
 		this(x, y, null);
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Vector)) return false;
+		Vector v = (Vector) o;
+		if (v.x == x && v.y == y && v.sideHit == sideHit) return true;
+		else return false;
 	}
 }
