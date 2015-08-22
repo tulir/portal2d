@@ -18,7 +18,7 @@ public class Player {
 	public final int pixelRadius = 15, pixelDiameter = 30;
 	public final float tileRadius = pixelRadius / 32, tileDiameter = pixelDiameter / 32;
 	/** The position and movement vectors of this player. */
-	public float x, y, controlDx, dx, dy;
+	public float x, y, dx, dy;
 	/** The texture of this player. */
 	private Image body, eye;
 	
@@ -54,15 +54,13 @@ public class Player {
 		 */
 		if (onGround) {
 			boolean a = input.isKeyDown(Keyboard.KEY_A), d = input.isKeyDown(Keyboard.KEY_D);
-			if (a && !d) controlDx = -MOVE_VELOCITY;
-			else if (!a && d) controlDx = MOVE_VELOCITY;
-			else controlDx = 0.0f;
+			if (a && !d) dx = -MOVE_VELOCITY;
+			else if (!a && d) dx = MOVE_VELOCITY;
+			else dx = 0.0f;
 		} else {
 			boolean a = input.isKeyDown(Keyboard.KEY_A), d = input.isKeyDown(Keyboard.KEY_D);
-			if (a && !d && controlDx >= -MOVE_VELOCITY) controlDx -= MOVE_VELOCITY_AIR;
-			else if (!a && d && controlDx <= MOVE_VELOCITY) controlDx += MOVE_VELOCITY_AIR;
-			else if (controlDx > 0f) controlDx -= MOVE_VELOCITY_AIR;
-			else if (controlDx < 0f) controlDx += MOVE_VELOCITY_AIR;
+			if (a && !d && dx >= -MOVE_VELOCITY) dx -= MOVE_VELOCITY_AIR;
+			else if (!a && d && dx <= MOVE_VELOCITY) dx += MOVE_VELOCITY_AIR;
 		}
 		
 		if (dx > 0f) dx -= GRAVITY_CHANGE;
@@ -78,7 +76,6 @@ public class Player {
 		 * Update player location.
 		 */
 		x += delta * dx;
-		x += delta * controlDx;
 		y -= delta * dy;
 	}
 }
