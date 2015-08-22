@@ -113,7 +113,7 @@ public class Map extends BasicGameState {
 		 * Handle bullet updates.
 		 */
 		for (int i = 0; i < bullets.size(); i++) {
-			Vector v = bullets.get(i).update(delta, blocks);
+			Vector v = bullets.get(i).update(delta, this);
 			if (v == null) continue;
 			if (v.x == -1 || v.y == -1) bullets.remove(i);
 			else {
@@ -142,7 +142,8 @@ public class Map extends BasicGameState {
 	 * @return The block type, or null if no block at given location.
 	 */
 	public int getBlockAt(int x, int y) {
-		return blocks[x][y];
+		if (x > -1 && y > -1 && blocks.length > x && blocks[x].length > y) return blocks[x][y];
+		else return Portal2D.TILE_NONE;
 	}
 	
 	/**

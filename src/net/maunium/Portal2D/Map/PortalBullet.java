@@ -55,11 +55,11 @@ public class PortalBullet {
 		g.drawImage(i, x, y);
 	}
 	
-	public Vector update(int delta, int[][] blocks) {
+	public Vector update(int delta, Map map) {
 		x += delta / 1000.0f * dx;
 		y += delta / 1000.0f * dy;
 		
-		int hitBlock = blocks[(int) (x - x % 32) / 32][(int) (y - y % 32) / 32];
+		int hitBlock = map.getBlockAt((int) (x - x % 32) / 32, (int) (y - y % 32) / 32);
 		if (hitBlock > Portal2D.TILE_NONE && BlockRegistry.isSolid(hitBlock)) {
 			if (hitBlock == Portal2D.TILE_LIGHT) {
 				int blockMiddleX = (int) (x - x % 32) + 16;
@@ -67,7 +67,8 @@ public class PortalBullet {
 				HashMap<Integer, Double> possibleValues = new HashMap<Integer, Double>();
 				// Checking if there can possibly be a portal there.
 				for (int side = 0; side < 4; side++) {
-					int test = blocks[(int) (x - x % 32) / 32 + (side == 0 ? 0 : side - 2)][(int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1)];
+					System.out.println((int) (x - x % 32) / 32 + (side == 0 ? 0 : side - 2) + ", " + ((int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1)));
+					int test = map.getBlockAt((int) (x - x % 32) / 32 + (side == 0 ? 0 : side - 2), (int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1));
 					int testX = (int) (x - x % 32) / 32 + (side == 0 ? 0 : side - 2);
 					int testY = (int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1);
 					int blockX = (int) (x - x % 32) / 32;
