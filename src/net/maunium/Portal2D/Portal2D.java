@@ -16,7 +16,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.ResourceLoader;
 
-import net.maunium.Portal2D.BlockRenderer.BlockType;
 import net.maunium.Portal2D.Map.Map;
 import net.maunium.Portal2D.Map.PortalBullet;
 
@@ -28,6 +27,8 @@ import net.maunium.Portal2D.Map.PortalBullet;
  * @since 0.1
  */
 public class Portal2D extends StateBasedGame {
+	public static final int TILE_DARK = 1, TILE_LIGHT = 2, TILE_POINT = 3, TILE_FINISH = 4, TILE_BOMB = 5, TILE_NONE = -1;
+	
 	public Portal2D() {
 		super("Portal 2(D)");
 	}
@@ -36,11 +37,11 @@ public class Portal2D extends StateBasedGame {
 	public void initStatesList(GameContainer container) throws SlickException {
 		addState(new Menu());
 		
-		BlockRenderer.loadImage(BlockType.DARK, new Color(50, 50, 50), getImage("blocks/tile_dark"));
-		BlockRenderer.loadImage(BlockType.LIGHT, new Color(200, 200, 200), getImage("blocks/tile_light"));
-		BlockRenderer.loadImage(BlockType.POINT, new Color(0, 100, 0), getImage("blocks/point"));
-		BlockRenderer.loadImage(BlockType.FINISH, new Color(0, 255, 0), getImage("blocks/finish"));
-		BlockRenderer.loadImage(BlockType.BOMB, new Color(255, 0, 255), getImage("blocks/bomb"));
+		BlockRenderer.registerBlock(TILE_DARK, new Color(50, 50, 50), getImage("blocks/tile_dark"), true);
+		BlockRenderer.registerBlock(TILE_LIGHT, new Color(200, 200, 200), getImage("blocks/tile_light"), true);
+		BlockRenderer.registerBlock(TILE_POINT, new Color(0, 100, 0), getImage("blocks/point"), false);
+		BlockRenderer.registerBlock(TILE_FINISH, new Color(0, 255, 0), getImage("blocks/finish"), false);
+		BlockRenderer.registerBlock(TILE_BOMB, new Color(255, 0, 255), getImage("blocks/bomb"), true);
 		
 		PortalBullet.BLUE_BULLET = getImage("bullet_blue");
 		PortalBullet.ORANGE_BULLET = getImage("bullet_orange");

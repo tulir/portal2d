@@ -2,7 +2,6 @@ package net.maunium.Portal2D;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -15,53 +14,53 @@ import org.newdawn.slick.Image;
  * @since 0.1
  */
 public class BlockRenderer {
-	/** Contains the BlockType -> Image mappings. */
-	private static Map<BlockType, Image> images = new HashMap<BlockType, Image>();
-	/** Contains the Color -> BlockType mappings. */
-	private static Map<Color, BlockType> colors = new HashMap<Color, BlockType>();
+	/** Contains the ID -> Image mappings. */
+	private static Map<Integer, Image> images = new HashMap<Integer, Image>();
+	private static Map<Integer, Boolean> solid = new HashMap<Integer, Boolean>();
+	/** Contains the Color -> ID mappings. */
+	private static Map<Color, Integer> colors = new HashMap<Color, Integer>();
 	
 	/**
-	 * Render the the texture of the given block type at the given coordinates using the given Graphics object.
-	 */
-	public static void render(Graphics g, BlockType bt, int x, int y) {
-		g.drawImage(images.get(bt), x * 32, y * 32);
-	}
-	
-	/**
-	 * Get the block type matching the given color.
+	 * Render the the texture of the given block ID at the given coordinates using the given Graphics object.
 	 * 
-	 * @return The block type, or null if color couldn't be identified.
+	 * @param g The graphics object to use.
+	 * @param id The integer ID of the block.
+	 * @param x The X coordinate of the block
+	 * @param y The Y coordinate of the block
 	 */
-	public static BlockType getBlockType(Color c) {
-		for (Entry<Color, BlockType> e : colors.entrySet()) {
-			if (e.getKey().equals(c)) return e.getValue();
-		}
-		return null;
+	public static void render(Graphics g, int id, int x, int y) {
+		if (images.containsKey(id)) g.drawImage(images.get(id), x * 32, y * 32);
 	}
 	
 	/**
-	 * Map the given color and image to the given block type.
+	 * Get the block ID matching the given color.
+	 * 
+	 * @param c The color registered to the block.
+	 * @return The block name, or null if color couldn't be identified.
 	 */
-	public static void loadImage(BlockType bt, Color c, Image i) {
-		images.put(bt, i);
-		colors.put(c, bt);
+	public static int getBlockId(Color c) {
+//		for (Entry<Color, Integer> e : colors.entrySet()) {
+//			if (e.getKey().equals(c)) return e.getValue();
+//		}
+//		return -1;
+		if (colors.containsKey(c)) return colors.get(c);
+		else return -1;
 	}
 	
 	/**
-	 * Temporary enum to store the type of the block. This should be changed to something more modular.
+	 * Map the given color and image to the given block name.
 	 */
-	public static enum BlockType {
-		LIGHT, DARK, BOMB, POINT, FINISH;
-		
-		public boolean isSolid() {
-			switch (this) {
-				case LIGHT:
-				case DARK:
-				case BOMB:
-					return true;
-				default:
-					return false;
-			}
-		}
+	public static void registerBlock(int id, Color c, Image i, boolean s) {
+		images.put(id, i);
+		colors.put(c, id);
+		solid.put(id, s);
+	}
+	
+	/**
+	 * Get whether or not the block with the given id is solid.
+	 */
+	public static boolean isSolid(int id) {
+		if (id == Portal2D.TILE_NONE) return false;
+		else return solid.get(id);
 	}
 }

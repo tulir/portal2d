@@ -14,7 +14,6 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import net.maunium.Portal2D.BlockRenderer;
-import net.maunium.Portal2D.BlockRenderer.BlockType;
 import net.maunium.Portal2D.Portal2D;
 import net.maunium.Portal2D.Util.Vector;
 
@@ -33,7 +32,7 @@ public class Map extends BasicGameState {
 	private final Image img;
 	private final Portal2D host;
 	private double angle;
-	private BlockType[][] blocks;
+	private int[][] blocks;
 	private Portal portal_blue, portal_orange;
 	private List<PortalBullet> bullets;
 	private Player p;
@@ -56,9 +55,9 @@ public class Map extends BasicGameState {
 		portal_blue = new Portal(host.getImage("blocks/portal_blue"));
 		portal_orange = new Portal(host.getImage("blocks/portal_orange"));
 		
-		blocks = new BlockType[img.getWidth()][];
+		blocks = new int[img.getWidth()][];
 		for (int x = 0; x < img.getWidth(); x++) {
-			blocks[x] = new BlockType[img.getHeight()];
+			blocks[x] = new int[img.getHeight()];
 			for (int y = 0; y < img.getHeight(); y++) {
 				Color c = img.getColor(x, y);
 				
@@ -66,7 +65,7 @@ public class Map extends BasicGameState {
 				if (c.getRed() == 255 && c.getGreen() == 0 && c.getBlue() == 0) {
 					p.x = x;
 					p.y = y;
-				} else blocks[x][y] = BlockRenderer.getBlockType(c);
+				} else blocks[x][y] = BlockRenderer.getBlockId(c);
 			}
 		}
 	}
@@ -79,7 +78,7 @@ public class Map extends BasicGameState {
 		for (int x = 0; x < blocks.length; x++) {
 			for (int y = 0; y < blocks[x].length; y++) {
 				// Render each existing block. Ignore non-existing block positions.
-				if (blocks[x][y] != null) BlockRenderer.render(g, blocks[x][y], x, y);
+				if (blocks[x][y] != Portal2D.TILE_NONE) BlockRenderer.render(g, blocks[x][y], x, y);
 			}
 		}
 		
@@ -116,8 +115,8 @@ public class Map extends BasicGameState {
 		/*
 		 * Handle up/down presses.
 		 */
-		BlockType below = getBlockAt((int) (p.x + 0.5), (int) p.y + 1);
-		if (gc.getInput().isKeyDown(Keyboard.KEY_SPACE) && p.dy == 0 && below != null && below.isSolid()) p.dy = 0.004f;
+		int below = getBlockAt((int) (p.x + 0.5), (int) p.y + 1);
+		if (gc.getInput().isKeyDown(Keyboard.KEY_SPACE) && p.dy == 0 && BlockRenderer.isSolid(below)) p.dy = 0.004f;
 		else if (gc.getInput().isKeyDown(Keyboard.KEY_S)) p.dy = -MOVE_VELOCITY;
 		else if (gc.getInput().isKeyDown(Keyboard.KEY_W)) p.dy = MOVE_VELOCITY;
 		else if (p.dy > 0.0f) p.dy -= delta * JUMP_VELOCITY;
@@ -168,7 +167,7 @@ public class Map extends BasicGameState {
 	 * 
 	 * @return The block type, or null if no block at given location.
 	 */
-	public BlockType getBlockAt(int x, int y) {
+	public int getBlockAt(int x, int y) {
 		return blocks[x][y];
 	}
 	

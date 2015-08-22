@@ -5,7 +5,8 @@ import java.util.HashMap;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
-import net.maunium.Portal2D.BlockRenderer.BlockType;
+import net.maunium.Portal2D.BlockRenderer;
+import net.maunium.Portal2D.Portal2D;
 import net.maunium.Portal2D.Util.Vector;
 import net.maunium.Portal2D.Util.Vector.SideHit;
 
@@ -13,11 +14,12 @@ import net.maunium.Portal2D.Util.Vector.SideHit;
  * Portal bullet.
  * 
  * @author Tulir293
+ * @author Antti
  * @since 0.1
  */
 public class PortalBullet {
 	public static Image BLUE_BULLET, ORANGE_BULLET;
-	public static final int PIXELS_PER_SECOND = 40 * 32;
+	public static final int PIXELS_PER_SECOND = 20 * 32;
 	public float x, y, dx, dy, angle;
 	public boolean blue;
 	
@@ -52,22 +54,24 @@ public class PortalBullet {
 		g.drawImage(i, x, y);
 	}
 	
-	public Vector update(int delta, BlockType[][] blocks) {
+	public Vector update(int delta, int[][] blocks) {
 		x += delta / 1000.0f * dx;
 		y += delta / 1000.0f * dy;
 		
-		BlockType hitBlock = blocks[(int) (x - x % 32) / 32][(int) (y - y % 32) / 32];
-		if (hitBlock != null && hitBlock.isSolid()) {
-			if (hitBlock == BlockType.LIGHT) {
+		int hitBlock = blocks[(int) (x - x % 32) / 32][(int) (y - y % 32) / 32];
+		if (hitBlock != Portal2D.TILE_NONE && BlockRenderer.isSolid(hitBlock)) {
+			if (hitBlock == Portal2D.TILE_LIGHT) {
 				int blockMiddleX = (int) (x - x % 32) + 16;
 				int blockMiddleY = (int) (y - y % 32) + 16;
 				HashMap<Integer, Double> possibleValues = new HashMap<Integer, Double>();
 				// Checking if there can possibly be a portal there.
 				for (int side = 0; side < 4; side++) {
-					BlockType test = blocks[Math.min(Math.max((int) (x - x % 32) / 32 + (side == 0 ? 0 : side - 2), 0), blocks.length - 1)][Math
-							.min(Math.max((int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1), 0), blocks.length - 1)];
-					if (test == null || test == BlockType.POINT || test == BlockType.FINISH) {
-						
+					int test = blocks[(int) (x - x % 32) / 32 + (side == 0 ? 0 : side - 2)][(int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1)];
+					int testX = (int) (x - x % 32) / 32 + (side == 0 ? 0 : side - 2);
+					int testY = (int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1);
+					int blockX = (int) (x - x % 32) / 32;
+					int blockY = (int) (y - y % 32) / 32;
+					if (BlockRenderer.isSolid(hitBlock)) {
 						if ((side == 0 ? 0 : side - 2) * dx <= 0 && (side == 3 ? 0 : side - 1) * dy <= 0) {
 							if (Math.abs(blockMiddleX + (side == 0 ? 0 : side - 2) * 16 - x)
 									+ Math.abs(blockMiddleY + (side == 3 ? 0 : side - 1) * 16 - y) <= 16) { return new Vector((int) (x - x % 32) / 32,
@@ -75,7 +79,6 @@ public class PortalBullet {
 						}
 					}
 				}
-				return Vector.NULL;
 			} else {
 				return Vector.NULL;
 			}
