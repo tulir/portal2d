@@ -166,30 +166,52 @@ public class Map extends BasicGameState {
 	 * 
 	 * @author Antti
 	 */
-	private Vector rayTrace(int x1, int y1) {
-		float x0 = p.x*32+16;
-		float y0 = p.y*32+16;
+	private Vector rayTrace(float x1, float y1) {
+		// Player position
 		
+		float x0 = p.x+0.5f;
+		float y0 = p.y+0.5f;
+		// x1 and y1 are mouse position
+		x1 /= 32.0f;
+		y1 /= 32.0f;
+		
+		// x and y are the position of the tile we aree
+		// currently checking collision with.
+		int x = (int)p.x;
+		int y = (int)p.y;
+		// Difference in the mouse and player positions
 		double dx = Math.abs(x0 - x1);
 		double dy = Math.abs(x0 - y1);
 		
-		int x = (int)x0;
-		int y = (int)y0;
-		
+		// The line is not at a perfect 45 degree angle.
+		// These two are the slopes of our line.
 		double dt_dx = 1.0 / dx;
 		double dt_dy = 1.0 / dy;
 		
+		// not sure as of what this is yet.
 		double t = 0;
 		
+		// this variable tells us which limit we have last hit.
+		boolean lastHitVertical = false;
+		// n means the amount of limits we have to reach
+		// before getting to the click position.
 		int n = 1;
+		// These are the directions we will be going to.
 		int x_inc, y_inc;
+		// These two are the x- and y-coordinates for the
+		// next limits.
 		double t_next_vertical, t_next_horizontal;
 		
+		// If the two points are on the same x-coordinate, we
+		// of course never reach the next horizontal line, so
+		// lets just set it to infinity.
 		if (dx == 0)
 		{
 		    x_inc = 0;
 		    t_next_horizontal = dt_dx; // infinity
 		}
+		// If the clickpoint's x is larger than 
+		// player's x, we want to be going up.
 		else if (x1 > x0)
 		{
 		    x_inc = 1;
@@ -198,15 +220,18 @@ public class Map extends BasicGameState {
 		}
 		else
 		{
+			// Otherwise we want to go down.
 		    x_inc = -1;
 		    n += x - x1;
 		    t_next_horizontal = (x0 - x) * dt_dx;
 		}
 		
+		// same for y.
+		// Same for y.
 		if (dy == 0)
 		{
-		    y_inc = 0;
-		    t_next_vertical = dt_dy; // infinity
+			y_inc = 0;
+			t_next_vertical = dt_dy; // infinity
 		}
 		else if (y1 > y0)
 		{
@@ -221,21 +246,31 @@ public class Map extends BasicGameState {
 		    t_next_vertical = (y0 - y1) * dt_dy;
 		}
 		
-		for (; n > 0; --n)
+		while(true)
 		{
-		    // Visit
+		    BlockType hitBlock = blocks[x][y];
+		    if (hitBlock != null) {
+		    	if (hitBlock == BlockType.LIGHT) {
+		    		return new Vector(x,y,
+		    				SideHit.fromInt(lastHitVertical?y_inc+1:x_inc+2));
+		    	} else {
+		    		return null;
+		    	}
+		    }
 		
 		    if (t_next_vertical < t_next_horizontal)
 		    {
 		        y += y_inc;
 		        t = t_next_vertical;
 		        t_next_vertical += dt_dy;
+		        lastHitVertical = true;
 		    }
 		    else
 		    {
 		        x += x_inc;
 		        t = t_next_horizontal;
 		        t_next_horizontal += dt_dx;
+		        lastHitVertical = false;
 		    }
 		}
 	}
