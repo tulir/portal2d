@@ -47,8 +47,9 @@ public class Player {
 		// Convert the angle to degrees.
 		map.angle = Math.toDegrees(ang < 0 ? ang + 2 * Math.PI : ang);
 		
-		boolean onGround = BlockRegistry.isSolid(map.getBlockAt((int) x, (int) y + 1)) || BlockRegistry.isSolid(map.getBlockAt((int) (x + 1), (int) y + 1));
-		
+		boolean onGround = dy == 0
+				&& (BlockRegistry.isSolid(map.getBlockAt((int) x, (int) y + 1)) || BlockRegistry.isSolid(map.getBlockAt((int) (x + 1), (int) y + 1)));
+				
 		/*
 		 * Handle left/right presses.
 		 */
@@ -69,7 +70,7 @@ public class Player {
 		/*
 		 * Handle up/down presses.
 		 */
-		if (input.isKeyDown(Keyboard.KEY_SPACE) && dy == 0 && onGround) dy = JUMP_VELOCITY;
+		if (input.isKeyDown(Keyboard.KEY_SPACE) && onGround) dy = JUMP_VELOCITY;
 		else if (dy > GRAVITY) dy -= delta * GRAVITY_CHANGE;
 		
 		/*
