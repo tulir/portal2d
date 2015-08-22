@@ -69,11 +69,7 @@ public class PortalBullet {
 				for (int side = 0; side < 4; side++) {
 					System.out.println((int) (x - x % 32) / 32 + (side == 0 ? 0 : side - 2) + ", " + ((int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1)));
 					int test = map.getBlockAt((int) (x - x % 32) / 32 + (side == 0 ? 0 : side - 2), (int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1));
-					int testX = (int) (x - x % 32) / 32 + (side == 0 ? 0 : side - 2);
-					int testY = (int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1);
-					int blockX = (int) (x - x % 32) / 32;
-					int blockY = (int) (y - y % 32) / 32;
-					if (BlockRegistry.isSolid(hitBlock)) {
+					if (!BlockRegistry.isSolid(test)) {
 						if ((side == 0 ? 0 : side - 2) * dx <= 0 && (side == 3 ? 0 : side - 1) * dy <= 0) {
 							possibleValues.put(side, (double) (Math.abs(blockMiddleX + (side == 0 ? 0 : side - 2) * 16 - x)
 									+ Math.abs(blockMiddleY + (side == 3 ? 0 : side - 1) * 16 - y)));
