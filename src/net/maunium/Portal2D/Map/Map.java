@@ -131,8 +131,9 @@ public class Map extends BasicGameState {
 		/*
 		 * Portal shooting
 		 */
-		if (gc.getInput().isMousePressed(0) || gc.getInput().isMouseButtonDown(1)) {
-			bullets.add(new PortalBullet(p.x * 32 + 16, p.y * 32 + 16, gc.getInput().getMouseX(), gc.getInput().getMouseY(), gc.getInput().isMousePressed(1)));
+		if (gc.getInput().isMousePressed(0) || gc.getInput().isMousePressed(1)) {
+			bullets.add(
+					new PortalBullet(p.x * 32 + 16, p.y * 32 + 16, gc.getInput().getMouseX(), gc.getInput().getMouseY(), gc.getInput().isMouseButtonDown(1)));
 //			Vector rt = rayTrace(gc.getInput().getMouseX(), gc.getInput().getMouseY());
 //			if (validPortalBlock(rt)) (gc.getInput().isMousePressed(0) ? portal_orange : portal_blue).setLocation(rt);
 		}
