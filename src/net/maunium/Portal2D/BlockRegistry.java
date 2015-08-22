@@ -29,8 +29,8 @@ public class BlockRegistry {
 	 * @param x The X coordinate of the block
 	 * @param y The Y coordinate of the block
 	 */
-	public static void render(Graphics g, int id, int x, int y) {
-		if (images.containsKey(id)) g.drawImage(images.get(id), x * 32, y * 32);
+	public static void render(Graphics g, int id, int x, int y, int shiftX, int shiftY) {
+		if (images.containsKey(id)) g.drawImage(images.get(id), x * 32 + shiftX, y * 32 + shiftY);
 	}
 	
 	/**

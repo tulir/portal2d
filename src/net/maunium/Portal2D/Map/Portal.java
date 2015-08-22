@@ -19,14 +19,14 @@ public class Portal {
 	 * Construct a new Portal with the given texture.
 	 */
 	public Portal(Image i) {
-		this.image = i;
+		image = i;
 		location = Vector.NULL;
 	}
 	
 	/**
-	 * Render this portal at the given location.
+	 * Render this portal at its location.
 	 */
-	public void render(Graphics g) {
+	public void render(Graphics g, int shiftX, int shiftY) {
 		if (location == null) return;
 		
 		image.setRotation(0);
@@ -42,7 +42,7 @@ public class Portal {
 			case TOP:
 		}
 		
-		g.drawImage(image, location.x * 32, location.y * 32);
+		g.drawImage(image, location.x * 32 + shiftX, location.y * 32 + shiftY);
 	}
 	
 	/**

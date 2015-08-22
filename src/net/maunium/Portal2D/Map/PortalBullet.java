@@ -24,9 +24,9 @@ public class PortalBullet {
 	public float x, y, dx, dy, angle;
 	public boolean isBlue;
 	
-	public PortalBullet(boolean blue) {
-		this(0f, 0f, 0f, 0f, blue);
-	}
+	/*
+	 * TODO: Add handling for the map shifting!
+	 */
 	
 	public PortalBullet(float x, float y, int mouseX, int mouseY, boolean isBlue) {
 		this.x = x;
@@ -39,14 +39,6 @@ public class PortalBullet {
 		double angle = -Math.atan2(dx, dy);
 		// Convert the angle to degrees.
 		this.angle = (float) Math.toDegrees(angle < 0 ? angle + 2 * Math.PI : angle);
-	}
-	
-	public PortalBullet(float x, float y, float dx, float dy, boolean blue) {
-		this.x = x;
-		this.y = y;
-		this.dx = dx;
-		this.dy = dy;
-		this.isBlue = blue;
 	}
 	
 	public void render(Graphics g) {

@@ -33,17 +33,17 @@ public class Player {
 	/**
 	 * Render the player.
 	 */
-	public void render(Graphics g, double eyeAngle) {
+	public void render(Graphics g, double eyeAngle, int shiftX, int shiftY) {
 		eye.setRotation((float) eyeAngle - 45.0f);
-		g.drawImage(body, x * 32, y * 32);
-		g.drawImage(eye, x * 32, y * 32);
+		g.drawImage(body, x * 32 + shiftX, y * 32 + shiftY);
+		g.drawImage(eye, x * 32 + shiftX, y * 32 + shiftY);
 	}
 	
-	public void update(Input input, Map map, int delta) {
+	public void update(Input input, Map map, int delta, int shiftX, int shiftY) {
 		int mX = input.getMouseX(), mY = input.getMouseY();
 		
 		// Calculate the angle from the player to the mouse in radians.
-		double ang = -Math.atan2(x * 32 + pixelRadius - mX, y * 32 + pixelRadius - mY);
+		double ang = -Math.atan2(x * 32 + pixelRadius - mX + shiftX, y * 32 + pixelRadius - mY + shiftY);
 		// Convert the angle to degrees.
 		map.angle = Math.toDegrees(ang < 0 ? ang + 2 * Math.PI : ang);
 		

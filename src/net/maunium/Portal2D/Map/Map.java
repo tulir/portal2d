@@ -27,8 +27,9 @@ import net.maunium.Portal2D.Util.Vector.SideHit;
  */
 public class Map extends BasicGameState {
 	public static final int MS_BETWEEN_BULLETS = 500;
-	private final int id;
 	public final String name;
+	private final int id;
+	protected int shiftX = 0, shiftY = 0;
 	protected final Image img;
 	protected final Portal2D host;
 	protected double angle;
@@ -62,6 +63,9 @@ public class Map extends BasicGameState {
 		portal_orange.setLocation(Vector.NULL);
 		bullets = new ArrayList<PortalBullet>();
 		
+		shiftX = 0;
+		shiftY = 0;
+		
 		blocks = new int[img.getWidth()][];
 		for (int x = 0; x < img.getWidth(); x++) {
 			blocks[x] = new int[img.getHeight()];
@@ -85,7 +89,7 @@ public class Map extends BasicGameState {
 		for (int x = 0; x < blocks.length; x++) {
 			for (int y = 0; y < blocks[x].length; y++) {
 				// Render each existing block. Ignore non-existing block positions.
-				if (blocks[x][y] > Portal2D.TILE_NONE) BlockRegistry.render(g, blocks[x][y], x, y);
+				if (blocks[x][y] > Portal2D.TILE_NONE) BlockRegistry.render(g, blocks[x][y], x, y, shiftX, shiftY);
 			}
 		}
 		
@@ -93,11 +97,11 @@ public class Map extends BasicGameState {
 			pb.render(g);
 			
 		// Render the portals.
-		portal_blue.render(g);
-		portal_orange.render(g);
+		portal_blue.render(g, shiftX, shiftY);
+		portal_orange.render(g, shiftX, shiftY);
 		
 		// Render the player.
-		player.render(g, angle);
+		player.render(g, angle, shiftX, shiftY);
 	}
 	
 	@Override
@@ -111,10 +115,16 @@ public class Map extends BasicGameState {
 			portal_orange.setLocation(Vector.NULL);
 		}
 		
+		// Temporary controls for shifting the view.
+		if (gc.getInput().isKeyPressed(Keyboard.KEY_LEFT)) shiftX -= 32;
+		else if (gc.getInput().isKeyPressed(Keyboard.KEY_RIGHT)) shiftX += 32;
+		if (gc.getInput().isKeyPressed(Keyboard.KEY_UP)) shiftY -= 32;
+		else if (gc.getInput().isKeyPressed(Keyboard.KEY_DOWN)) shiftY += 32;
+		
 		/*
 		 * Update player location/velocity and handle movement input.
 		 */
-		p.update(gc.getInput(), this, delta);
+		p.update(gc.getInput(), this, delta, shiftX, shiftY);
 		
 		/*
 		 * Portal bullet shooting.
