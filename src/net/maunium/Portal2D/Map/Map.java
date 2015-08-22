@@ -1,6 +1,7 @@
 package net.maunium.Portal2D.Map;
 
 import org.lwjgl.input.Keyboard;
+import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -75,7 +76,7 @@ public class Map extends BasicGameState {
 		}
 		
 		// Calculate the angle from the player to the mouse in radians.
-		double angle = -Math.atan2(p.x * 32 + 16 - gc.getInput().getMouseX(), p.y * 32 + 16 - gc.getInput().getMouseY());
+		double angle = -Math.atan2(p.x * 32 + p.size - gc.getInput().getMouseX(), p.y * 32 + p.size - gc.getInput().getMouseY());
 		// Convert the angle to degrees.
 		angle = Math.toDegrees(angle < 0 ? angle + 2 * Math.PI : angle);
 		
@@ -113,7 +114,11 @@ public class Map extends BasicGameState {
 		 */
 		p.x += delta * p.dx;
 		p.y -= delta * p.dy;
-		
+	}
+	
+	@Override
+	public void enter(GameContainer gc, StateBasedGame game) throws SlickException {
+		((AppGameContainer) gc).setDisplayMode(img.getWidth() * 32, img.getHeight() * 32, false);
 	}
 	
 	@Override
