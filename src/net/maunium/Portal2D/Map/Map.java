@@ -3,7 +3,6 @@ package net.maunium.Portal2D.Map;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -29,13 +28,13 @@ public class Map extends BasicGameState {
 	public static final int MS_BETWEEN_BULLETS = 500;
 	private final int id;
 	public final String name;
-	private final Image img;
-	private final Portal2D host;
-	private double angle;
-	private int[][] blocks;
-	private Portal portal_blue, portal_orange;
-	private List<PortalBullet> bullets;
-	private Player p;
+	protected final Image img;
+	protected final Portal2D host;
+	protected double angle;
+	protected int[][] blocks;
+	protected Portal portal_blue, portal_orange;
+	protected List<PortalBullet> bullets;
+	protected Player p;
 	
 	/**
 	 * Construct a map based on the given Image.
@@ -97,42 +96,17 @@ public class Map extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Player p = getPlayer();
 		
-		int mX = gc.getInput().getMouseX(), mY = gc.getInput().getMouseY();
-		
-		// Calculate the angle from the player to the mouse in radians.
-		double ang = -Math.atan2(p.x * 32 + p.size - mX, p.y * 32 + p.size - mY);
-		// Convert the angle to degrees.
-		angle = Math.toDegrees(ang < 0 ? ang + 2 * Math.PI : ang);
-		
 		/*
-		 * Handle left/right presses.
+		 * Update player location/velocity and handle movement input.
 		 */
-		boolean a = gc.getInput().isKeyDown(Keyboard.KEY_A), d = gc.getInput().isKeyDown(Keyboard.KEY_D);
-		if (a && !d) p.dx = -MOVE_VELOCITY;
-		else if (!a && d) p.dx = MOVE_VELOCITY;
-		else p.dx = 0.0f;
-		
-		/*
-		 * Handle up/down presses.
-		 */
-		int below = getBlockAt((int) (p.x + 0.5), (int) p.y + 1);
-		if (gc.getInput().isKeyDown(Keyboard.KEY_SPACE) && p.dy == 0 && BlockRenderer.isSolid(below)) p.dy = 0.004f;
-		else if (gc.getInput().isKeyDown(Keyboard.KEY_S)) p.dy = -MOVE_VELOCITY;
-		else if (gc.getInput().isKeyDown(Keyboard.KEY_W)) p.dy = MOVE_VELOCITY;
-		else if (p.dy > 0.0f) p.dy -= delta * JUMP_VELOCITY;
-		else if (p.dy < 0.0f) p.dy = 0.0f;
-		
-		/*
-		 * Update the player position.
-		 */
-		p.x += delta * p.dx;
-		p.y -= delta * p.dy;
+		p.update(gc.getInput(), this, delta);
 		
 		/*
 		 * Portal bullet shooting.
 		 */
 		if (gc.getInput().isMousePressed(0) || gc.getInput().isMousePressed(1)) {
-			bullets.add(new PortalBullet(p.x * 32 + 16, p.y * 32 + 16, mX, mY, gc.getInput().isMouseButtonDown(1)));
+			bullets.add(
+					new PortalBullet(p.x * 32 + 16, p.y * 32 + 16, gc.getInput().getMouseX(), gc.getInput().getMouseY(), gc.getInput().isMouseButtonDown(1)));
 		}
 		
 		/*
