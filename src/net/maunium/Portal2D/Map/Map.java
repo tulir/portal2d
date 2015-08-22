@@ -23,6 +23,7 @@ import net.maunium.Portal2D.Util.Vector.SideHit;
  * @since 0.1
  */
 public class Map extends BasicGameState {
+	public static final float MOVE_VELOCITY = 0.005f, JUMP_VELOCITY = 0.000008f;
 	private final int id;
 	private final Image img;
 	private final Portal2D host;
@@ -85,15 +86,15 @@ public class Map extends BasicGameState {
 		
 		int mX = gc.getInput().getMouseX(), mY = gc.getInput().getMouseY();
 		
-		if (gc.getInput().isKeyDown(Keyboard.KEY_A)) p.dx = -0.005f;
-		else if (gc.getInput().isKeyDown(Keyboard.KEY_D)) p.dx = 0.005f;
+		if (gc.getInput().isKeyDown(Keyboard.KEY_A)) p.dx = -MOVE_VELOCITY;
+		else if (gc.getInput().isKeyDown(Keyboard.KEY_D)) p.dx = MOVE_VELOCITY;
 		else p.dx = 0.0f;
 		
 		if (gc.getInput().isKeyDown(Keyboard.KEY_SPACE) && p.dy == 0 && getBlockAt((int) (p.x + 0.5), (int) p.y + 1) != null) p.dy = 0.004f;
 		// TODO: Proper collision checking
 //		else if (p.dy == 0 && ((int) p.x < p.x || map.getBlockAt((int) (p.x + 0.5), (int) p.y + 1) == null)) p.dy = -0.01f;
-		else if (gc.getInput().isKeyDown(Keyboard.KEY_LSHIFT)) p.dy = -0.004f;
-		else if (p.dy > 0.0f) p.dy -= delta * 0.000008f;
+		else if (gc.getInput().isKeyDown(Keyboard.KEY_LSHIFT)) p.dy = -MOVE_VELOCITY;
+		else if (p.dy > 0.0f) p.dy -= delta * JUMP_VELOCITY;
 		else if (p.dy < 0.0f) p.dy = 0.0f;
 		
 		p.x += delta * p.dx;
