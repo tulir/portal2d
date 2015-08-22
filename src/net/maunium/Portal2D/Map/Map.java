@@ -303,7 +303,7 @@ public class Map extends BasicGameState {
 					p.y += 32 - p.y % 32;
 				}
 			}
-			if (blocks[x][y] == BlockType.SPIKE) return true;
+			if (blocks[x][y] == BlockType.BOMB) return true;
 		}
 		return false;
 	}

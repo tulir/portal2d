@@ -51,13 +51,13 @@ public class BlockRenderer {
 	 * Temporary enum to store the type of the block. This should be changed to something more modular.
 	 */
 	public static enum BlockType {
-		LIGHT, DARK, SPIKE, POINT, FINISH;
+		LIGHT, DARK, BOMB, POINT, FINISH;
 		
 		public boolean isSolid() {
 			switch (this) {
 				case LIGHT:
 				case DARK:
-				case SPIKE:
+				case BOMB:
 					return true;
 				default:
 					return false;
