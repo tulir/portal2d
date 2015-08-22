@@ -3,6 +3,7 @@ package net.maunium.Portal2D.Map;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -102,6 +103,10 @@ public class Map extends BasicGameState {
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Player p = getPlayer();
+		
+		if (gc.getInput().isKeyPressed(Keyboard.KEY_ESCAPE)) {
+			game.enterState(0);
+		}
 		
 		/*
 		 * Update player location/velocity and handle movement input.
