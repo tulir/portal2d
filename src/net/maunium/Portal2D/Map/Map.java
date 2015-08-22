@@ -80,12 +80,12 @@ public class Map extends BasicGameState {
 		// Convert the angle to degrees.
 		angle = Math.toDegrees(angle < 0 ? angle + 2 * Math.PI : angle);
 		
-		// Render the player.
-		p.render(g, angle);
-		
 		// Render the portals.
 		portal_blue.render(g);
 		portal_orange.render(g);
+		
+		// Render the player.
+		p.render(g, angle);
 	}
 	
 	@Override
