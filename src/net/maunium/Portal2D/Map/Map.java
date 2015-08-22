@@ -106,9 +106,6 @@ public class Map extends BasicGameState {
 		
 		if (gc.getInput().isKeyPressed(Keyboard.KEY_ESCAPE)) {
 			game.enterState(0);
-		} else if (gc.getInput().isKeyPressed(Keyboard.KEY_R)) {
-			portal_blue.setLocation(Vector.NULL);
-			portal_orange.setLocation(Vector.NULL);
 		}
 		
 		/*
@@ -240,7 +237,7 @@ public class Map extends BasicGameState {
 	 * Checks collision between the player and the two portals. If a player is to teleport, this method also does that.
 	 */
 	public void checkPortals() {
-		if (portal_blue == null || portal_orange == null) return;
+		if (portal_blue.getLocation().equals(Vector.NULL)|| portal_orange.getLocation().equals(Vector.NULL)) return;
 		if (!checkCollisionWithPortal(portal_blue)) {
 			checkCollisionWithPortal(portal_orange);
 		}
@@ -295,7 +292,7 @@ public class Map extends BasicGameState {
 		int cx = x == 0 ? 0 : x - 2;
 		int cy = x == 3 ? 0 : x - 1;
 		
-		player.x = targetPortal.getLocation().x + cx * (33 / 32);
-		player.y = targetPortal.getLocation().y + cy * (33 / 32);
+		player.x = targetPortal.getLocation().x + cx*(33/32);
+		player.y = targetPortal.getLocation().y + cy*(33/32);
 	}
 }
