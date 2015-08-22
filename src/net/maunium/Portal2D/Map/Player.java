@@ -14,7 +14,9 @@ import net.maunium.Portal2D.BlockRegistry;
  * @since 0.1
  */
 public class Player {
-	public final int size = 15;
+	public static final float MOVE_VELOCITY = 0.005f, JUMP_VELOCITY = 0.008f, GRAVITY_CHANGE = 0.00001f, GRAVITY = -0.1f;
+	public final int pixelRadius = 15, pixelDiameter = 30;
+	public final float tileRadius = pixelRadius / 32, tileDiameter = pixelDiameter / 32;
 	/** The position and movement vectors of this player. */
 	public float x, y, dx, dy;
 	/** The texture of this player. */
@@ -41,7 +43,7 @@ public class Player {
 		int mX = i.getMouseX(), mY = i.getMouseY();
 		
 		// Calculate the angle from the player to the mouse in radians.
-		double ang = -Math.atan2(x * 32 + size - mX, y * 32 + size - mY);
+		double ang = -Math.atan2(x * 32 + pixelRadius - mX, y * 32 + pixelRadius - mY);
 		// Convert the angle to degrees.
 		m.angle = Math.toDegrees(ang < 0 ? ang + 2 * Math.PI : ang);
 		
@@ -49,19 +51,16 @@ public class Player {
 		 * Handle left/right presses.
 		 */
 		boolean a = i.isKeyDown(Keyboard.KEY_A), d = i.isKeyDown(Keyboard.KEY_D);
-		if (a && !d) dx = -Map.MOVE_VELOCITY;
-		else if (!a && d) dx = Map.MOVE_VELOCITY;
+		if (a && !d) dx = -MOVE_VELOCITY;
+		else if (!a && d) dx = MOVE_VELOCITY;
 		else dx = 0.0f;
 		
 		/*
 		 * Handle up/down presses.
 		 */
 		int below = m.getBlockAt((int) (x + 0.5), (int) y + 1);
-		if (i.isKeyDown(Keyboard.KEY_SPACE) && dy == 0 && BlockRegistry.isSolid(below)) dy = 0.004f;
-		else if (i.isKeyDown(Keyboard.KEY_S)) dy = -Map.MOVE_VELOCITY;
-		else if (i.isKeyDown(Keyboard.KEY_W)) dy = Map.MOVE_VELOCITY;
-		else if (dy > 0.0f) dy -= delta * Map.JUMP_VELOCITY;
-		else if (dy < 0.0f) dy = 0.0f;
+		if (i.isKeyDown(Keyboard.KEY_SPACE) && dy == 0 && BlockRegistry.isSolid(below)) dy = JUMP_VELOCITY;
+		else if (dy > GRAVITY) dy -= delta * GRAVITY_CHANGE;
 		
 		/*
 		 * Update player location.

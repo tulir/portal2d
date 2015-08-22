@@ -24,7 +24,6 @@ import net.maunium.Portal2D.Util.Vector;
  * @since 0.1
  */
 public class Map extends BasicGameState {
-	public static final float MOVE_VELOCITY = 0.005f, JUMP_VELOCITY = 0.000008f;
 	public static final int MS_BETWEEN_BULLETS = 500;
 	private final int id;
 	public final String name;
@@ -179,7 +178,7 @@ public class Map extends BasicGameState {
 		// Return true if a spike gets hit.
 		// This is the block in that tile.
 		int blockAt = getBlockAt(x, y);
-		if (!BlockRegistry.isSolid(blockAt)) { return false; }
+		if (!BlockRegistry.isSolid(blockAt)) return false;
 		if (Math.abs(player.x - x) < 1 && Math.abs(player.y - y) < 1) {
 			if (Math.abs(player.x - x) >= Math.abs(player.y - y)) {
 				// We want to create as little lag as possible, so we politely
@@ -198,7 +197,7 @@ public class Map extends BasicGameState {
 					player.y += (int) player.y - player.y + 1;
 				}
 			}
-			if (blocks[x][y] == Portal2D.TILE_BOMB) return true;
+			if (getBlockAt(x, y) == Portal2D.TILE_BOMB) return true;
 		}
 		return false;
 	}
