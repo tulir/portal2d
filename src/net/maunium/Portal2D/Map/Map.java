@@ -157,13 +157,6 @@ public class Map extends BasicGameState {
 		return player;
 	}
 	
-	private Vector rotateVector(double x, double y) {
-		double angle = Math.atan2(x, y);
-		if (angle < 0) angle += Math.PI * 2;
-		Vector rotatedVector = new Vector((int) (x * Math.cos(angle) - y * Math.sin(angle)), (int) (x * Math.sin(angle) + y * Math.cos(angle)));
-		return rotatedVector;
-	}
-	
 	private boolean checkCollision() {
 		// Returns true if a spike was hit.
 		int playerTileX = (int) player.x;
@@ -242,23 +235,23 @@ public class Map extends BasicGameState {
 	
 	private void teleport(Portal currentPortal) {
 		Portal targetPortal = currentPortal == portal_blue ? portal_orange : portal_blue;
-		float newDX = player.dx, newDY = player.dy;
+		
+		int hitSide = SideHit.toInt(currentPortal.getLocation().sideHit);
 		
 		// Get the amount of rotations needed
-		int rotationsNeeded = SideHit.toInt(currentPortal.getLocation().sideHit) - SideHit.toInt(targetPortal.getLocation().sideHit);
-		if (rotationsNeeded < 0) {
-			rotationsNeeded += 4;
+		int rotationsNeeded = hitSide - SideHit.toInt(targetPortal.getLocation().sideHit);
+		if (hitSide % 2 != 0) {
+			player.dx*=-1;
+		} else {
+			player.dy*=-1;
 		}
 		
-		// Do the rotations
-		for (int rotations = 0; rotations < rotationsNeeded; rotations++) {
-			Vector tempVector = rotateVector(newDX, newDY);
-			newDX = tempVector.x;
-			newDY = tempVector.y;
-		}
+		float newDX = (float)(player.dx * Math.cos(-Math.PI/2*rotationsNeeded) - player.dy * Math.sin(-Math.PI/2*rotationsNeeded));
+		player.dy = (float)(player.dx * Math.sin(-Math.PI/2*rotationsNeeded) + player.dy * Math.cos(-Math.PI/2*rotationsNeeded));
 		// Apply the new speed vector
 		player.dx = newDX;
-		player.dy = newDY;
+		
+		
 		
 		// Then after modifying the speed, teleport to the correct tile.
 		int x = SideHit.toInt(targetPortal.getLocation().sideHit);
