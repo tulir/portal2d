@@ -220,7 +220,7 @@ public class Map extends BasicGameState {
 		int blockAt = getBlockAt(x, y);
 		if (Math.abs(player.x - x) < 1 && Math.abs(player.y - y) < 1) {
 			if (!BlockRegistry.isSolid(blockAt)) return new Vector(x, y);
-			if (Math.abs(player.x - x) >= Math.abs(player.y - y)) {
+			if (Math.abs(player.x - x) >= Math.abs(player.y - y)-6/32) {
 				// We want to create as little lag as possible, so we politely
 				// Show the player the door with the least moving required.
 				player.dx = 0;
