@@ -38,11 +38,11 @@ public class Portal2D extends StateBasedGame {
 		BlockRenderer.loadImage(BlockType.LIGHT, new Color(200, 200, 200), getImage("blocks/tile_light"));
 		BlockRenderer.loadImage(BlockType.POINT, new Color(0, 100, 0), getImage("blocks/point"));
 		BlockRenderer.loadImage(BlockType.FINISH, new Color(0, 255, 0), getImage("blocks/finish"));
-		BlockRenderer.loadImage(BlockType.SPIKE, new Color(0, 255, 0), getImage("blocks/bomb"));
+		BlockRenderer.loadImage(BlockType.SPIKE, new Color(255, 0, 255), getImage("blocks/bomb"));
 		
-		int i = 99;
+		int i = 100;
 		for (File f : getMaps()) {
-			String name = f.getName().split(Pattern.quote("."), 3)[2];
+			String name = f.getName().split(Pattern.quote("."), 3)[1];
 			try {
 				addState(new Map(this, new Image(new FileInputStream(f), name, false), name, i++));
 			} catch (FileNotFoundException e) {
