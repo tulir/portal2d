@@ -126,7 +126,7 @@ public class Map extends BasicGameState {
 		}
 		updatePortals();
 		if (checkCollision()) {
-			// TODO: Kill player
+			game.enterState(0);
 		}
 	}
 	
@@ -219,7 +219,7 @@ public class Map extends BasicGameState {
 	
 	private boolean checkCollisionWithPortal(Portal portal) {
 		if (Math.abs(player.x - portal.getLocation().x) < 1 && Math.abs(player.y - portal.getLocation().y) < 1) {
-			if (Math.abs(player.y - portal.getLocation().y) < 5f/32f) {
+			if (Math.abs(player.y - portal.getLocation().y) < 5f / 32f) {
 				if (player.x - portal.getLocation().x < 0) {
 					if (portal.getLocation().sideHit == SideHit.LEFT) teleport(portal);
 					else return false;
@@ -227,7 +227,7 @@ public class Map extends BasicGameState {
 					if (portal.getLocation().sideHit == SideHit.RIGHT) teleport(portal);
 					else return false;
 				}
-			} else if (Math.abs(player.x - portal.getLocation().x) < 5f/32f) {
+			} else if (Math.abs(player.x - portal.getLocation().x) < 5f / 32f) {
 				if (player.y - portal.getLocation().y < 0) {
 					if (portal.getLocation().sideHit == SideHit.TOP) teleport(portal);
 					else return false;
@@ -265,7 +265,7 @@ public class Map extends BasicGameState {
 		int cx = x == 0 ? 0 : x - 2;
 		int cy = x == 3 ? 0 : x - 1;
 		
-		player.x = (targetPortal.getLocation().x + cx);
-		player.y = (targetPortal.getLocation().y + cy);
+		player.x = targetPortal.getLocation().x + cx;
+		player.y = targetPortal.getLocation().y + cy;
 	}
 }
