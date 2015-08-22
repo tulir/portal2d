@@ -139,14 +139,16 @@ public class Map extends BasicGameState {
 //			if (validPortalBlock(rt)) (gc.getInput().isMousePressed(0) ? portal_orange : portal_blue).setLocation(rt);
 		}
 		
-		for (PortalBullet pb : bullets)
-			pb.update(delta, blocks);
+		for (int i = 0; i < bullets.size(); i++) {
+			Vector v = bullets.get(i).update(delta, blocks);
+			if (v == null) continue;
+			if (v.x == -1 || v.y == -1) bullets.remove(i);
+			else {
+				(bullets.get(i).blue ? portal_blue : portal_orange).setLocation(v);
+				bullets.remove(i);
+			}
+		}
 	}
-	
-//	public boolean validPortalBlock(Vector rt) {
-//		if (rt == null || getBlockAt(rt.x, rt.y) != BlockType.LIGHT) return false;
-//		else return true;
-//	}
 	
 	@Override
 	public void enter(GameContainer gc, StateBasedGame game) throws SlickException {
