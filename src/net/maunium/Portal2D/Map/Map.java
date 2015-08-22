@@ -124,7 +124,9 @@ public class Map extends BasicGameState {
 				bullets.remove(i);
 			}
 		}
-		checkCollision();
+		if (checkCollision()) {
+			// TODO: Kill player
+		}
 	}
 	
 	@Override
@@ -161,10 +163,6 @@ public class Map extends BasicGameState {
 		return rotatedVector;
 	}
 	
-	/*
-	 * TODO |-!!!------!!!!------!!!-| TODO |------------------------| TODO | FIX COLLISION CHECKING | TODO |------------------------| TODO
-	 * |-!!!------!!!!------!!!-| It currently assumes player positions are in pixels, while they are in floating grid points.
-	 */
 	private boolean checkCollision() {
 		// Returns true if a spike was hit.
 		int playerTileX = (int) player.x;
@@ -181,9 +179,7 @@ public class Map extends BasicGameState {
 		// Return true if a spike gets hit.
 		// This is the block in that tile.
 		int blockAt = getBlockAt(x, y);
-		if (!BlockRegistry.isSolid(blockAt)) {
-			return false;
-		}
+		if (!BlockRegistry.isSolid(blockAt)) { return false; }
 		if (Math.abs(player.x - x) < 1 && Math.abs(player.y - y) < 1) {
 			if (Math.abs(player.x - x) >= Math.abs(player.y - y)) {
 				// We want to create as little lag as possible, so we politely
