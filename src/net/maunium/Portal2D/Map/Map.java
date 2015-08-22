@@ -64,18 +64,25 @@ public class Map extends BasicGameState {
 	
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
+		// Set the background color to RGB 50, 50, 50.
 		g.setBackground(new Color(50, 50, 50));
+		// Loop through the blocks.
 		for (int x = 0; x < blocks.length; x++) {
 			for (int y = 0; y < blocks[x].length; y++) {
+				// Render each existing block. Ignore non-existing block positions.
 				if (blocks[x][y] != null) BlockRenderer.render(g, blocks[x][y], x, y);
 			}
 		}
 		
+		// Calculate the angle from the player to the mouse in radians.
 		double angle = -Math.atan2(p.x * 32 + 16 - gc.getInput().getMouseX(), p.y * 32 + 16 - gc.getInput().getMouseY());
+		// Convert the angle to degrees.
 		angle = Math.toDegrees(angle < 0 ? angle + 2 * Math.PI : angle);
 		
+		// Render the player.
 		p.render(g, angle);
 		
+		// Render the portals.
 		portal_blue.render(g);
 		portal_orange.render(g);
 	}
@@ -84,19 +91,26 @@ public class Map extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Player p = getPlayer();
 		
-		int mX = gc.getInput().getMouseX(), mY = gc.getInput().getMouseY();
-		
-		if (gc.getInput().isKeyDown(Keyboard.KEY_A)) p.dx = -MOVE_VELOCITY;
-		else if (gc.getInput().isKeyDown(Keyboard.KEY_D)) p.dx = MOVE_VELOCITY;
+		/*
+		 * Handle left/right presses.
+		 */
+		boolean a = gc.getInput().isKeyDown(Keyboard.KEY_A), d = gc.getInput().isKeyDown(Keyboard.KEY_D);
+		if (a && !d) p.dx = -MOVE_VELOCITY;
+		else if (!a && d) p.dx = MOVE_VELOCITY;
 		else p.dx = 0.0f;
 		
+		/*
+		 * Handle up/down presses.
+		 */
 		if (gc.getInput().isKeyDown(Keyboard.KEY_SPACE) && p.dy == 0 && getBlockAt((int) (p.x + 0.5), (int) p.y + 1) != null) p.dy = 0.004f;
-		// TODO: Proper collision checking
-//		else if (p.dy == 0 && ((int) p.x < p.x || map.getBlockAt((int) (p.x + 0.5), (int) p.y + 1) == null)) p.dy = -0.01f;
-		else if (gc.getInput().isKeyDown(Keyboard.KEY_LSHIFT)) p.dy = -MOVE_VELOCITY;
+		else if (gc.getInput().isKeyDown(Keyboard.KEY_S)) p.dy = -MOVE_VELOCITY;
+		else if (gc.getInput().isKeyDown(Keyboard.KEY_W)) p.dy = MOVE_VELOCITY;
 		else if (p.dy > 0.0f) p.dy -= delta * JUMP_VELOCITY;
 		else if (p.dy < 0.0f) p.dy = 0.0f;
 		
+		/*
+		 * Update the player position.
+		 */
 		p.x += delta * p.dx;
 		p.y -= delta * p.dy;
 		
