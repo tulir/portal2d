@@ -15,6 +15,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import net.maunium.Portal2D.BlockRegistry;
 import net.maunium.Portal2D.Portal2D;
 import net.maunium.Portal2D.Util.Vector;
+import net.maunium.Portal2D.Util.Vector.SideHit;
 
 /**
  * Container for maps.
@@ -124,6 +125,7 @@ public class Map extends BasicGameState {
 				bullets.remove(i);
 			}
 		}
+		updatePortals();
 		checkCollision();
 	}
 	
@@ -212,63 +214,63 @@ public class Map extends BasicGameState {
 	 * 
 	 * @author Antti
 	 */
-//	private void checkPortalCollision() {
-//		if (portal_blue == null || portal_orange == null) return;
-//		if (!checkCollisionWithPortal(portal_blue)) {
-//			checkCollisionWithPortal(portal_orange);
-//		}
-//		return;
-//	}
-//	
-//	private boolean checkCollisionWithPortal(Portal portal) {
-//		if (Math.abs(p.x - portal.getLocation().x) < 32 && Math.abs(p.y - portal.getLocation().y) < 32) {
-//			if (Math.abs(p.y - portal.getLocation().y) < 2) {
-//				if (p.x - portal.getLocation().x < 0) {
-//					if (portal.getLocation().sideHit == SideHit.LEFT) teleport(portal);
-//					else return false;
-//				} else {
-//					if (portal.getLocation().sideHit == SideHit.RIGHT) teleport(portal);
-//					else return false;
-//				}
-//			} else if (Math.abs(p.x - portal.getLocation().x) < 2) {
-//				if (p.y - portal.getLocation().y < 0) {
-//					if (portal.getLocation().sideHit == SideHit.TOP) teleport(portal);
-//					else return false;
-//				} else {
-//					if (portal.getLocation().sideHit == SideHit.BOTTOM) teleport(portal);
-//					else return false;
-//				}
-//			} else return false;
-//		} else return false;
-//		return true;
-//	}
-//	
-//	private void teleport(Portal currentPortal) {
-//		Portal targetPortal = currentPortal == portal_blue ? portal_orange : portal_blue;
-//		float newDX = p.dx, newDY = p.dy;
-//		
-//		// Get the amount of rotations needed
-//		int rotationsNeeded = SideHit.toInt(currentPortal.getLocation().sideHit) - SideHit.toInt(targetPortal.getLocation().sideHit);
-//		if (rotationsNeeded < 0) {
-//			rotationsNeeded += 4;
-//		}
-//		
-//		// Do the rotations
-//		for (int rotations = 0; rotations < rotationsNeeded; rotations++) {
-//			Vector tempVector = rotateVector(newDX, newDY);
-//			newDX = tempVector.x;
-//			newDY = tempVector.y;
-//		}
-//		// Apply the new speed vector
-//		p.dx = newDX;
-//		p.dy = newDY;
-//		
-//		// Then after modifying the speed, teleport to the correct tile.
-//		int x = SideHit.toInt(targetPortal.getLocation().sideHit);
-//		int cx = x == 0 ? 0 : x - 2;
-//		int cy = x == 3 ? 0 : x - 1;
-//		
-//		p.x = (targetPortal.getLocation().x + cx) * 32;
-//		p.y = (targetPortal.getLocation().y + cy) * 32;
-//	}
+	private void updatePortals() {
+		if (portal_blue == null || portal_orange == null) return;
+		if (!checkCollisionWithPortal(portal_blue)) {
+			checkCollisionWithPortal(portal_orange);
+		}
+		return;
+	}
+	
+	private boolean checkCollisionWithPortal(Portal portal) {
+		if (Math.abs(player.x - portal.getLocation().x) < 1 && Math.abs(player.y - portal.getLocation().y) < 1) {
+			if (Math.abs(player.y*32 - portal.getLocation().y) < 5) {
+				if (player.x - portal.getLocation().x < 0) {
+					if (portal.getLocation().sideHit == SideHit.LEFT) teleport(portal);
+					else return false;
+				} else {
+					if (portal.getLocation().sideHit == SideHit.RIGHT) teleport(portal);
+					else return false;
+				}
+			} else if (Math.abs(player.x*32 - portal.getLocation().x) < 5) {
+				if (player.y - portal.getLocation().y < 0) {
+					if (portal.getLocation().sideHit == SideHit.TOP) teleport(portal);
+					else return false;
+				} else {
+					if (portal.getLocation().sideHit == SideHit.BOTTOM) teleport(portal);
+					else return false;
+				}
+			} else return false;
+		} else return false;
+		return true;
+	}
+	
+	private void teleport(Portal currentPortal) {
+		Portal targetPortal = currentPortal == portal_blue ? portal_orange : portal_blue;
+		float newDX = player.dx, newDY = player.dy;
+		
+		// Get the amount of rotations needed
+		int rotationsNeeded = SideHit.toInt(currentPortal.getLocation().sideHit) - SideHit.toInt(targetPortal.getLocation().sideHit);
+		if (rotationsNeeded < 0) {
+			rotationsNeeded += 4;
+		}
+		
+		// Do the rotations
+		for (int rotations = 0; rotations < rotationsNeeded; rotations++) {
+			Vector tempVector = rotateVector(newDX, newDY);
+			newDX = tempVector.x;
+			newDY = tempVector.y;
+		}
+		// Apply the new speed vector
+		player.dx = newDX;
+		player.dy = newDY;
+		
+		// Then after modifying the speed, teleport to the correct tile.
+		int x = SideHit.toInt(targetPortal.getLocation().sideHit);
+		int cx = x == 0 ? 0 : x - 2;
+		int cy = x == 3 ? 0 : x - 1;
+		
+		player.x = (targetPortal.getLocation().x + cx) * 32;
+		player.y = (targetPortal.getLocation().y + cy) * 32;
+	}
 }
