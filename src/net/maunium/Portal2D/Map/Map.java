@@ -224,4 +224,43 @@ public class Map extends BasicGameState {
 		Vector rotatedVector = new Vector((int) (x * Math.cos(angle) - y * Math.sin(angle)), (int) (x * Math.sin(angle) + y * Math.cos(angle)));
 		return rotatedVector;
 	}
+	private boolean checkCollision() {
+		// Returns true if a spike was hit.
+		int playerTileX = (int)(p.x-p.x%32)/32;
+		int playerTileY = (int)(p.y-p.y%32)/32;
+		for (int mx = -1; mx < 2; mx++) {
+			for (int my = -1; my < 2; my++) {
+				if (checkCollisionWith(playerTileX+mx,playerTileY+my)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	private boolean checkCollisionWith(int x, int y) {
+		// Return true if a spike gets hit.
+		if (Math.abs(p.x-x) <32 && Math.abs(p.y-y) < 32) {
+			if (Math.abs(p.x-x) >= Math.abs(p.y-y)) {
+				// We want to create as little lag as possible, so we politely
+				// Show the player the door with the least moving required.
+				p.dx=0;
+				if (p.x-x < 0) {
+					p.x -= p.x%32;
+				} else {
+					p.x += 32-p.x%32;
+				}
+			} else {
+				p.dy=0;
+				if (p.y-y < 0) {
+					p.y -= p.y%32;
+				} else {
+					p.y += 32-p.y%32;
+				}
+			}
+			if(blocks[x][y] == BlockType.SPIKE) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
