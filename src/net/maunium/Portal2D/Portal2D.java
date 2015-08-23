@@ -57,7 +57,6 @@ public class Portal2D extends StateBasedGame {
 	public void loadMaps() throws SlickException {
 		int i = 100;
 		// Get the file pointing to the res/maps directory embedded in the jar.
-//		File defMaps = new File(ResourceLoader.getResource("res/maps").getFile());
 		File defMaps = new File("./maps");
 		// Loop through map files.
 		for (File f : sort(defMaps.listFiles())) {
@@ -100,7 +99,6 @@ public class Portal2D extends StateBasedGame {
 	 * Get the image in the given path (without .png) from the jar.
 	 */
 	public Image getImage(String name) throws SlickException {
-//		return new Image(ResourceLoader.getResourceAsStream("res/" + name + ".png"), name, false);
 		try {
 			return new Image(new FileInputStream(new File("./res/" + name + ".png")), name, false);
 		} catch (FileNotFoundException e) {
@@ -110,7 +108,6 @@ public class Portal2D extends StateBasedGame {
 	}
 	
 	public static void main(String[] args) {
-//		System.setProperty("org.lwjgl.librarypath", new File(ResourceLoader.getResource("natives").getFile()).getAbsolutePath());
 		System.setProperty("org.lwjgl.librarypath", new File("./natives").getAbsolutePath());
 		
 		try {
