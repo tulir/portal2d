@@ -105,13 +105,21 @@ public class Portal2D extends StateBasedGame {
 	
 	public static void main(String[] args) {
 		try {
-			AppGameContainer agc;
-			agc = new AppGameContainer(new Portal2D());
+			// Create the game container.
+			AppGameContainer agc = new AppGameContainer(new Portal2D());
+			// Set the default resolution to 480p.
 			agc.setDisplayMode(640, 480, false);
+			// Enable vsync.
 			agc.setVSync(true);
+			// Set tick rate to 20.
+			agc.setMaximumLogicUpdateInterval(20);
+			agc.setMinimumLogicUpdateInterval(20);
+			// Don't show FPS.
 			agc.setShowFPS(false);
+			// Start the game.
 			agc.start();
 		} catch (SlickException e) {
+			// Print stack trace if an error occurs.
 			System.err.println("Fatal error:");
 			e.printStackTrace();
 		}

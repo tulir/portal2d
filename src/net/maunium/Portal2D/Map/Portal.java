@@ -6,7 +6,8 @@ import org.newdawn.slick.Image;
 import net.maunium.Portal2D.Util.Vector;
 
 /**
- * Wrapper for portals. Contains the texture (blue or orange) and the location as a vector. If the vector is null, the portal will be hidden.
+ * Wrapper for portals. Contains the texture (blue or orange) and the location as a vector. If the vector is null, the
+ * portal will be hidden.
  * 
  * @author Tulir293
  * @since 0.1

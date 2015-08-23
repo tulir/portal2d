@@ -207,10 +207,9 @@ public class Map extends BasicGameState {
 	/**
 	 * Check if the player is colliding with something.
 	 * 
-	 * @return The ID of the block the player collided with.
+	 * @return The Vector location of the block the player collided with.
 	 */
 	public List<Vector> checkCollision() {
-		// Returns true if a spike was hit.
 		List<Vector> hitBlocks = new ArrayList<Vector>();
 		int playerTileX = (int) player.x;
 		int playerTileY = (int) player.y;
@@ -224,14 +223,13 @@ public class Map extends BasicGameState {
 	}
 	
 	private Vector checkCollisionWith(int x, int y) {
-		// Return true if a spike gets hit.
-		// This is the block in that tile.
+		// Return true if a spike gets hit. This is the block in that tile.
 		int blockAt = getBlockAt(x, y);
 		if (Math.abs(player.x - x) < 1 && Math.abs(player.y - y) < 1) {
 			if (!BlockRegistry.isSolid(blockAt)) return new Vector(x, y);
+			// We want to create as little lag as possible, so we politely show the player the door with the least
+			// moving required.
 			if (Math.abs(player.x - x) >= Math.abs(player.y - y) - 6 / 32) {
-				// We want to create as little lag as possible, so we politely
-				// Show the player the door with the least moving required.
 				player.dx = 0;
 				if (player.x - x < 0) player.x += (int) player.x - player.x;
 				else player.x += (int) player.x - player.x + 1;
@@ -246,16 +244,22 @@ public class Map extends BasicGameState {
 	}
 	
 	/**
-	 * Checks collision between the player and the two portals. If a player is to teleport, this method also does that.
+	 * Checks collision between the player and the two portals. If the player has collided with a portal, this will
+	 * teleport them to the opposite portal. This also ignores everything if either portal has not been set.
 	 */
 	public void checkPortals() {
+		// Make sure both portals have been set.
 		if (portal_blue.getLocation().equals(Vector.NULL) || portal_orange.getLocation().equals(Vector.NULL)) return;
-		if (!checkCollisionWithPortal(portal_blue)) {
-			checkCollisionWithPortal(portal_orange);
-		}
+		// Check if the player is collided with the blue portal. If not, check with the orange one.
+		if (!checkCollisionWithPortal(portal_blue)) checkCollisionWithPortal(portal_orange);
 		return;
 	}
 	
+	/**
+	 * Check a collision with a single portal.
+	 * 
+	 * @return True if the player collided with a portal and was teleported. False otherwise.
+	 */
 	private boolean checkCollisionWithPortal(Portal portal) {
 		if (Math.abs(player.x - portal.getLocation().x) < 1 && Math.abs(player.y - portal.getLocation().y) < 1) {
 			if (Math.abs(player.y - portal.getLocation().y) < 5f / 32f) {
@@ -279,6 +283,9 @@ public class Map extends BasicGameState {
 		return true;
 	}
 	
+	/**
+	 * Teleport the player from the given portal to the opposite one.
+	 */
 	private void teleport(Portal currentPortal) {
 		Portal targetPortal = currentPortal == portal_blue ? portal_orange : portal_blue;
 		
