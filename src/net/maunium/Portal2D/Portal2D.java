@@ -3,6 +3,7 @@ package net.maunium.Portal2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -88,6 +89,7 @@ public class Portal2D extends StateBasedGame {
 	}
 	
 	private List<File> sort(File[] f) {
+		if(f == null || f.length == 0) return new ArrayList<File>();
 		List<File> fs = Arrays.asList(f);
 		Collections.sort(fs);
 		return fs;
