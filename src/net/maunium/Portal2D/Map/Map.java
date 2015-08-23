@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -108,6 +110,8 @@ public class Map extends BasicGameState {
 	
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+		if (Display.wasResized()) GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
+		
 		Player p = getPlayer();
 		
 		if (gc.getInput().isKeyPressed(Keyboard.KEY_ESCAPE)) {

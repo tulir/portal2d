@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -116,6 +117,7 @@ public class Portal2D extends StateBasedGame {
 		try {
 			// Create the game container.
 			AppGameContainer agc = new AppGameContainer(new Portal2D());
+			Display.setResizable(true);
 			// Set the default resolution to 480p.
 			agc.setDisplayMode(640, 480, false);
 			// Enable vsync.
