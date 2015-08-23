@@ -318,4 +318,50 @@ public class Map extends BasicGameState {
 		player.x = targetPortal.getLocation().x + cx * (33 / 32);
 		player.y = targetPortal.getLocation().y + cy * (33 / 32);
 	}
+	private void updateDisplay(GameContainer gc) throws SlickException{
+		int windowWidth = gc.getWidth();
+		int windowHeight = gc.getHeight();
+		int preferredWindowWidth = windowWidth;
+		int preferredWindowHeight = windowHeight;
+		if (windowWidth > rawMap.getWidth()*32) {
+			preferredWindowWidth = rawMap.getWidth()*32;
+		} 
+		if (windowHeight > rawMap.getHeight()*32) {
+			preferredWindowHeight = rawMap.getHeight()*32;
+		}
+		((AppGameContainer) gc).setDisplayMode(preferredWindowWidth, preferredWindowHeight, false);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
