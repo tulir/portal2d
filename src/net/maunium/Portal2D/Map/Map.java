@@ -270,7 +270,7 @@ public class Map extends BasicGameState {
 	 */
 	private boolean checkCollisionWithPortal(Portal portal) {
 		if (Math.abs(player.x - portal.getLocation().x) < 1 && Math.abs(player.y - portal.getLocation().y) < 1) {
-			if (Math.abs(player.y - portal.getLocation().y) < 6f / 32f) {
+			if (Math.abs(player.y - portal.getLocation().y) < 1f / 3f) {
 				if (player.x - portal.getLocation().x < 0) {
 					if (portal.getLocation().sideHit == SideHit.LEFT) teleport(portal);
 					else return false;
@@ -278,7 +278,7 @@ public class Map extends BasicGameState {
 					if (portal.getLocation().sideHit == SideHit.RIGHT) teleport(portal);
 					else return false;
 				}
-			} else if (Math.abs(player.x - portal.getLocation().x) < 5f / 32f) {
+			} else if (Math.abs(player.x - portal.getLocation().x) < 1f / 3f) {
 				if (player.y - portal.getLocation().y < 0) {
 					if (portal.getLocation().sideHit == SideHit.TOP) teleport(portal);
 					else return false;
