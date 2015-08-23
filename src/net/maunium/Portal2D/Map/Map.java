@@ -270,7 +270,7 @@ public class Map extends BasicGameState {
 	 */
 	private boolean checkCollisionWithPortal(Portal portal) {
 		if (Math.abs(player.x - portal.getLocation().x) < 1 && Math.abs(player.y - portal.getLocation().y) < 1) {
-			if (Math.abs(player.y - portal.getLocation().y) < 5f / 32f) {
+			if (Math.abs(player.y - portal.getLocation().y) < 6f / 32f) {
 				if (player.x - portal.getLocation().x < 0) {
 					if (portal.getLocation().sideHit == SideHit.LEFT) teleport(portal);
 					else return false;
