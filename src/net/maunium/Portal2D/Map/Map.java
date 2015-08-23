@@ -332,6 +332,22 @@ public class Map extends BasicGameState {
 		((AppGameContainer) gc).setDisplayMode(preferredWindowWidth, preferredWindowHeight, false);
 	}
 	
+	private void updateDrawRectangle(GameContainer gc) {
+		drawAreaWidth = gc.getWidth();
+		drawAreaHeight = gc.getHeight();
+		shiftX = (int)(player.x*32+16-drawAreaWidth / 2);
+		shiftY = (int)(player.y*32-16-drawAreaHeight / 2);
+		if (shiftX < 0) {
+			shiftX = 0;
+		} else if (shiftX+drawAreaWidth > rawMap.getWidth()*32) {
+			shiftX = rawMap.getWidth()*32 - drawAreaWidth;
+		}
+		if (shiftY < 0) {
+			shiftY = 0;
+		} else if (shiftY+drawAreaHeight > rawMap.getHeight()*32) {
+			shiftY = rawMap.getHeight()*32 - drawAreaHeight;
+		}
+	}
 	
 	
 	
