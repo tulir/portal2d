@@ -105,6 +105,8 @@ public class Portal2D extends StateBasedGame {
 	}
 	
 	public static void main(String[] args) {
+		System.setProperty("org.lwjgl.librarypath", new File(ResourceLoader.getResource("/natives").getFile()).getAbsolutePath());
+		
 		try {
 			// Create the game container.
 			AppGameContainer agc = new AppGameContainer(new Portal2D());
