@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -108,6 +110,8 @@ public class Map extends BasicGameState {
 	
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+		if (Display.wasResized()) updateDisplay(gc);
+		
 		Player p = getPlayer();
 		
 		if (gc.getInput().isKeyPressed(Keyboard.KEY_ESCAPE)) {
@@ -318,18 +322,15 @@ public class Map extends BasicGameState {
 		player.x = targetPortal.getLocation().x + cx * (33 / 32);
 		player.y = targetPortal.getLocation().y + cy * (33 / 32);
 	}
-	private void updateDisplay(GameContainer gc) throws SlickException{
+	
+	private void updateDisplay(GameContainer gc) throws SlickException {
 		int windowWidth = gc.getWidth();
 		int windowHeight = gc.getHeight();
 		int preferredWindowWidth = windowWidth;
 		int preferredWindowHeight = windowHeight;
-		if (windowWidth > rawMap.getWidth()*32) {
-			preferredWindowWidth = rawMap.getWidth()*32;
-		} 
-		if (windowHeight > rawMap.getHeight()*32) {
-			preferredWindowHeight = rawMap.getHeight()*32;
-		}
-		((AppGameContainer) gc).setDisplayMode(preferredWindowWidth, preferredWindowHeight, false);
+		if (windowWidth > rawMap.getWidth() * 32) preferredWindowWidth = rawMap.getWidth() * 32;
+		if (windowHeight > rawMap.getHeight() * 32) preferredWindowHeight = rawMap.getHeight() * 32;
+		GL11.glViewport(0, 0, preferredWindowWidth, preferredWindowHeight);
 	}
 	
 	private void updateDrawRectangle(GameContainer gc) {
