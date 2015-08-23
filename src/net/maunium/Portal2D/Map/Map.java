@@ -178,6 +178,7 @@ public class Map extends BasicGameState {
 					break;
 			}
 		}
+		updateDrawRectangle(gc);
 	}
 	
 	@Override
