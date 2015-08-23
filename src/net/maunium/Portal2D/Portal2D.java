@@ -116,8 +116,8 @@ public class Portal2D extends StateBasedGame {
 		try {
 			// Create the game container.
 			AppGameContainer agc = new AppGameContainer(new Portal2D());
-			// Set the default resolution to 480p.
-			agc.setDisplayMode(32 * 32, 32 * 18, false);
+			// Set the resolution to 39 * 25 blocks.
+			agc.setDisplayMode(32 * 39, 32 * 25, false);
 			// Enable vsync.
 			agc.setVSync(true);
 			// Set tick rate to 20.
