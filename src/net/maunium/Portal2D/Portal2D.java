@@ -89,7 +89,7 @@ public class Portal2D extends StateBasedGame {
 	}
 	
 	private List<File> sort(File[] f) {
-		if(f == null || f.length == 0) return new ArrayList<File>();
+		if (f == null || f.length == 0) return new ArrayList<File>();
 		List<File> fs = Arrays.asList(f);
 		Collections.sort(fs);
 		return fs;
@@ -103,6 +103,8 @@ public class Portal2D extends StateBasedGame {
 	}
 	
 	public static void main(String[] args) {
+		System.setProperty("org.lwjgl.librarypath", new File(ResourceLoader.getResource("natives").getFile()).getAbsolutePath());
+		
 		try {
 			// Create the game container.
 			AppGameContainer agc = new AppGameContainer(new Portal2D());
