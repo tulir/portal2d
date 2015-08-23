@@ -28,9 +28,9 @@ import net.maunium.Portal2D.Util.Vector.SideHit;
 public class Map extends BasicGameState {
 	public static final int MS_BETWEEN_BULLETS = 500;
 	public final String name;
-	private final int id;
 	protected final Image rawMap;
-	protected final Portal2D host;
+	private final Portal2D host;
+	private final int id;
 	protected int shiftX = 0, shiftY = 0;
 	protected int[][] blocks;
 	protected Portal portal_blue, portal_orange;
@@ -40,10 +40,10 @@ public class Map extends BasicGameState {
 	/**
 	 * Construct a map based on the given Image.
 	 */
-	public Map(Portal2D host, Image img, String name, int id) throws SlickException {
+	public Map(Portal2D host, Image rawMap, String name, int id) throws SlickException {
 		this.id = id;
 		this.host = host;
-		rawMap = img;
+		this.rawMap = rawMap;
 		this.name = name;
 	}
 	
@@ -101,6 +101,9 @@ public class Map extends BasicGameState {
 		
 		// Render the player.
 		player.render(g, shiftX, shiftY);
+		
+		g.setColor(Color.white);
+		g.drawString("Points: " + host.points, 5, 5);
 	}
 	
 	@Override
@@ -157,13 +160,14 @@ public class Map extends BasicGameState {
 		for (Vector v : vs) {
 			switch (getBlockAt(v.x, v.y)) {
 				case Portal2D.TILE_BOMB:
-					// The player hit a bomb. Go to the menu.
+					// The player hit a bomb. Reset score and go to the menu.
+					host.points = 0;
 					game.enterState(0);
 					break;
 				case Portal2D.TILE_POINT:
 					// The player hit a point. Collect it.
 					blocks[v.x][v.y] = Portal2D.TILE_NONE;
-					// TODO: Increase points and delete point.
+					host.points++;
 					break;
 				case Portal2D.TILE_FINISH:
 					game.enterState(game.getCurrentStateID() + 1);

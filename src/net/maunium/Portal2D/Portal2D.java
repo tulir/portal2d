@@ -27,6 +27,7 @@ import net.maunium.Portal2D.Map.PortalBullet;
  * @since 0.1
  */
 public class Portal2D extends StateBasedGame {
+	public int points = 0;
 	/* Default tile IDs */
 	public static final int TILE_DARK = 1, TILE_LIGHT = 2, TILE_POINT = 3, TILE_FINISH = 4, TILE_BOMB = 5, TILE_NONE = 0;
 	
@@ -37,7 +38,7 @@ public class Portal2D extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
 		// Add the menu state.
-		addState(new Menu());
+		addState(new Menu(this));
 		
 		// Register the default blocks.
 		BlockRegistry.registerBlock(TILE_DARK, new Color(50, 50, 50), getImage("blocks/tile_dark"), true);

@@ -17,6 +17,12 @@ import net.maunium.Portal2D.Map.Map;
  * @since 0.1
  */
 public class Menu extends BasicGameState {
+	private Portal2D host;
+	
+	public Menu(Portal2D host) {
+		this.host = host;
+	}
+	
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {}
 	
@@ -28,6 +34,9 @@ public class Menu extends BasicGameState {
 			g.setColor(Color.pink);
 			g.drawString(((Map) game.getState(i + 99)).name, gc.getWidth() / 2 - 95, i * 25 + 1);
 		}
+		
+		g.setColor(Color.white);
+		g.drawString("Points: " + host.points, 5, 5);
 	}
 	
 	@Override
