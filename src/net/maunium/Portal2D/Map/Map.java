@@ -31,7 +31,7 @@ public class Map extends BasicGameState {
 	protected final Image rawMap;
 	private final Portal2D host;
 	private final int id;
-	protected int shiftX = 0, shiftY = 0;
+	protected int shiftX = 0, shiftY = 0, drawAreaWidth, drawAreaHeight;
 	protected int[][] blocks;
 	protected Portal portal_blue, portal_orange;
 	protected List<PortalBullet> bullets;
