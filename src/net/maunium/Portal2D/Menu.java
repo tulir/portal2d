@@ -1,6 +1,5 @@
 package net.maunium.Portal2D;
 
-import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -47,11 +46,6 @@ public class Menu extends BasicGameState {
 			int i = mY / 25;
 			game.enterState(99 + i);
 		}
-	}
-	
-	@Override
-	public void enter(GameContainer gc, StateBasedGame game) throws SlickException {
-		((AppGameContainer) gc).setDisplayMode(640, 480, false);
 	}
 	
 	@Override

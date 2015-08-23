@@ -6,7 +6,6 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -181,10 +180,10 @@ public class Map extends BasicGameState {
 		updateDrawRectangle(gc);
 	}
 	
-	@Override
-	public void enter(GameContainer gc, StateBasedGame game) throws SlickException {
-		((AppGameContainer) gc).setDisplayMode(rawMap.getWidth() * 32, rawMap.getHeight() * 32, false);
-	}
+//	@Override
+//	public void enter(GameContainer gc, StateBasedGame game) throws SlickException {
+//		((AppGameContainer) gc).setDisplayMode(rawMap.getWidth() * 32, rawMap.getHeight() * 32, false);
+//	}
 	
 	@Override
 	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
@@ -325,8 +324,8 @@ public class Map extends BasicGameState {
 	}
 	
 	private void updateDisplay(GameContainer gc) throws SlickException {
-		int windowWidth = gc.getWidth();
-		int windowHeight = gc.getHeight();
+		int windowWidth = Display.getWidth();
+		int windowHeight = Display.getHeight();
 		int preferredWindowWidth = windowWidth;
 		int preferredWindowHeight = windowHeight;
 		if (windowWidth > rawMap.getWidth() * 32) preferredWindowWidth = rawMap.getWidth() * 32;
@@ -335,53 +334,21 @@ public class Map extends BasicGameState {
 	}
 	
 	private void updateDrawRectangle(GameContainer gc) {
-		drawAreaWidth = gc.getWidth();
-		drawAreaHeight = gc.getHeight();
-		shiftX = (int)(player.x*32+16-drawAreaWidth / 2);
-		shiftY = (int)((rawMap.getHeight() - player.y)*32-16-drawAreaHeight / 2);
+		drawAreaWidth = Display.getWidth();
+		drawAreaHeight = Display.getHeight();
+		shiftX = (int) ((rawMap.getWidth() - player.x) * 32 - 16 - drawAreaWidth / 2);
+		shiftY = (int) ((rawMap.getHeight() - player.y) * 32 - 16 - drawAreaHeight / 2);
 		System.out.println(shiftX + ", " + shiftY + ", " + drawAreaWidth + ", " + drawAreaHeight);
 		if (shiftX < 0) {
 			shiftX = 0;
-		} else if (shiftX+drawAreaWidth > rawMap.getWidth()*32) {
-			shiftX = rawMap.getWidth()*32 - drawAreaWidth;
+		} else if (shiftX + drawAreaWidth > rawMap.getWidth() * 32) {
+			shiftX = rawMap.getWidth() * 32 - drawAreaWidth;
 		}
 		if (shiftY < 0) {
 			shiftY = 0;
-		} else if (shiftY+drawAreaHeight > rawMap.getHeight()*32) {
-			shiftY = rawMap.getHeight()*32 - drawAreaHeight;
+		} else if (shiftY + drawAreaHeight > rawMap.getHeight() * 32) {
+			shiftY = rawMap.getHeight() * 32 - drawAreaHeight;
 		}
 		System.out.println(shiftX + ", " + shiftY + ", " + drawAreaWidth + ", " + drawAreaHeight);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
