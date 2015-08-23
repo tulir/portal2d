@@ -344,7 +344,6 @@ public class Map extends BasicGameState {
 		}
 		shiftX = (int) (player.x * 32 - 16 - drawAreaWidth / 2);
 		shiftY = (int) ((rawMap.getHeight() - player.y) * 32 - 16 - drawAreaHeight / 2);
-		System.out.println(shiftX + ", " + shiftY + ", " + drawAreaWidth + ", " + drawAreaHeight);
 		if (shiftX < 0) {
 			shiftX = 0;
 		} else if (shiftX + drawAreaWidth > rawMap.getWidth() * 32) {
@@ -356,6 +355,6 @@ public class Map extends BasicGameState {
 			shiftY = rawMap.getHeight() * 32 - drawAreaHeight;
 		}
 		shiftY+= drawAreaHeight-rawMap.getHeight() * 32;
-		System.out.println(shiftX + ", " + shiftY + ", " + drawAreaWidth + ", " + drawAreaHeight);
+		shiftX*=-1;
 	}
 }
