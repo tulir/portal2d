@@ -75,6 +75,7 @@ public class Portal2D extends StateBasedGame {
 		File userMaps = new File(System.getProperty("user.home") + "/.portal2d");
 		if (userMaps.isDirectory() && userMaps.exists()) {
 			for (File f : sort(userMaps.listFiles())) {
+				if (!f.getName().endsWith(".png")) continue;
 				// Get the name of the map.
 				String name = f.getName().split(Pattern.quote("."), 2)[0];
 				// Try to add the map as a state.
