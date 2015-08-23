@@ -93,7 +93,7 @@ public class Map extends BasicGameState {
 		}
 		
 		for (PortalBullet pb : bullets)
-			pb.render(g);
+			pb.render(g, shiftX, shiftY);
 			
 		// Render the portals.
 		portal_blue.render(g, shiftX, shiftY);
@@ -132,8 +132,8 @@ public class Map extends BasicGameState {
 		 * Portal bullet shooting.
 		 */
 		if (gc.getInput().isMousePressed(0) || gc.getInput().isMousePressed(1)) {
-			bullets.add(
-					new PortalBullet(p.x * 32 + 16, p.y * 32 + 16, gc.getInput().getMouseX(), gc.getInput().getMouseY(), gc.getInput().isMouseButtonDown(1)));
+			bullets.add(new PortalBullet((int) (p.x * 32 + 16), (int) (p.y * 32 + 16), gc.getInput().getMouseX(), gc.getInput().getMouseY(),
+					gc.getInput().isMouseButtonDown(1), shiftX, shiftY));
 		}
 		
 		/*
