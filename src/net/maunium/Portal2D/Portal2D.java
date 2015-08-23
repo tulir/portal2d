@@ -3,6 +3,9 @@ package net.maunium.Portal2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.newdawn.slick.AppGameContainer;
@@ -56,7 +59,7 @@ public class Portal2D extends StateBasedGame {
 		// Get the file pointing to the res/maps directory embedded in the jar.
 		File defMaps = new File(ResourceLoader.getResource("res/maps").getFile());
 		// Loop through map files.
-		for (File f : defMaps.listFiles()) {
+		for (File f : sort(defMaps.listFiles())) {
 			// Get the name of the map.
 			String name = f.getName().split(Pattern.quote("."), 3)[1];
 			// Try to add the map as a state.
@@ -70,7 +73,7 @@ public class Portal2D extends StateBasedGame {
 		
 		File userMaps = new File(System.getProperty("user.home") + "/.portal2d");
 		if (userMaps.isDirectory() && userMaps.exists()) {
-			for (File f : userMaps.listFiles()) {
+			for (File f : sort(userMaps.listFiles())) {
 				// Get the name of the map.
 				String name = f.getName().split(Pattern.quote("."), 2)[0];
 				// Try to add the map as a state.
@@ -84,16 +87,20 @@ public class Portal2D extends StateBasedGame {
 		}
 	}
 	
+	private List<File> sort(File[] f) {
+		List<File> fs = Arrays.asList(f);
+		Collections.sort(fs);
+		return fs;
+	}
+	
 	/**
 	 * Get the image in the given path (without .png) from the jar.
 	 */
 	public Image getImage(String name) throws SlickException {
-		return new Image(ResourceLoader.getResourceAsStream("/res/" + name + ".png"), name, false);
+		return new Image(ResourceLoader.getResourceAsStream("res/" + name + ".png"), name, false);
 	}
 	
 	public static void main(String[] args) {
-		System.setProperty("org.lwjgl.librarypath", new File(ResourceLoader.getResource("natives").getFile()).getAbsolutePath());
-		
 		try {
 			// Create the game container.
 			AppGameContainer agc = new AppGameContainer(new Portal2D());
