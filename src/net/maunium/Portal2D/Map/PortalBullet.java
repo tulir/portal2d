@@ -21,16 +21,15 @@ import net.maunium.Portal2D.Util.Vector.SideHit;
 public class PortalBullet {
 	public static Image BLUE_BULLET, ORANGE_BULLET;
 	public static final int PIXELS_PER_SECOND = 40 * 32;
-	public float x, y, dx, dy, angle;
+	public int x, y;
+	public float dx, dy, angle;
 	public boolean isBlue;
 	
-	/*
-	 * TODO: Add handling for the map shifting!
-	 */
-	
-	public PortalBullet(float x, float y, int mouseX, int mouseY, boolean isBlue) {
+	public PortalBullet(int x, int y, int mouseX, int mouseY, boolean isBlue, int shiftX, int shiftY) {
 		this.x = x;
 		this.y = y;
+		mouseX -= shiftX;
+		mouseY -= shiftY;
 		this.isBlue = isBlue;
 		dy = PIXELS_PER_SECOND * (mouseY - y) / (Math.abs(mouseY - y) + Math.abs(mouseX - x));
 		dx = PIXELS_PER_SECOND * (mouseX - x) / (Math.abs(mouseY - y) + Math.abs(mouseX - x));
@@ -41,25 +40,25 @@ public class PortalBullet {
 		this.angle = (float) Math.toDegrees(angle < 0 ? angle + 2 * Math.PI : angle);
 	}
 	
-	public void render(Graphics g) {
+	public void render(Graphics g, int shiftX, int shiftY) {
 		Image i = isBlue ? BLUE_BULLET : ORANGE_BULLET;
 		i.setRotation(angle);
-		g.drawImage(i, x, y);
+		g.drawImage(i, x + shiftX, y + shiftY);
 	}
 	
 	public Vector update(int delta, Map map) {
 		x += delta / 1000.0f * dx;
 		y += delta / 1000.0f * dy;
 		
-		int hitBlock = map.getBlockAt((int) (x - x % 32) / 32, (int) (y - y % 32) / 32);
+		int hitBlock = map.getBlockAt((x - x % 32) / 32, (y - y % 32) / 32);
 		if (hitBlock > Portal2D.TILE_NONE && BlockRegistry.isSolid(hitBlock)) {
 			if (hitBlock == Portal2D.TILE_LIGHT) {
-				int blockMiddleX = (int) (x - x % 32) + 16;
-				int blockMiddleY = (int) (y - y % 32) + 16;
+				int blockMiddleX = x - x % 32 + 16;
+				int blockMiddleY = y - y % 32 + 16;
 				HashMap<Integer, Double> possibleValues = new HashMap<Integer, Double>();
 				// Checking if there can possibly be a portal there.
 				for (int side = 0; side < 4; side++) {
-					int test = map.getBlockAt((int) (x - x % 32) / 32 + (side == 0 ? 0 : side - 2), (int) (y - y % 32) / 32 + (side == 3 ? 0 : side - 1));
+					int test = map.getBlockAt((x - x % 32) / 32 + (side == 0 ? 0 : side - 2), (y - y % 32) / 32 + (side == 3 ? 0 : side - 1));
 					if (!BlockRegistry.isSolid(test)) {
 						if ((side == 0 ? 0 : side - 2) * dx <= 0 && (side == 3 ? 0 : side - 1) * dy <= 0) {
 							possibleValues.put(side, (double) (Math.abs(blockMiddleX + (side == 0 ? 0 : side - 2) * 16 - x)
@@ -76,7 +75,7 @@ public class PortalBullet {
 						smallestKey = e.getKey();
 					}
 				}
-				return new Vector((int) (x - x % 32) / 32, (int) (y - y % 32) / 32, SideHit.fromInt(smallestKey));
+				return new Vector((x - x % 32) / 32, (y - y % 32) / 32, SideHit.fromInt(smallestKey));
 			} else {
 				return Vector.NULL;
 			}
