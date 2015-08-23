@@ -3,9 +3,6 @@ package net.maunium.Portal2D;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import org.newdawn.slick.AppGameContainer;
@@ -51,10 +48,15 @@ public class Portal2D extends StateBasedGame {
 		PortalBullet.BLUE_BULLET = getImage("bullet_blue");
 		PortalBullet.ORANGE_BULLET = getImage("bullet_orange");
 		
+		loadMaps();
+	}
+	
+	public void loadMaps() throws SlickException {
 		int i = 100;
-		
+		// Get the file pointing to the res/maps directory embedded in the jar.
+		File defMaps = new File(ResourceLoader.getResource("res/maps").getFile());
 		// Loop through map files.
-		for (File f : getMaps()) {
+		for (File f : defMaps.listFiles()) {
 			// Get the name of the map.
 			String name = f.getName().split(Pattern.quote("."), 3)[1];
 			// Try to add the map as a state.
@@ -65,36 +67,21 @@ public class Portal2D extends StateBasedGame {
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	/**
-	 * Get map files.
-	 */
-	public List<File> getMaps() {
-		// Create an ArrayList which will store the files.
-		List<File> files = new ArrayList<File>();
-		// Get the file pointing to the res/maps directory embedded in the jar.
-		File f = new File(ResourceLoader.getResource("res/maps").getFile());
-		// Loop through the files in the res/maps directory.
-		for (File ff : f.listFiles())
-			// Add each file to the file list.
-			files.add(ff);
-			
-		// Get the ~/.portal2d directory.
-		f = new File(System.getProperty("user.home") + "/.portal2d");
-		// Make sure it's not something else than a directory.
-		if (!f.isDirectory()) f.delete();
-		// If it doesn't exist, create it.
-		if (!f.exists()) f.mkdir();
-		// Loop through the files and add them to the list.
-		for (File ff : f.listFiles())
-			files.add(ff);
-			
-		// Sort the maps.
-		Collections.sort(files);
 		
-		// Return the list.
-		return files;
+		File userMaps = new File(System.getProperty("user.home") + "/.portal2d");
+		if (userMaps.isDirectory() && userMaps.exists()) {
+			for (File f : userMaps.listFiles()) {
+				// Get the name of the map.
+				String name = f.getName().split(Pattern.quote("."), 2)[0];
+				// Try to add the map as a state.
+				try {
+					addState(new Map(this, new Image(new FileInputStream(f), name, false), name, i++));
+				} catch (FileNotFoundException e) {
+					System.err.println("Failed to load map " + name + ":");
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	/**
