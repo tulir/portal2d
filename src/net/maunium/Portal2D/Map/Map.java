@@ -29,10 +29,9 @@ public class Map extends BasicGameState {
 	public static final int MS_BETWEEN_BULLETS = 500;
 	public final String name;
 	private final int id;
-	protected int shiftX = 0, shiftY = 0;
-	protected final Image img;
+	protected final Image rawMap;
 	protected final Portal2D host;
-	protected double angle;
+	protected int shiftX = 0, shiftY = 0;
 	protected int[][] blocks;
 	protected Portal portal_blue, portal_orange;
 	protected List<PortalBullet> bullets;
@@ -44,7 +43,7 @@ public class Map extends BasicGameState {
 	public Map(Portal2D host, Image img, String name, int id) throws SlickException {
 		this.id = id;
 		this.host = host;
-		this.img = img;
+		rawMap = img;
 		this.name = name;
 	}
 	
@@ -66,11 +65,11 @@ public class Map extends BasicGameState {
 		shiftX = 0;
 		shiftY = 0;
 		
-		blocks = new int[img.getWidth()][];
-		for (int x = 0; x < img.getWidth(); x++) {
-			blocks[x] = new int[img.getHeight()];
-			for (int y = 0; y < img.getHeight(); y++) {
-				Color c = img.getColor(x, y);
+		blocks = new int[rawMap.getWidth()][];
+		for (int x = 0; x < rawMap.getWidth(); x++) {
+			blocks[x] = new int[rawMap.getHeight()];
+			for (int y = 0; y < rawMap.getHeight(); y++) {
+				Color c = rawMap.getColor(x, y);
 				
 				// The player spawn point
 				if (c.getRed() == 255 && c.getGreen() == 0 && c.getBlue() == 0) {
@@ -101,7 +100,7 @@ public class Map extends BasicGameState {
 		portal_orange.render(g, shiftX, shiftY);
 		
 		// Render the player.
-		player.render(g, angle, shiftX, shiftY);
+		player.render(g, shiftX, shiftY);
 	}
 	
 	@Override
@@ -175,7 +174,7 @@ public class Map extends BasicGameState {
 	
 	@Override
 	public void enter(GameContainer gc, StateBasedGame game) throws SlickException {
-		((AppGameContainer) gc).setDisplayMode(img.getWidth() * 32, img.getHeight() * 32, false);
+		((AppGameContainer) gc).setDisplayMode(rawMap.getWidth() * 32, rawMap.getHeight() * 32, false);
 	}
 	
 	@Override
