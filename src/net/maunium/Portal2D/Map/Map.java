@@ -84,7 +84,12 @@ public class Map extends BasicGameState {
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		startTime = System.currentTimeMillis();
-	};
+	}
+	
+	@Override
+	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
+		resetMap();
+	}
 	
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
@@ -169,11 +174,6 @@ public class Map extends BasicGameState {
 			BlockRegistry.getBlockHandler(getBlockAt(v.x, v.y)).onCollide(host, gc, this, v);
 			
 		updateDrawRectangle(gc);
-	}
-	
-	@Override
-	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
-		resetMap();
 	}
 	
 	@Override
