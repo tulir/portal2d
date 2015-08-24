@@ -28,7 +28,6 @@ import net.maunium.Portal2D.Util.Vector.SideHit;
  * @since 0.1
  */
 public class Map extends BasicGameState {
-	public static final int MS_BETWEEN_BULLETS = 500;
 	public final String name;
 	private final Portal2D host;
 	private final int id;
@@ -237,7 +236,8 @@ public class Map extends BasicGameState {
 		int blockAt = getBlockAt(x, y);
 		if (Math.abs(player.x - x) < 1 && Math.abs(player.y - y) < 1) {
 			if (BlockRegistry.canWalkThrough(blockAt)) return new Vector(x, y);
-			// We want to create as little lag as possible, so we politely show the player the door with the least
+			// We want to create as little lag as possible, so we politely show the player the door
+			// with the least
 			// moving required.
 			if (Math.abs(player.x - x) >= Math.abs(player.y - y) - 6 / 32) {
 				player.dx = 0;
@@ -254,8 +254,9 @@ public class Map extends BasicGameState {
 	}
 	
 	/**
-	 * Checks collision between the player and the two portals. If the player has collided with a portal, this will
-	 * teleport them to the opposite portal. This also ignores everything if either portal has not been set.
+	 * Checks collision between the player and the two portals. If the player has collided with a
+	 * portal, this will teleport them to the opposite portal. This also ignores everything if
+	 * either portal has not been set.
 	 */
 	public void checkPortals() {
 		// Make sure both portals have been set.
