@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -117,8 +116,6 @@ public class Map extends BasicGameState {
 	
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
-		if (Display.wasResized()) updateDisplay(gc);
-		
 		Player p = getPlayer();
 		
 		if (gc.getInput().isKeyPressed(Keyboard.KEY_ESCAPE)) {
@@ -326,37 +323,28 @@ public class Map extends BasicGameState {
 		player.y = targetPortal.getLocation().y + cy * (33 / 32);
 	}
 	
-	private void updateDisplay(GameContainer gc) throws SlickException {
-		int windowWidth = Display.getWidth();
-		int windowHeight = Display.getHeight();
-		int preferredWindowWidth = windowWidth;
-		int preferredWindowHeight = windowHeight;
-		if (windowWidth > rawMap.getWidth() * 32) preferredWindowWidth = rawMap.getWidth() * 32;
-		if (windowHeight > rawMap.getHeight() * 32) preferredWindowHeight = rawMap.getHeight() * 32;
-		GL11.glViewport(0, 0, preferredWindowWidth, preferredWindowHeight);
-	}
-	
+	/**
+	 * Update the viewable area and move it if needed after the player has moved.
+	 */
 	private void updateDrawRectangle(GameContainer gc) {
 		drawAreaWidth = Display.getWidth();
 		if (drawAreaWidth > rawMap.getWidth() * 32) {
 			drawAreaWidth = rawMap.getWidth() * 32;
 		}
+		
 		drawAreaHeight = Display.getHeight();
 		if (drawAreaHeight > rawMap.getHeight() * 32) {
 			drawAreaHeight = rawMap.getHeight() * 32;
 		}
+		
 		shiftX = (int) (player.x * 32 - 16 - drawAreaWidth / 2);
+		if (shiftX < 0) shiftX = 0;
+		else if (shiftX + drawAreaWidth > rawMap.getWidth() * 32) shiftX = rawMap.getWidth() * 32 - drawAreaWidth;
+		
 		shiftY = (int) ((rawMap.getHeight() - player.y) * 32 - 16 - drawAreaHeight / 2);
-		if (shiftX < 0) {
-			shiftX = 0;
-		} else if (shiftX + drawAreaWidth > rawMap.getWidth() * 32) {
-			shiftX = rawMap.getWidth() * 32 - drawAreaWidth;
-		}
-		if (shiftY < 0) {
-			shiftY = 0;
-		} else if (shiftY + drawAreaHeight > rawMap.getHeight() * 32) {
-			shiftY = rawMap.getHeight() * 32 - drawAreaHeight;
-		}
+		if (shiftY < 0) shiftY = 0;
+		else if (shiftY + drawAreaHeight > rawMap.getHeight() * 32) shiftY = rawMap.getHeight() * 32 - drawAreaHeight;
+		
 		shiftY += drawAreaHeight - rawMap.getHeight() * 32;
 		shiftX *= -1;
 	}
