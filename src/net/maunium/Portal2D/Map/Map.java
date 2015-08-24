@@ -32,13 +32,13 @@ public class Map extends BasicGameState {
 	public final String name;
 	private final Portal2D host;
 	private final int id;
-	protected final Image rawMap;
-	protected long startTime;
+	public final Image rawMap;
+	public long startTime;
 	protected int shiftX = 0, shiftY = 0, drawAreaWidth, drawAreaHeight;
 	protected int[][] blocks;
-	protected Portal portal_blue, portal_orange;
-	protected List<PortalBullet> bullets;
-	protected Player player;
+	public Portal portal_blue, portal_orange;
+	public List<PortalBullet> bullets;
+	public Player player;
 	
 	/**
 	 * Construct a map based on the given Image.
