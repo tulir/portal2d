@@ -221,6 +221,7 @@ public class Map extends BasicGameState {
 			Vector v = checkCollisionWith(collisionBlocks.get(pos).x, collisionBlocks.get(pos).y);
 			if (!v.equals(Vector.NULL)) hitBlocks.add(v);
 		}
+		System.out.println(collisionBlocks.size());
 		return hitBlocks;
 	}
 	
@@ -228,7 +229,7 @@ public class Map extends BasicGameState {
 		// Return true if a spike gets hit. This is the block in that tile.
 		int blockAt = getBlockAt(x, y);
 		if (Math.abs(player.x - x) < 1 && Math.abs(player.y - y) < 1) {
-			if (!BlockRegistry.canShootThrough(blockAt)) return new Vector(x, y);
+			if (BlockRegistry.canWalkThrough(blockAt)) return new Vector(x, y);
 			// We want to create as little lag as possible, so we politely show the player the door with the least
 			// moving required.
 			if (Math.abs(player.x - x) >= Math.abs(player.y - y) - 6 / 32) {

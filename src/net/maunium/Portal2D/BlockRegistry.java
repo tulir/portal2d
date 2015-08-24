@@ -29,7 +29,9 @@ public class BlockRegistry {
 	 * @param y The Y coordinate of the block
 	 */
 	public static void render(Graphics g, int id, int x, int y, int shiftX, int shiftY) {
-		if (blocks.containsKey(id)) blocks.get(id).render(g, x * 32 + shiftX, x * 32 + shiftY);
+		if (blocks.containsKey(id)) {
+			blocks.get(id).render(g, x * 32 + shiftX, y * 32 + shiftY);
+		}
 	}
 	
 	/**
