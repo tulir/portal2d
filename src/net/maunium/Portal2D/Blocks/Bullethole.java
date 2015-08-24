@@ -1,13 +1,9 @@
 package net.maunium.Portal2D.Blocks;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
-import net.maunium.Portal2D.BlockRegistry;
 import net.maunium.Portal2D.Portal2D;
-import net.maunium.Portal2D.Map.Map;
-import net.maunium.Portal2D.Util.Vector;
 
 public class Bullethole extends AbstractBlock {
 	public static final int ID = 7;
@@ -19,11 +15,5 @@ public class Bullethole extends AbstractBlock {
 		canAttachPortal = false;
 		collisionPriority = 80;
 		texture = host.getImage("blocks/tile_bullethole");
-	}
-	
-	@Override
-	public void onCollide(Portal2D host, GameContainer gc, Map map, Vector v) {
-		map.setBlockAt(v.x, v.y, BlockRegistry.TILE_NULL);
-		host.points++;
 	}
 }
