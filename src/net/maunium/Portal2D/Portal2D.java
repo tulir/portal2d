@@ -87,6 +87,9 @@ public class Portal2D extends StateBasedGame {
 					e.printStackTrace();
 				}
 			}
+		} else {
+			userMaps.delete();
+			userMaps.mkdir();
 		}
 	}
 	

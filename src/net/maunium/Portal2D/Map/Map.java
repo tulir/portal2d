@@ -30,9 +30,10 @@ import net.maunium.Portal2D.Util.Vector.SideHit;
 public class Map extends BasicGameState {
 	public static final int MS_BETWEEN_BULLETS = 500;
 	public final String name;
-	protected final Image rawMap;
 	private final Portal2D host;
 	private final int id;
+	protected final Image rawMap;
+	protected long startTime;
 	protected int shiftX = 0, shiftY = 0, drawAreaWidth, drawAreaHeight;
 	protected int[][] blocks;
 	protected Portal portal_blue, portal_orange;
@@ -83,6 +84,11 @@ public class Map extends BasicGameState {
 	}
 	
 	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		startTime = System.currentTimeMillis();
+	};
+	
+	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		// Set the background color to RGB 50, 50, 50.
 		g.setBackground(new Color(50, 50, 50));
@@ -106,6 +112,7 @@ public class Map extends BasicGameState {
 		
 		g.setColor(Color.white);
 		g.drawString("Points: " + host.points, 5, 5);
+		g.drawString("Time: " + (System.currentTimeMillis() - startTime) / 1000.0f, 5, 20);
 	}
 	
 	@Override

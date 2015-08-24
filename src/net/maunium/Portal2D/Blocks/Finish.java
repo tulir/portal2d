@@ -17,7 +17,7 @@ public class Finish extends AbstractBlock {
 		canShootThrough = false;
 		canAttachPortal = false;
 		collisionPriority = 70;
-		texture = host.getImage("blocks/point");
+		texture = host.getImage("blocks/finish");
 	}
 	
 	@Override
