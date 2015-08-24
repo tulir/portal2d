@@ -74,7 +74,10 @@ public class PortalBullet {
 						smallestKey = e.getKey();
 					}
 				}
-				return new Vector((x - x % 32) / 32, (y - y % 32) / 32, SideHit.fromInt(smallestKey));
+				if (smallestValue < Double.MAX_VALUE) {
+					return new Vector((x - x % 32) / 32, (y - y % 32) / 32, SideHit.fromInt(smallestKey));
+				}
+				return Vector.NULL;
 			} else {
 				return Vector.NULL;
 			}
