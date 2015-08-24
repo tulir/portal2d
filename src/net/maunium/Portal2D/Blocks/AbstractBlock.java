@@ -47,7 +47,7 @@ public abstract class AbstractBlock {
 		}
 		
 		@Override
-		public int compare(Vector o1, Vector o2) {
+		public int compare(Vector o2, Vector o1) {
 			return Integer.compare(BlockRegistry.getBlockHandler(m.getBlockAt(o1.x, o1.y)).getCollisionPriority(),
 					BlockRegistry.getBlockHandler(m.getBlockAt(o2.x, o2.y)).getCollisionPriority());
 		}

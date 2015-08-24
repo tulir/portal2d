@@ -16,7 +16,7 @@ public class Finish extends AbstractBlock {
 		canWalkThrough = false;
 		canShootThrough = false;
 		canAttachPortal = false;
-		collisionPriority = 30;
+		collisionPriority = 70;
 		texture = host.getImage("blocks/point");
 	}
 	

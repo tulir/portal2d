@@ -216,7 +216,7 @@ public class Map extends BasicGameState {
 				}
 			}
 		}
-		AbstractBlock.CollisionSorter.sort(hitBlocks, this);
+		AbstractBlock.CollisionSorter.sort(collisionBlocks, this);
 		for (int pos = 0; pos < collisionBlocks.size(); pos++) {
 			Vector v = checkCollisionWith(collisionBlocks.get(pos).x, collisionBlocks.get(pos).y);
 			if (!v.equals(Vector.NULL)) hitBlocks.add(v);

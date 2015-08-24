@@ -13,7 +13,7 @@ public class BlockDark extends AbstractBlock {
 		canWalkThrough = false;
 		canShootThrough = false;
 		canAttachPortal = false;
-		collisionPriority = 10;
+		collisionPriority = 50;
 		texture = host.getImage("blocks/tile_dark");
 	}
 }

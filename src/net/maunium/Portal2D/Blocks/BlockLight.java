@@ -13,7 +13,7 @@ public class BlockLight extends AbstractBlock {
 		canWalkThrough = false;
 		canShootThrough = false;
 		canAttachPortal = true;
-		collisionPriority = 10;
+		collisionPriority = 50;
 		texture = host.getImage("blocks/tile_light");
 	}
 }

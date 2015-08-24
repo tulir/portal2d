@@ -17,7 +17,7 @@ public class Point extends AbstractBlock {
 		canWalkThrough = true;
 		canShootThrough = true;
 		canAttachPortal = false;
-		collisionPriority = 30;
+		collisionPriority = 80;
 		texture = host.getImage("blocks/point");
 	}
 	
