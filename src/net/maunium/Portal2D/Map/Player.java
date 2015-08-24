@@ -52,8 +52,8 @@ public class Player {
 		// Convert the angle to degrees.
 		eyeAngle = Math.toDegrees(eyeAngle < 0 ? eyeAngle + 2 * Math.PI : eyeAngle);
 		
-		boolean onGround = dy == 0
-				&& (BlockRegistry.isSolid(map.getBlockAt((int) x, (int) y + 1)) || BlockRegistry.isSolid(map.getBlockAt((int) (x + 1), (int) y + 1)));
+		boolean onGround = dy == 0 && (!BlockRegistry.canWalkThrough(map.getBlockAt((int) x, (int) y + 1))
+				|| !BlockRegistry.canWalkThrough(map.getBlockAt((int) (x + 1), (int) y + 1)));
 				
 		/*
 		 * Handle left/right presses.

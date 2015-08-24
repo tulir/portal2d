@@ -16,6 +16,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import net.maunium.Portal2D.BlockRegistry;
 import net.maunium.Portal2D.Portal2D;
+import net.maunium.Portal2D.Blocks.AbstractBlock;
 import net.maunium.Portal2D.Util.Vector;
 import net.maunium.Portal2D.Util.Vector.SideHit;
 
@@ -89,7 +90,7 @@ public class Map extends BasicGameState {
 		for (int x = 0; x < blocks.length; x++) {
 			for (int y = 0; y < blocks[x].length; y++) {
 				// Render each existing block. Ignore non-existing block positions.
-				if (blocks[x][y] > Portal2D.TILE_NONE) BlockRegistry.render(g, blocks[x][y], x, y, shiftX, shiftY);
+				if (blocks[x][y] != BlockRegistry.TILE_NULL) BlockRegistry.render(g, blocks[x][y], x, y, shiftX, shiftY);
 			}
 		}
 		
@@ -160,30 +161,11 @@ public class Map extends BasicGameState {
 		
 		// Check collisions with blocks and handle them accordingly.
 		List<Vector> vs = checkCollision();
-		for (Vector v : vs) {
-			switch (getBlockAt(v.x, v.y)) {
-				case Portal2D.TILE_BOMB:
-					// The player hit a bomb. Reset score and go to the menu.
-					host.points = 0;
-					game.enterState(0);
-					break;
-				case Portal2D.TILE_POINT:
-					// The player hit a point. Collect it.
-					blocks[v.x][v.y] = Portal2D.TILE_NONE;
-					host.points++;
-					break;
-				case Portal2D.TILE_FINISH:
-					game.enterState(game.getCurrentStateID() + 1);
-					break;
-			}
-		}
+		for (Vector v : vs)
+			BlockRegistry.getBlockHandler(getBlockAt(v.x, v.y)).onCollide(host, gc, this, v);
+			
 		updateDrawRectangle(gc);
 	}
-	
-//	@Override
-//	public void enter(GameContainer gc, StateBasedGame game) throws SlickException {
-//		((AppGameContainer) gc).setDisplayMode(rawMap.getWidth() * 32, rawMap.getHeight() * 32, false);
-//	}
 	
 	@Override
 	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
@@ -202,7 +184,11 @@ public class Map extends BasicGameState {
 	 */
 	public int getBlockAt(int x, int y) {
 		if (x > -1 && y > -1 && blocks.length > x && blocks[x].length > y) return blocks[x][y];
-		else return Portal2D.TILE_NONE;
+		else return BlockRegistry.TILE_NULL;
+	}
+	
+	public void setBlockAt(int x, int y, int block) {
+		if (x > -1 && y > -1 && blocks.length > x && blocks[x].length > y) blocks[x][y] = block;
 	}
 	
 	/**
@@ -218,31 +204,31 @@ public class Map extends BasicGameState {
 	 * @return The Vector location of the block the player collided with.
 	 */
 	public List<Vector> checkCollision() {
-		// I will first check collision with walls, then collision with bombs, then collision with points.
 		List<Vector> hitBlocks = new ArrayList<Vector>();
 		List<Vector> collisionBlocks = new ArrayList<Vector>();
 		int playerTileX = (int) player.x;
 		int playerTileY = (int) player.y;
 		for (int mx = -1; mx < 2; mx++) {
 			for (int my = -1; my < 2; my++) {
-				Vector v = new Vector(playerTileX+mx, playerTileY+my);
-				if (getBlockAt(playerTileX+mx, playerTileY+my) != Portal2D.TILE_NONE) {
+				Vector v = new Vector(playerTileX + mx, playerTileY + my);
+				if (getBlockAt(playerTileX + mx, playerTileY + my) != BlockRegistry.TILE_NULL) {
 					collisionBlocks.add(v);
 				}
 			}
 		}
-		// Sort the list here
-		// From smallest collisionPriority to the largest
-		for(int pos = 0; pos < collisionBlocks.size(); pos++) {
-			hitBlocks.add(checkCollisionWith(collisionBlocks.get(pos).x, collisionBlocks.get(pos).y));
+		AbstractBlock.CollisionSorter.sort(hitBlocks, this);
+		for (int pos = 0; pos < collisionBlocks.size(); pos++) {
+			Vector v = checkCollisionWith(collisionBlocks.get(pos).x, collisionBlocks.get(pos).y);
+			if (!v.equals(Vector.NULL)) hitBlocks.add(v);
 		}
 		return hitBlocks;
 	}
+	
 	private Vector checkCollisionWith(int x, int y) {
 		// Return true if a spike gets hit. This is the block in that tile.
 		int blockAt = getBlockAt(x, y);
 		if (Math.abs(player.x - x) < 1 && Math.abs(player.y - y) < 1) {
-			if (!BlockRegistry.isSolid(blockAt)) return new Vector(x, y);
+			if (!BlockRegistry.canShootThrough(blockAt)) return new Vector(x, y);
 			// We want to create as little lag as possible, so we politely show the player the door with the least
 			// moving required.
 			if (Math.abs(player.x - x) >= Math.abs(player.y - y) - 6 / 32) {

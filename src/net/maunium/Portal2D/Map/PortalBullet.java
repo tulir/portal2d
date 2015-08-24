@@ -7,7 +7,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import net.maunium.Portal2D.BlockRegistry;
-import net.maunium.Portal2D.Portal2D;
 import net.maunium.Portal2D.Util.Vector;
 import net.maunium.Portal2D.Util.Vector.SideHit;
 
@@ -51,15 +50,15 @@ public class PortalBullet {
 		y += delta / 1000.0f * dy;
 		
 		int hitBlock = map.getBlockAt((x - x % 32) / 32, (y - y % 32) / 32);
-		if (hitBlock > Portal2D.TILE_NONE && BlockRegistry.isSolid(hitBlock)) {
-			if (hitBlock == Portal2D.TILE_LIGHT) {
+		if (hitBlock > BlockRegistry.TILE_NULL && !BlockRegistry.canShootThrough(hitBlock)) {
+			if (BlockRegistry.canAttachPortal(hitBlock)) {
 				int blockMiddleX = x - x % 32 + 16;
 				int blockMiddleY = y - y % 32 + 16;
 				HashMap<Integer, Double> possibleValues = new HashMap<Integer, Double>();
 				// Checking if there can possibly be a portal there.
 				for (int side = 0; side < 4; side++) {
 					int test = map.getBlockAt((x - x % 32) / 32 + (side == 0 ? 0 : side - 2), (y - y % 32) / 32 + (side == 3 ? 0 : side - 1));
-					if (!BlockRegistry.isSolid(test)) {
+					if (BlockRegistry.canShootThrough(test)) {
 						if ((side == 0 ? 0 : side - 2) * dx <= 0 && (side == 3 ? 0 : side - 1) * dy <= 0) {
 							possibleValues.put(side, (double) (Math.abs(blockMiddleX + (side == 0 ? 0 : side - 2) * 16 - x)
 									+ Math.abs(blockMiddleY + (side == 3 ? 0 : side - 1) * 16 - y)));

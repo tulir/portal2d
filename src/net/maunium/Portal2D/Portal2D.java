@@ -10,12 +10,16 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import net.maunium.Portal2D.Blocks.BlockDark;
+import net.maunium.Portal2D.Blocks.BlockLight;
+import net.maunium.Portal2D.Blocks.Bomb;
+import net.maunium.Portal2D.Blocks.Finish;
+import net.maunium.Portal2D.Blocks.Point;
 import net.maunium.Portal2D.Map.Map;
 import net.maunium.Portal2D.Map.PortalBullet;
 
@@ -28,8 +32,6 @@ import net.maunium.Portal2D.Map.PortalBullet;
  */
 public class Portal2D extends StateBasedGame {
 	public int points = 0;
-	/* Default tile IDs */
-	public static final int TILE_DARK = 1, TILE_LIGHT = 2, TILE_POINT = 3, TILE_FINISH = 4, TILE_BOMB = 5, TILE_NONE = 0;
 	
 	public Portal2D() {
 		super("Portal 2(D)");
@@ -41,11 +43,11 @@ public class Portal2D extends StateBasedGame {
 		addState(new Menu(this));
 		
 		// Register the default blocks.
-		BlockRegistry.registerBlock(TILE_DARK, new Color(50, 50, 50), getImage("blocks/tile_dark"), true);
-		BlockRegistry.registerBlock(TILE_LIGHT, new Color(200, 200, 200), getImage("blocks/tile_light"), true);
-		BlockRegistry.registerBlock(TILE_POINT, new Color(0, 100, 0), getImage("blocks/point"), false);
-		BlockRegistry.registerBlock(TILE_FINISH, new Color(0, 255, 0), getImage("blocks/finish"), false);
-		BlockRegistry.registerBlock(TILE_BOMB, new Color(255, 0, 255), getImage("blocks/bomb"), true);
+		BlockRegistry.registerBlock(BlockDark.ID, BlockDark.COLORID, new BlockDark(this));
+		BlockRegistry.registerBlock(BlockLight.ID, BlockLight.COLORID, new BlockLight(this));
+		BlockRegistry.registerBlock(Point.ID, Point.COLORID, new Point(this));
+		BlockRegistry.registerBlock(Finish.ID, Finish.COLORID, new Finish(this));
+		BlockRegistry.registerBlock(Bomb.ID, Bomb.COLORID, new Bomb(this));
 		
 		// Load the images for the portal bullets.
 		PortalBullet.BLUE_BULLET = getImage("bullet_blue");

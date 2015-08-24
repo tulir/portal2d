@@ -5,7 +5,8 @@ import java.util.Map;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
+
+import net.maunium.Portal2D.Blocks.AbstractBlock;
 
 /**
  * Block registry. Maps Color -> BlockType and BlockType -> Image.
@@ -14,12 +15,10 @@ import org.newdawn.slick.Image;
  * @since 0.1
  */
 public class BlockRegistry {
-	/** Contains the ID -> Image mappings. */
-	private static Map<Integer, Image> images = new HashMap<Integer, Image>();
-	/** Contains the ID -> Solid flag mappings. */
-	private static Map<Integer, Boolean> solid = new HashMap<Integer, Boolean>();
+	private static Map<Integer, AbstractBlock> blocks = new HashMap<Integer, AbstractBlock>();
 	/** Contains the Color -> ID mappings. */
 	private static Map<Color, Integer> colors = new HashMap<Color, Integer>();
+	public static final int TILE_NULL = 0;
 	
 	/**
 	 * Render the the texture of the given block ID at the given coordinates using the given Graphics object.
@@ -30,7 +29,7 @@ public class BlockRegistry {
 	 * @param y The Y coordinate of the block
 	 */
 	public static void render(Graphics g, int id, int x, int y, int shiftX, int shiftY) {
-		if (images.containsKey(id)) g.drawImage(images.get(id), x * 32 + shiftX, y * 32 + shiftY);
+		if (blocks.containsKey(id)) blocks.get(id).render(g, x * 32 + shiftX, x * 32 + shiftY);
 	}
 	
 	/**
@@ -41,23 +40,34 @@ public class BlockRegistry {
 	 */
 	public static int getBlockId(Color c) {
 		if (colors.containsKey(c)) return colors.get(c);
-		else return -1;
+		else return TILE_NULL;
+	}
+	
+	public static AbstractBlock getBlockHandler(int id) {
+		if (blocks.containsKey(id)) return blocks.get(id);
+		else return null;
 	}
 	
 	/**
 	 * Map the given color and image to the given block name.
 	 */
-	public static void registerBlock(int id, Color c, Image i, boolean s) {
-		images.put(id, i);
+	public static void registerBlock(int id, Color c, AbstractBlock block) {
 		colors.put(c, id);
-		solid.put(id, s);
+		blocks.put(id, block);
 	}
 	
-	/**
-	 * Get whether or not the block with the given id is solid.
-	 */
-	public static boolean isSolid(int id) {
-		if (id <= Portal2D.TILE_NONE || !solid.containsKey(id)) return false;
-		else return solid.get(id);
+	public static boolean canWalkThrough(int id) {
+		if (id <= TILE_NULL || !blocks.containsKey(id)) return false;
+		else return blocks.get(id).canWalkThrough();
+	}
+	
+	public static boolean canShootThrough(int id) {
+		if (id <= TILE_NULL || !blocks.containsKey(id)) return false;
+		else return blocks.get(id).canShootThrough();
+	}
+	
+	public static boolean canAttachPortal(int id) {
+		if (id <= TILE_NULL || !blocks.containsKey(id)) return false;
+		else return blocks.get(id).canAttachPortal();
 	}
 }
