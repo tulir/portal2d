@@ -92,11 +92,6 @@ public class Map extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
 		// Set the background color to RGB 50, 50, 50.
 		g.setBackground(new Color(50, 50, 50));
-		
-		// Render portal bullets.
-		for (PortalBullet pb : bullets)
-			pb.render(g, shiftX, shiftY);
-			
 		// Loop through the blocks.
 		for (int x = 0; x < blocks.length; x++) {
 			for (int y = 0; y < blocks[x].length; y++) {
@@ -105,6 +100,10 @@ public class Map extends BasicGameState {
 			}
 		}
 		
+		// Render portal bullets.
+		for (PortalBullet pb : bullets)
+			pb.render(g, shiftX, shiftY);
+			
 		// Render the portals.
 		portal_blue.render(g, shiftX, shiftY);
 		portal_orange.render(g, shiftX, shiftY);
