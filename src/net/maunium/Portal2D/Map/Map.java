@@ -221,7 +221,6 @@ public class Map extends BasicGameState {
 			Vector v = checkCollisionWith(collisionBlocks.get(pos).x, collisionBlocks.get(pos).y);
 			if (!v.equals(Vector.NULL)) hitBlocks.add(v);
 		}
-		System.out.println(collisionBlocks.size());
 		return hitBlocks;
 	}
 	
