@@ -59,12 +59,12 @@ public class BlockRegistry {
 	}
 	
 	public static boolean canWalkThrough(int id) {
-		if (id <= TILE_NULL || !blocks.containsKey(id)) return false;
+		if (id <= TILE_NULL || !blocks.containsKey(id)) return true;
 		else return blocks.get(id).canWalkThrough();
 	}
 	
 	public static boolean canShootThrough(int id) {
-		if (id <= TILE_NULL || !blocks.containsKey(id)) return false;
+		if (id <= TILE_NULL || !blocks.containsKey(id)) return true;
 		else return blocks.get(id).canShootThrough();
 	}
 	

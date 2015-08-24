@@ -50,7 +50,7 @@ public class PortalBullet {
 		y += delta / 1000.0f * dy;
 		
 		int hitBlock = map.getBlockAt((x - x % 32) / 32, (y - y % 32) / 32);
-		if (hitBlock > BlockRegistry.TILE_NULL && !BlockRegistry.canShootThrough(hitBlock)) {
+		if (!BlockRegistry.canShootThrough(hitBlock)) {
 			if (BlockRegistry.canAttachPortal(hitBlock)) {
 				int blockMiddleX = x - x % 32 + 16;
 				int blockMiddleY = y - y % 32 + 16;

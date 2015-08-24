@@ -15,7 +15,7 @@ public class Point extends AbstractBlock {
 	
 	public Point(Portal2D host) throws SlickException {
 		canWalkThrough = true;
-		canShootThrough = false;
+		canShootThrough = true;
 		canAttachPortal = false;
 		collisionPriority = 30;
 		texture = host.getImage("blocks/point");
