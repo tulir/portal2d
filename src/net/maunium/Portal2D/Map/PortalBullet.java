@@ -11,7 +11,7 @@ import net.maunium.Portal2D.Util.Vector;
 import net.maunium.Portal2D.Util.Vector.SideHit;
 
 /**
- * Portal bullet.
+ * Portal bullet class.
  * 
  * @author Tulir293
  * @author Antti
@@ -39,23 +39,40 @@ public class PortalBullet {
 		this.angle = (float) Math.toDegrees(angle < 0 ? angle + 2 * Math.PI : angle);
 	}
 	
+	/**
+	 * Render the portal bullet.
+	 */
 	public void render(Graphics g, int shiftX, int shiftY) {
 		Image i = isBlue ? BLUE_BULLET : ORANGE_BULLET;
 		i.setRotation(angle);
 		g.drawImage(i, x + shiftX, y + shiftY);
 	}
 	
+	/**
+	 * Update the portal bullet location.
+	 */
 	public Vector update(int delta, Map map) {
+		/*
+		 * Increase X and Y by delta times the change of X and Y where delta is the time since the
+		 * last update in seconds and the change of X and Y have been calculated in the constructor
+		 * using the shooting angle.
+		 */
 		x += delta / 1000.0f * dx;
 		y += delta / 1000.0f * dy;
 		
+		// Get the block where the bullet is.
 		int hitBlock = map.getBlockAt((x - x % 32) / 32, (y - y % 32) / 32);
+		// Check if the block allows portal blocks to pass through.
 		if (!BlockRegistry.canShootThrough(hitBlock)) {
+			// Check if a portal can be attached to the block that was hit.
 			if (BlockRegistry.canAttachPortal(hitBlock)) {
 				int blockMiddleX = x - x % 32 + 16;
 				int blockMiddleY = y - y % 32 + 16;
 				HashMap<Integer, Double> possibleValues = new HashMap<Integer, Double>();
-				// Checking if there can possibly be a portal there.
+				/*
+				 * Fairly complicated magic to see if a portal can be validly placed. This will
+				 * cover most cases where the portal tries to go in the middle of two blocks.
+				 */
 				for (int side = 0; side < 4; side++) {
 					int test = map.getBlockAt((x - x % 32) / 32 + (side == 0 ? 0 : side - 2), (y - y % 32) / 32 + (side == 3 ? 0 : side - 1));
 					if (BlockRegistry.canShootThrough(test)) {
@@ -74,14 +91,17 @@ public class PortalBullet {
 						smallestKey = e.getKey();
 					}
 				}
-				if (smallestValue < Double.MAX_VALUE) {
-					return new Vector((x - x % 32) / 32, (y - y % 32) / 32, SideHit.fromInt(smallestKey));
-				}
-				return Vector.NULL;
+				if (smallestValue < Double.MAX_VALUE) return new Vector((x - x % 32) / 32, (y - y % 32) / 32, SideHit.fromInt(smallestKey));
+				else return Vector.NULL;
+				/*
+				 * The portal checking magic ends here.
+				 */
 			} else {
+				// Portal can't be attached, return a vector null.
 				return Vector.NULL;
 			}
 		}
+		// Bullet can continue freely, return null.
 		return null;
 	}
 }
