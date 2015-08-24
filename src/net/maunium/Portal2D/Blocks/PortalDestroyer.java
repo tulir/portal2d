@@ -4,11 +4,16 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 
-import net.maunium.Portal2D.BlockRegistry;
 import net.maunium.Portal2D.Portal2D;
 import net.maunium.Portal2D.Map.Map;
 import net.maunium.Portal2D.Util.Vector;
 
+/**
+ * A block that destroys portals when the player walks through it.
+ * 
+ * @author Tulir293
+ * @since 0.1
+ */
 public class PortalDestroyer extends AbstractBlock {
 	public static final int ID = 6;
 	public static final Color COLORID = new Color(0, 150, 255);

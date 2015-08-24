@@ -8,6 +8,13 @@ import net.maunium.Portal2D.Portal2D;
 import net.maunium.Portal2D.Map.Map;
 import net.maunium.Portal2D.Util.Vector;
 
+/**
+ * The built-in bomb type. Points will reset to zero and the game will go back the menu when
+ * collided.
+ * 
+ * @author Tulir293
+ * @since 0.1
+ */
 public class Bomb extends AbstractBlock {
 	public static final int ID = 5;
 	public static final Color COLORID = new Color(255, 0, 255);

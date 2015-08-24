@@ -8,6 +8,12 @@ import net.maunium.Portal2D.Portal2D;
 import net.maunium.Portal2D.Map.Map;
 import net.maunium.Portal2D.Util.Vector;
 
+/**
+ * The exit point.
+ * 
+ * @author Tulir293
+ * @since 0.1
+ */
 public class Finish extends AbstractBlock {
 	public static final int ID = 4;
 	public static final Color COLORID = new Color(0, 255, 0);

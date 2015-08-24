@@ -5,6 +5,12 @@ import org.newdawn.slick.SlickException;
 
 import net.maunium.Portal2D.Portal2D;
 
+/**
+ * The built-in dark block type which portals can't attach to.
+ * 
+ * @author Tulir293
+ * @since 0.1
+ */
 public class BlockDark extends AbstractBlock {
 	public static final int ID = 1;
 	public static final Color COLORID = new Color(50, 50, 50);

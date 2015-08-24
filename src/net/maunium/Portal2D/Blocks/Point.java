@@ -9,6 +9,12 @@ import net.maunium.Portal2D.Portal2D;
 import net.maunium.Portal2D.Map.Map;
 import net.maunium.Portal2D.Util.Vector;
 
+/**
+ * A collectable point.
+ * 
+ * @author Tulir293
+ * @since 0.1
+ */
 public class Point extends AbstractBlock {
 	public static final int ID = 3;
 	public static final Color COLORID = new Color(0, 100, 0);

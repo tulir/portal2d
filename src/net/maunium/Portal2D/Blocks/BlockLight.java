@@ -5,6 +5,12 @@ import org.newdawn.slick.SlickException;
 
 import net.maunium.Portal2D.Portal2D;
 
+/**
+ * The built-in light block type which portals can attach to
+ * 
+ * @author Tulir293
+ * @since 0.1
+ */
 public class BlockLight extends AbstractBlock {
 	public static final int ID = 2;
 	public static final Color COLORID = new Color(200, 200, 200);
