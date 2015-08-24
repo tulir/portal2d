@@ -218,18 +218,26 @@ public class Map extends BasicGameState {
 	 * @return The Vector location of the block the player collided with.
 	 */
 	public List<Vector> checkCollision() {
+		// I will first check collision with walls, then collision with bombs, then collision with points.
 		List<Vector> hitBlocks = new ArrayList<Vector>();
+		List<Vector> collisionBlocks = new ArrayList<Vector>();
 		int playerTileX = (int) player.x;
 		int playerTileY = (int) player.y;
 		for (int mx = -1; mx < 2; mx++) {
 			for (int my = -1; my < 2; my++) {
-				Vector v = checkCollisionWith(playerTileX + mx, playerTileY + my);
-				if (!v.equals(Vector.NULL)) hitBlocks.add(v);
+				Vector v = new Vector(playerTileX+mx, playerTileY+my);
+				if (getBlockAt(playerTileX+mx, playerTileY+my) != Portal2D.TILE_NONE) {
+					collisionBlocks.add(v);
+				}
 			}
+		}
+		// Sort the list here
+		// From smallest collisionPriority to the largest
+		for(int pos = 0; pos < collisionBlocks.size(); pos++) {
+			hitBlocks.add(checkCollisionWith(collisionBlocks.get(pos).x, collisionBlocks.get(pos).y));
 		}
 		return hitBlocks;
 	}
-	
 	private Vector checkCollisionWith(int x, int y) {
 		// Return true if a spike gets hit. This is the block in that tile.
 		int blockAt = getBlockAt(x, y);
