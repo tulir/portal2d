@@ -18,8 +18,10 @@ import org.newdawn.slick.state.StateBasedGame;
 import net.maunium.Portal2D.Blocks.BlockDark;
 import net.maunium.Portal2D.Blocks.BlockLight;
 import net.maunium.Portal2D.Blocks.Bomb;
+import net.maunium.Portal2D.Blocks.Bullethole;
 import net.maunium.Portal2D.Blocks.Finish;
 import net.maunium.Portal2D.Blocks.Point;
+import net.maunium.Portal2D.Blocks.PortalDestroyer;
 import net.maunium.Portal2D.Map.Map;
 import net.maunium.Portal2D.Map.PortalBullet;
 
@@ -48,6 +50,8 @@ public class Portal2D extends StateBasedGame {
 		BlockRegistry.registerBlock(Point.ID, Point.COLORID, new Point(this));
 		BlockRegistry.registerBlock(Finish.ID, Finish.COLORID, new Finish(this));
 		BlockRegistry.registerBlock(Bomb.ID, Bomb.COLORID, new Bomb(this));
+		BlockRegistry.registerBlock(PortalDestroyer.ID, PortalDestroyer.COLORID, new PortalDestroyer(this));
+		BlockRegistry.registerBlock(Bullethole.ID, Bullethole.COLORID, new Bullethole(this));
 		
 		// Load the images for the portal bullets.
 		PortalBullet.BLUE_BULLET = getImage("bullet_blue");
