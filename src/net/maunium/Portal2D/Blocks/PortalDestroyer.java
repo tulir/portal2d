@@ -22,7 +22,7 @@ public class PortalDestroyer extends AbstractBlock {
 		canWalkThrough = true;
 		canShootThrough = false;
 		canAttachPortal = false;
-		collisionPriority = 80;
+		collisionPriority = 30;
 		texture = host.getImage("blocks/portal_destroyer");
 	}
 	
