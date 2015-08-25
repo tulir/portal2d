@@ -259,7 +259,9 @@ public class Map extends BasicGameState {
 		// Make sure both portals have been set.
 		if (portal_blue.getLocation().equals(Vector.NULL) || portal_orange.getLocation().equals(Vector.NULL)) return;
 		// Check if the player is collided with the blue portal. If not, check with the orange one.
-		if (!checkCollisionWithPortal(portal_blue)) checkCollisionWithPortal(portal_orange);
+		if (!checkCollisionWithPortal(portal_blue.getLocation(),portal_orange.getLocation())) {
+			checkCollisionWithPortal(portal_orange.getLocation(),portal_blue.getLocation());
+		}
 		return;
 	}
 	
@@ -268,23 +270,22 @@ public class Map extends BasicGameState {
 	 * 
 	 * @return True if the player collided with a portal and was teleported. False otherwise.
 	 */
-	private boolean checkCollisionWithPortal(Portal portal) {
-		if (Math.abs(player.x - portal.getLocation().x) < 1 && Math.abs(player.y - portal.getLocation().y) < 1) {
-			if (Math.abs(player.y - portal.getLocation().y) < 1f / 3f) {
-				if (player.x - portal.getLocation().x < 0) {
-					if (portal.getLocation().sideHit == SideHit.LEFT) teleport(portal);
-					else return false;
-				} else {
-					if (portal.getLocation().sideHit == SideHit.RIGHT) teleport(portal);
-					else return false;
+	private boolean checkCollisionWithPortal(Vector portal, Vector targetPortal) {
+		if (Math.abs(player.x - portal.x) < 1 && Math.abs(player.y - portal.y) < 1) {
+			
+			if (Math.abs(player.y - portal.y) < 1f / 3f) {
+				if (portal.sideHit == SideHit.LEFT || portal.sideHit == SideHit.RIGHT) {
+					teleport(portal, targetPortal);
 				}
-			} else if (Math.abs(player.x - portal.getLocation().x) < 1f / 3f) {
-				if (player.y - portal.getLocation().y < 0) {
-					if (portal.getLocation().sideHit == SideHit.TOP) teleport(portal);
-					else return false;
-				} else {
-					if (portal.getLocation().sideHit == SideHit.BOTTOM) teleport(portal);
-					else return false;
+				else {
+					return false;
+				}
+			} else if (Math.abs(player.x - portal.x) < 1f / 3f) {
+				if (portal.sideHit == SideHit.TOP || portal.sideHit == SideHit.BOTTOM) {
+					teleport(portal, targetPortal);
+				}
+				else {
+					return false;
 				}
 			} else return false;
 		} else return false;
@@ -294,13 +295,13 @@ public class Map extends BasicGameState {
 	/**
 	 * Teleport the player from the given portal to the opposite one.
 	 */
-	private void teleport(Portal currentPortal) {
-		Portal targetPortal = currentPortal == portal_blue ? portal_orange : portal_blue;
+	public void teleport(Vector currentPortal, Vector targetPortal) {
 		
-		int hitSide = SideHit.toInt(currentPortal.getLocation().sideHit);
+		
+		int hitSide = SideHit.toInt(currentPortal.sideHit);
 		
 		// Get the amount of rotations needed
-		int rotationsNeeded = hitSide - SideHit.toInt(targetPortal.getLocation().sideHit);
+		int rotationsNeeded = hitSide - SideHit.toInt(targetPortal.sideHit);
 		if (hitSide % 2 != 0) {
 			player.dx *= -1;
 			player.dy = 0;
@@ -315,12 +316,12 @@ public class Map extends BasicGameState {
 		player.dx = newDX;
 		
 		// Then after modifying the speed, teleport to the correct tile.
-		int x = SideHit.toInt(targetPortal.getLocation().sideHit);
+		int x = SideHit.toInt(targetPortal.sideHit);
 		int cx = x == 0 ? 0 : x - 2;
 		int cy = x == 3 ? 0 : x - 1;
 		
-		player.x = targetPortal.getLocation().x + cx * (33 / 32);
-		player.y = targetPortal.getLocation().y + cy * (33 / 32);
+		player.x = targetPortal.x + cx * (33 / 32);
+		player.y = targetPortal.y + cy * (33 / 32);
 	}
 	
 	/**
