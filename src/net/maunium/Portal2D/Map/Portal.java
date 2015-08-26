@@ -3,7 +3,7 @@ package net.maunium.Portal2D.Map;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
-import net.maunium.Portal2D.Util.Vector;
+import net.maunium.Portal2D.Vector;
 
 /**
  * Wrapper for portals. Contains the texture (blue or orange) and the location as a vector. If the vector is null, the

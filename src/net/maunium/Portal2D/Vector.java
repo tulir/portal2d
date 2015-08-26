@@ -1,4 +1,4 @@
-package net.maunium.Portal2D.Util;
+package net.maunium.Portal2D;
 
 /**
  * Vector class. Contains three values, X-coordinate, Y-coordinate and the side that was hit.

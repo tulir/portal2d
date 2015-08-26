@@ -15,9 +15,9 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import net.maunium.Portal2D.BlockRegistry;
 import net.maunium.Portal2D.Portal2D;
+import net.maunium.Portal2D.Vector;
 import net.maunium.Portal2D.Blocks.AbstractBlock;
-import net.maunium.Portal2D.Util.Vector;
-import net.maunium.Portal2D.Util.Vector.SideHit;
+import net.maunium.Portal2D.Vector.SideHit;
 
 /**
  * Container for maps.

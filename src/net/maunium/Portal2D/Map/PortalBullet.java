@@ -7,8 +7,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import net.maunium.Portal2D.BlockRegistry;
-import net.maunium.Portal2D.Util.Vector;
-import net.maunium.Portal2D.Util.Vector.SideHit;
+import net.maunium.Portal2D.Vector;
+import net.maunium.Portal2D.Vector.SideHit;
 
 /**
  * Portal bullet class.

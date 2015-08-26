@@ -9,8 +9,8 @@ import org.newdawn.slick.Image;
 
 import net.maunium.Portal2D.BlockRegistry;
 import net.maunium.Portal2D.Portal2D;
+import net.maunium.Portal2D.Vector;
 import net.maunium.Portal2D.Map.Map;
-import net.maunium.Portal2D.Util.Vector;
 
 /**
  * Base class for all block handlers.
